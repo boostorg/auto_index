@@ -1,0 +1,77 @@
+[article AutoIndex
+    [quickbook 1.4]
+    [copyright 2008 John Maddock]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+    [authors [Maddock, John]]
+    [/last-revision $Date: 2008-11-04 17:11:53 +0000 (Tue, 04 Nov 2008) $]
+]
+
+[section:overview Overview]
+
+AutoIndex is a tool for taking the grunt work out of indexing a
+Quickbook\/Boostbook\/Docbook document that describes C/C++ code.
+
+Traditionally, in order to index a Docbook document you would
+have to manually add a large amount of `<indexterm>` markup: 
+in fact one `<indexterm>` for each occurance of each term to be
+indexed.  
+
+Instead AutoIndex will scan one or more C/C++ header files
+and extract all the ['function], ['class], ['macro] and ['typedef] 
+names that are defined by those headers, and then insert the 
+`<indexterm>`'s into the XML document for you.
+
+AutoIndex creates index entries as follows - for each occurance of 
+each search term, it creates two index entries - one has the search term
+as the primary index key and the title of the section it appears in as
+a subterm, the other has the section title as the main index entry and the
+search term as the subentry.  Thus the user has two chances to find what their
+looking for, based upon either the section name or the ['function], ['class], ['macro] 
+or ['typedef] name.
+
+So for example in Boost.Math the class name `students_t_distribution` has a primary
+entry that lists all sections it appears in:
+
+[$../students_t_eg_1.png]
+
+Then those sections also have primary entries, which list all the search terms those
+sections contain:
+
+[$../students_t_eg_2.png]
+
+Of course these automated index entries may not be quite
+what you're looking for: often you'll get a few spurious entries, a few missing entries,
+and a few entries where the section name used as an index entry is less than ideal.
+So AutoIndex provides some powerful regular expression based rules that allow you
+to add, remove, constrain, or rewrite entries.  Normally just a few lines in
+AutoIndex's script file are enough to tailor the output to match the authors
+expectations.
+
+AutoIndex also supports multiple indexes (as does Docbook), and since it knows
+which search terms are ['function], ['class], ['macro] or ['typedef] names, it
+can add the necessary attritubes to the XML so that you can have separate
+indexes for each of these different types.  These specialised indexes only contain
+entries for the ['function], ['class], ['macro] or ['typedef] names, ['section
+names] are never used as primary index terms here, unlike the main "include everything"
+index.
+
+Finally, while the Docbook XSL stylesheets create nice indexes complete with page
+numbers for PDF output, the HTML indexes look a lot less good, as these use
+section titles in place of page numbers... but as AutoIndex uses section titles
+as index entries this leads to a lot of repetition, so as an alternative AutoIndex
+can be instructed to construct the index itself.  This is faster than using
+the XSL stylesheets, and now each index entry is a hyperlink to the 
+approprate section:
+
+[$../students_t_eg_3.png]
+
+With internal index generation there is also a helpful navigation bar 
+at the start of each Index:
+
+[$../students_t_eg_4.png]
+
+[endsect]
