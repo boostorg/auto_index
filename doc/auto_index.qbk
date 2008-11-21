@@ -13,14 +13,14 @@
 [section:overview Overview]
 
 AutoIndex is a tool for taking the grunt work out of indexing a
-Quickbook\/Boostbook\/Docbook document that describes C/C++ code.
+Quickbook\/Boostbook\/Docbook document that describes C\/C++ code.
 
 Traditionally, in order to index a Docbook document you would
 have to manually add a large amount of `<indexterm>` markup: 
 in fact one `<indexterm>` for each occurance of each term to be
 indexed.  
 
-Instead AutoIndex will scan one or more C/C++ header files
+Instead AutoIndex will scan one or more C\/C++ header files
 and extract all the ['function], ['class], ['macro] and ['typedef] 
 names that are defined by those headers, and then insert the 
 `<indexterm>`'s into the XML document for you.
@@ -75,3 +75,129 @@ at the start of each Index:
 [$../students_t_eg_4.png]
 
 [endsect]
+
+[section:tut Getting Started and Tutorial]
+
+[h4 Step 1: Build the tool]
+
+cd into `tools/auto_index/build` and invoke bjam as:
+
+   bjam release
+
+Optionally pass the name of the compiler toolset you want to use to bjam as well:
+
+   bjam release gcc
+
+[h4 Step 2: Configure Boost.Build]
+
+TODO: we need BoostBook integration!!!
+
+Currently the tool can only be run manually.
+
+[h4 Step 3: Add indexes to your documentation]
+
+To add a single index to a BoostBook\/Docbook document, then add
+`<index/>` at the location where you want the index to appear.  The
+index will be rendered as a separate section when the documentation
+is built.
+
+To add multiple indexes, then give each one a title and set it's
+`type` attribute to specify which terms will be included, for example
+to place the ['function], ['class], ['macro] or ['typedef] names
+indexed by ['auto_index] in separate indexes along with a main
+"include everything" index as well, one could add:
+
+  <index type="class_name">
+  <title>Class Index</title>
+  </index>
+
+  <index type="typedef_name">
+  <title>Typedef Index</title>
+  </index>
+
+  <index type="function_name">
+  <title>Function Index</title>
+  </index>
+
+  <index type="macro_name">
+  <title>Macro Index</title>
+  </index>
+
+  <index/>
+  
+In quickbook, you add the same markup but enclose it in an escape:
+
+   '''<index/>'''
+   
+[h4 Step 4: Create the script file]
+
+AutoIndex works by reading a script file that tells it what to index,
+at it's simplest it will scan one or more headers for terms that
+should be indexed in the documentation.  So for example to scan
+"myheader.hpp" the script file would just contain:
+
+   !scan myheader.hpp
+   
+Or we can recursively scan through directories looking for all
+the files to scan whose name matches a particular regular expression:
+
+   !scan-path "../../../../boost/math" ".*\.hpp" true
+   
+Note how each argument is whitespace separated and can be optionally
+enclosed in "double quotes".  The final ['true] argument indicates
+that subdirectories in `../../../../boost/math` should be searched
+in addition to that directory.
+
+Often the ['scan] or ['scan-path] rules will bring in too many terms
+to search for, so we need to be able to exclude terms as well:
+
+   !exclude type
+   
+Which excludes the term "type" from being indexed.
+
+We can also add terms manually:
+
+   foobar
+   
+will index occurances of "foobar" and:
+
+   foo bar
+   
+will index occurances of "foo" under the name "bar".
+
+This inclusion rule can also restict the term to
+certain sections, and add an index category that
+the term should belong to (so it only appears in certain
+indexes).
+
+Finally the script can add rewrite rules, that rename section names
+that are automatically used as index entries.  For example we might
+want to remove leading "A" or "The" prefixes from section titles
+when AutoIndex uses them as an index entry:
+
+   !rewrite-name "(?i)(?:A|The)\s+(.*)" "\1"
+   
+[h4 Step 5: Iterate]
+
+Creating a good index is an iterative process, often the first step is
+just to add a header scanning rule to the script file and then generate
+the documentation and see:
+
+* What's missing.
+* What's been included that shouldn't be.
+* What's been included under a poor name.
+
+Further rules can then be added to the script to handle these cases
+and the next iteration examined, and so on.
+
+[endsect]
+
+[section:script_ref Script File Reference]
+
+
+[endsect]
+
+[section:comm_ref Command Line Reference]
+
+[endsect]
+
