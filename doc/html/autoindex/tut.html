@@ -1,0 +1,194 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Getting Started and Tutorial</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot_8125">
+<link rel="home" href="../index.html" title="AutoIndex">
+<link rel="up" href="../index.html" title="AutoIndex">
+<link rel="prev" href="overview.html" title="Overview">
+<link rel="next" href="script_ref.html" title="Script File Reference">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
+<td align="center"><a href="../libraries.html">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="overview.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="script_ref.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial"> Getting Started and Tutorial</a>
+</h2></div></div></div>
+<a name="autoindex.tut.step_1__build_the_tool"></a><h5>
+<a name="id473685"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_1__build_the_tool">Step 1: Build the tool</a>
+    </h5>
+<p>
+      cd into <code class="computeroutput"><span class="identifier">tools</span><span class="special">/</span><span class="identifier">auto_index</span><span class="special">/</span><span class="identifier">build</span></code> and invoke bjam as:
+    </p>
+<pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">release</span>
+</pre>
+<p>
+      Optionally pass the name of the compiler toolset you want to use to bjam as
+      well:
+    </p>
+<pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">release</span> <span class="identifier">gcc</span>
+</pre>
+<a name="autoindex.tut.step_2__configure_boost_build"></a><h5>
+<a name="id473793"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build">Step 2: Configure
+      Boost.Build</a>
+    </h5>
+<p>
+      TODO: we need BoostBook integration!!!
+    </p>
+<p>
+      Currently the tool can only be run manually.
+    </p>
+<a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
+<a name="id475028"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
+      3: Add indexes to your documentation</a>
+    </h5>
+<p>
+      To add a single index to a BoostBook/Docbook document, then add <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">/&gt;</span></code> at the location where you want the index
+      to appear. The index will be rendered as a separate section when the documentation
+      is built.
+    </p>
+<p>
+      To add multiple indexes, then give each one a title and set it's <code class="computeroutput"><span class="identifier">type</span></code> attribute to specify which terms will
+      be included, for example to place the <span class="emphasis"><em>function</em></span>, <span class="emphasis"><em>class</em></span>,
+      <span class="emphasis"><em>macro</em></span> or <span class="emphasis"><em>typedef</em></span> names indexed by
+      <span class="emphasis"><em>auto_index</em></span> in separate indexes along with a main "include
+      everything" index as well, one could add:
+    </p>
+<pre class="programlisting"><span class="special">&lt;</span><span class="identifier">index</span> <span class="identifier">type</span><span class="special">=</span><span class="string">"class_name"</span><span class="special">&gt;</span>
+<span class="special">&lt;</span><span class="identifier">title</span><span class="special">&gt;</span><span class="identifier">Class</span> <span class="identifier">Index</span><span class="special">&lt;/</span><span class="identifier">title</span><span class="special">&gt;</span>
+<span class="special">&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span>
+
+<span class="special">&lt;</span><span class="identifier">index</span> <span class="identifier">type</span><span class="special">=</span><span class="string">"typedef_name"</span><span class="special">&gt;</span>
+<span class="special">&lt;</span><span class="identifier">title</span><span class="special">&gt;</span><span class="identifier">Typedef</span> <span class="identifier">Index</span><span class="special">&lt;/</span><span class="identifier">title</span><span class="special">&gt;</span>
+<span class="special">&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span>
+
+<span class="special">&lt;</span><span class="identifier">index</span> <span class="identifier">type</span><span class="special">=</span><span class="string">"function_name"</span><span class="special">&gt;</span>
+<span class="special">&lt;</span><span class="identifier">title</span><span class="special">&gt;</span><span class="identifier">Function</span> <span class="identifier">Index</span><span class="special">&lt;/</span><span class="identifier">title</span><span class="special">&gt;</span>
+<span class="special">&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span>
+
+<span class="special">&lt;</span><span class="identifier">index</span> <span class="identifier">type</span><span class="special">=</span><span class="string">"macro_name"</span><span class="special">&gt;</span>
+<span class="special">&lt;</span><span class="identifier">title</span><span class="special">&gt;</span><span class="identifier">Macro</span> <span class="identifier">Index</span><span class="special">&lt;/</span><span class="identifier">title</span><span class="special">&gt;</span>
+<span class="special">&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span>
+
+<span class="special">&lt;</span><span class="identifier">index</span><span class="special">/&gt;</span>
+</pre>
+<p>
+      In quickbook, you add the same markup but enclose it in an escape:
+    </p>
+<pre class="programlisting"><span class="char">''</span><span class="char">'&lt;index/&gt;'</span><span class="char">''</span>
+</pre>
+<a name="autoindex.tut.step_4__create_the_script_file"></a><h5>
+<a name="id473476"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file">Step 4: Create
+      the script file</a>
+    </h5>
+<p>
+      AutoIndex works by reading a script file that tells it what to index, at it's
+      simplest it will scan one or more headers for terms that should be indexed
+      in the documentation. So for example to scan "myheader.hpp" the script
+      file would just contain:
+    </p>
+<pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">myheader</span><span class="special">.</span><span class="identifier">hpp</span>
+</pre>
+<p>
+      Or we can recursively scan through directories looking for all the files to
+      scan whose name matches a particular regular expression:
+    </p>
+<pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span><span class="special">-</span><span class="identifier">path</span> <span class="string">"../../../../boost/math"</span> <span class="string">".*\.hpp"</span> <span class="keyword">true</span>
+</pre>
+<p>
+      Note how each argument is whitespace separated and can be optionally enclosed
+      in "double quotes". The final <span class="emphasis"><em>true</em></span> argument
+      indicates that subdirectories in <code class="computeroutput"><span class="special">../../../../</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span></code>
+      should be searched in addition to that directory.
+    </p>
+<p>
+      Often the <span class="emphasis"><em>scan</em></span> or <span class="emphasis"><em>scan-path</em></span> rules
+      will bring in too many terms to search for, so we need to be able to exclude
+      terms as well:
+    </p>
+<pre class="programlisting"><span class="special">!</span><span class="identifier">exclude</span> <span class="identifier">type</span>
+</pre>
+<p>
+      Which excludes the term "type" from being indexed.
+    </p>
+<p>
+      We can also add terms manually:
+    </p>
+<pre class="programlisting"><span class="identifier">foobar</span>
+</pre>
+<p>
+      will index occurances of "foobar" and:
+    </p>
+<pre class="programlisting"><span class="identifier">foo</span> <span class="identifier">bar</span>
+</pre>
+<p>
+      will index occurances of "foo" under the name "bar".
+    </p>
+<p>
+      This inclusion rule can also restict the term to certain sections, and add
+      an index category that the term should belong to (so it only appears in certain
+      indexes).
+    </p>
+<p>
+      Finally the script can add rewrite rules, that rename section names that are
+      automatically used as index entries. For example we might want to remove leading
+      "A" or "The" prefixes from section titles when AutoIndex
+      uses them as an index entry:
+    </p>
+<pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
+</pre>
+<a name="autoindex.tut.step_5__iterate"></a><h5>
+<a name="id527366"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_5__iterate">Step 5: Iterate</a>
+    </h5>
+<p>
+      Creating a good index is an iterative process, often the first step is just
+      to add a header scanning rule to the script file and then generate the documentation
+      and see:
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+        What's missing.
+      </li>
+<li>
+        What's been included that shouldn't be.
+      </li>
+<li>
+        What's been included under a poor name.
+      </li>
+</ul></div>
+<p>
+      Further rules can then be added to the script to handle these cases and the
+      next iteration examined, and so on.
+    </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright © 2008 John Maddock<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="overview.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="script_ref.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
