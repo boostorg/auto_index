@@ -27,7 +27,7 @@
 <a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial"> Getting Started and Tutorial</a>
 </h2></div></div></div>
 <a name="autoindex.tut.step_1__build_the_tool"></a><h5>
-<a name="id473685"></a>
+<a name="id473689"></a>
       <a class="link" href="tut.html#autoindex.tut.step_1__build_the_tool">Step 1: Build the tool</a>
     </h5>
 <p>
@@ -42,7 +42,7 @@
 <pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">release</span> <span class="identifier">gcc</span>
 </pre>
 <a name="autoindex.tut.step_2__configure_boost_build"></a><h5>
-<a name="id473793"></a>
+<a name="id473797"></a>
       <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build">Step 2: Configure
       Boost.Build</a>
     </h5>
@@ -53,7 +53,7 @@
       Currently the tool can only be run manually.
     </p>
 <a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
-<a name="id475028"></a>
+<a name="id475023"></a>
       <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
       3: Add indexes to your documentation</a>
     </h5>
@@ -93,7 +93,7 @@
 <pre class="programlisting"><span class="char">''</span><span class="char">'&lt;index/&gt;'</span><span class="char">''</span>
 </pre>
 <a name="autoindex.tut.step_4__create_the_script_file"></a><h5>
-<a name="id473476"></a>
+<a name="id473477"></a>
       <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file">Step 4: Create
       the script file</a>
     </h5>
@@ -135,10 +135,23 @@
 <p>
       will index occurances of "foobar" and:
     </p>
-<pre class="programlisting"><span class="identifier">foo</span> <span class="identifier">bar</span>
+<pre class="programlisting"><span class="identifier">foobar</span> <span class="special">\&lt;\</span><span class="identifier">w</span><span class="special">*(</span><span class="identifier">foo</span><span class="special">|</span><span class="identifier">bar</span><span class="special">)\</span><span class="identifier">w</span><span class="special">*\&gt;</span>
 </pre>
 <p>
-      will index occurances of "foo" under the name "bar".
+      will index any whole word containing either "foo" or "bar"
+      within it, this is useful when you want to index a lot of similar or related
+      words under one entry, for example:
+    </p>
+<pre class="programlisting"><span class="identifier">reflex</span>
+</pre>
+<p>
+      Will only index occurances of "reflex" as a whole word, but:
+    </p>
+<pre class="programlisting"><span class="identifier">reflex</span> <span class="special">\&lt;</span><span class="identifier">reflex</span><span class="special">\</span><span class="identifier">w</span><span class="special">*\&gt;</span>
+</pre>
+<p>
+      will index occurances of "reflex", reflexing" and "reflexed"
+      all under the same entry <span class="emphasis"><em>reflex</em></span>.
     </p>
 <p>
       This inclusion rule can also restict the term to certain sections, and add
@@ -154,7 +167,7 @@
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>
 <a name="autoindex.tut.step_5__iterate"></a><h5>
-<a name="id527366"></a>
+<a name="id527476"></a>
       <a class="link" href="tut.html#autoindex.tut.step_5__iterate">Step 5: Iterate</a>
     </h5>
 <p>

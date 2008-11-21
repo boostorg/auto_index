@@ -161,9 +161,20 @@ We can also add terms manually:
    
 will index occurances of "foobar" and:
 
-   foo bar
+   foobar \<\w*(foo|bar)\w*\>
    
-will index occurances of "foo" under the name "bar".
+will index any whole word containing either "foo" or "bar" within it,
+this is useful when you want to index a lot of similar or related
+words under one entry, for example:
+
+   reflex
+   
+Will only index occurances of "reflex" as a whole word, but:
+
+   reflex \<reflex\w*\>
+   
+will index occurances of "reflex", reflexing" and 
+"reflexed" all under the same entry ['reflex].
 
 This inclusion rule can also restict the term to
 certain sections, and add an index category that
@@ -194,10 +205,124 @@ and the next iteration examined, and so on.
 
 [section:script_ref Script File Reference]
 
+The following elements can occur in a script:
+
+[h4 Simple Inclusions]
+
+   term [regular-expression1 [regular-expression2 [category]]]
+   
+[variablelist
+[[term][The term to index: this will form a primary entry in the Index
+with the section title(s) containing the term as secondary entries, and
+also will be used as a secondary entry beneath each of the section
+titles that the term occurs in.]]
+
+[[regular-expression1][An optional regular expression: each occurance
+of the regular expression in the text of the document will result
+in one index term being emitted.
+
+If the regular expression is omitted or is "", then the ['term] itself
+will be used as the search text - and only occurance of whole words matching
+['term] will be indexed.]]
+
+[[regular-expression2][A constraint that specifies which sections are
+indexed for ['term]: only if the ID of the section matches
+['regular-expression2] exactly will that section be indexed for occurances
+of ['term].
+
+For example:
+
+   `myclass "" "mylib.examples.*"`
+   
+Will index occurances of "myclass" as a whole word only in sections
+whose ID begins "mylib.examples", while:
+
+   `myclass "" "(?!mylib.introduction.*).*"`
+   
+will index occurances of "myclass" in any section, except those whose
+ID's begin "mylib.introduction".]]
+
+[[category][Optionally an index category to place occurances of
+['term] in.  If you have multiple indexes then this is the name
+assigned to the indexes "type" attribute.
+]]
+
+]
+
+[h4 Source File Scanning]
+
+   !scan source-file-name
+   
+Scans the C\/C++ source file ['source-file-name] for definitions of
+['function]'s, ['class]'s, ['macro]'s or ['typedef]'s and makes each of
+these a term to be indexed.  Terms found are assigned to the index category
+"function_name", "class_name", "macro_name" or "typedef_name" depending
+on how they were seen in the source file.  These may then be included
+in a specialised index whose "type" attribute has the same category name.
+
+[h4 Directory and Source File Scanning]
+
+   !scan-path directory-name file-name-regex [recurse]
+   
+[variablelist
+[[directory-name][The directory to scan: this should be a path relative
+to the script file and should use all forward slashes in it's file name.]]
+
+[[file-name-regex][A regular expression: any file in the directory whose name
+matches the regular expression will be scanned for terms to index.]]
+
+[[recurse][An optional boolian value - either "true" or "false" - that
+indicates whether to recurse into subdirectories.]]
+]
+
+[h4 Excluding Terms]
+
+   !exclude term-list
+   
+Excludes all the terms in whitespace separated ['term-list] from being indexed.
+This should be placed /after/ any ['!scan] or ['!scan-path] rules which may
+result in the terms becoming included.
+
+[h4 Rewriting Section Names]
+
+   !rewrite-id regular-expression new-name
+   
+[variablelist
+[[regular-expression][A regular expression: all section ID's that match
+the expression exactly will have index entries ['new-name] instead of 
+their title(s).]]
+
+[[new-name][The name that the section will appear under in the index.]]
+]
+
+   !rewrite-name regular-expression format-text
+   
+[variablelist
+[[regular-expression][A regular expression: all sections whose titles
+match the regular expression exactly, will have index entries composed
+of the regular expression match combined with the regex format string
+['format-text].]]
+[[format-text][The Perl-style format string used to reformat the title.]]
+]
 
 [endsect]
 
 [section:comm_ref Command Line Reference]
+
+The following command line options are supported by auto_index:
+
+[variablelist
+[[in=infilename][Specifies the name of the XML input file to be indexed.]]
+[[out=outfilename][Specifies the name of the new XML file to create.]]
+[[scan=source-filename][Specifies that ['source-filename] should be scanned
+for terms to index.]]
+[[script=script-filename][Specifies the name of the script file to process.]]
+[[--no-duplicates][If a term occurs more than once in the same section, then
+include only one index entry.]]
+[[--internal-index][Specifies that auto_index should generate the actual
+indexes rather than inserting `<indexterm>`'s and leaving index generation
+to the XSL stylesheets.]]
+]
 
 [endsect]
 

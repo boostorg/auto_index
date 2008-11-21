@@ -1,0 +1,11 @@
+import quickbook ;
+
+exe auto_index : ../src/auto_index.cpp ../src/tiny_xml.cpp /boost/regex /boost/filesystem 
+: <define>BOOST_ALL_NO_LIB=1 <link>static
+;
+
+install dist : auto_index ;
+
+
+
+
