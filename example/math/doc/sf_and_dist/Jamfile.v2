@@ -63,8 +63,10 @@ boostbook standalone
         <format>pdf:<xsl:param>img.src.path=$(images_location)/
         <format>pdf:<xsl:param>admon.graphics.path=$(images_location)/images/
         <format>pdf:<xsl:param>draft.mode="no"
+        <format>pdf:<xsl:param>index.on.type=1
     ;
 
+install pdf-install : standalone : <install-type>PDF <location>. ;
 
 
 
