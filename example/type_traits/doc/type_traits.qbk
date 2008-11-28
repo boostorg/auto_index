@@ -250,14 +250,12 @@ See __has_trivial_constructor.
   <index type="typedef_name">
   <title>Typedef Index</title>
   </index>
-  <index type="function_name">
-  <title>Function Index</title>
-  </index>
   <index type="macro_name">
   <title>Macro Index</title>
   </index>
   <index/>
 '''
+
 
 
 

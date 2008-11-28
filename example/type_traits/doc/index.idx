@@ -1,0 +1,74 @@
+
+!scan-path ../../../../../../trunk/boost/type_traits .*\.hpp true
+
+!exclude type arg1_type arg2_type arg3_type arg4_type arg5_type B D
+!exclude result
+
+!rewrite-name "(?:A|An|The)\s+(.*)" "\1"
+
+
+is_array "" "" class_name
+is_class "" "" class_name
+is_complex "" "" class_name
+is_enum "" "" class_name
+is_floating_point "" "" class_name
+is_function "" "" class_name
+is_integral "" "" class_name
+is_member_function_pointer "" "" class_name
+is_member_object_pointer "" "" class_name
+is_pointer "" "" class_name
+is_reference "" "" class_name
+is_union "" "" class_name
+is_void "" "" class_name
+is_arithmetic "" "" class_name
+is_compound "" "" class_name
+is_fundamental "" "" class_name
+is_member_pointer "" "" class_name
+is_object "" "" class_name
+is_scalar "" "" class_name
+alignment_of "" "" class_name
+has_nothrow_assign "" "" class_name
+has_nothrow_constructor "" "" class_name
+has_nothrow_default_constructor "" "" class_name
+has_nothrow_copy "" "" class_name
+has_nothrow_copy_constructor "" "" class_name
+has_trivial_assign "" "" class_name
+has_trivial_constructor "" "" class_name
+has_trivial_default_constructor "" "" class_name
+has_trivial_copy "" "" class_name
+has_trivial_copy_constructor "" "" class_name
+has_trivial_destructor "" "" class_name
+has_virtual_destructor "" "" class_name
+is_abstract "" "" class_name
+is_const "" "" class_name
+is_empty "" "" class_name
+is_stateless "" "" class_name
+is_pod "" "" class_name
+is_polymorphic "" "" class_name
+is_signed "" "" class_name
+is_unsigned "" "" class_name
+is_volatile "" "" class_name
+extent "" "" class_name
+rank "" "" class_name
+is_base_of "" "" class_name
+is_convertible "" "" class_name
+is_same "" "" class_name
+add_const "" "" class_name
+add_cv "" "" class_name
+add_pointer "" "" class_name
+add_reference "" "" class_name
+add_volatile "" "" class_name
+decay "" "" class_name
+floating_point_promotion "" "" class_name
+integral_promotion "" "" class_name
+make_signed "" "" class_name
+make_unsigned "" "" class_name
+promote "" "" class_name
+remove_all_extents "" "" class_name
+remove_const "" "" class_name
+remove_cv "" "" class_name
+remove_extent "" "" class_name
+remove_pointer "" "" class_name
+remove_reference "" "" class_name
+remove_volatile "" "" class_name
+

@@ -13,11 +13,11 @@ boostbook standalone
         type_traits
     :
         # Path for links to Boost:
-        <xsl:param>boost.root=../../../..
+        #<xsl:param>boost.root=../../../..
         # Path for libraries index:
-        <xsl:param>boost.libraries=../../../libraries.htm
+        #<xsl:param>boost.libraries=../../../libraries.htm
         # Use the main Boost stylesheet:
-        <xsl:param>html.stylesheet=../../../../doc/html/boostbook.css
+        #<xsl:param>html.stylesheet=../../../../doc/html/boostbook.css
         
         # Some general style settings:
         <xsl:param>table.footnote.number.format=1
@@ -62,6 +62,7 @@ boostbook standalone
 
 #install html : ../../../doc/html/boostbook.css ;
 #install ../ : ../../../boost.png ;
+
 
 
 
