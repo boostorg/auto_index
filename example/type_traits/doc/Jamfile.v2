@@ -5,7 +5,7 @@
 
 using quickbook ;
 
-path-constant boost-images : ../../../doc/src/images ;
+path-constant boost-images : html/images ;
 
 xml type_traits : type_traits.qbk ;
 boostbook standalone
@@ -58,10 +58,13 @@ boostbook standalone
         # better use SVG's instead:
         <format>pdf:<xsl:param>admon.graphics.extension=".svg"
         <format>pdf:<xsl:param>admon.graphics.path=$(boost-images)/
+        <format>pdf:<xsl:param>index.on.type=1
     ;
 
 #install html : ../../../doc/html/boostbook.css ;
 #install ../ : ../../../boost.png ;
+
+install pdf-install : standalone : <location>. <install-type>PDF ;
 
 
 
