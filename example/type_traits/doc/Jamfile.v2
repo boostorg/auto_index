@@ -4,6 +4,7 @@
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 using quickbook ;
+import auto-index ;
 
 path-constant boost-images : html/images ;
 
@@ -12,6 +13,10 @@ boostbook standalone
     :
         type_traits
     :
+        <auto-index>on
+        <format>pdf:<auto-index-internal>off
+        <format>html:<auto-index-internal>on
+        <auto-index-script>index.idx
         # Path for links to Boost:
         #<xsl:param>boost.root=../../../..
         # Path for libraries index:
@@ -65,8 +70,6 @@ boostbook standalone
 #install ../ : ../../../boost.png ;
 
 install pdf-install : standalone : <location>. <install-type>PDF ;
-
-
 
 
 

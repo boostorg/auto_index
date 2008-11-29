@@ -79,6 +79,7 @@ bool operator < (const index_info& a, const index_info& b)
 std::multiset<index_info> index_terms;
 std::set<std::pair<std::string, std::string> > found_terms;
 bool no_duplicates = false;
+bool verbose = false;
 
 struct index_entry;
 typedef boost::shared_ptr<index_entry> index_entry_ptr;
@@ -209,11 +210,14 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
       // not this tag itself:
       //
       title.prev->title = get_consolidated_content(node);
-      std::cout << "Indexing section: " << title.prev->title << std::endl;
+      if(verbose)
+         std::cout << "Indexing section: " << title.prev->title << std::endl;
    }
    else if(node->name == "index")
    {
       indexes.push_back(node);
+      if(parent_node->name == "para")
+         parent_node->name = "";
    }
 
    //
@@ -345,6 +349,8 @@ void load_file(std::string& s, std::istream& is)
 
 void scan_file(const char* file)
 {
+   if(verbose)
+      std::cout << "Scanning file... " << file << std::endl;
    static const boost::regex class_e(
          // possibly leading whitespace:   
          "^[[:space:]]*" 
@@ -371,6 +377,8 @@ void scan_file(const char* file)
    std::ifstream is(file);
    load_file(text, is);
    {
+      if(verbose)
+         std::cout << "Scanning for class names... " << std::endl;
       boost::sregex_token_iterator i(text.begin(), text.end(), class_e, 5), j;
       while(i != j)
       {
@@ -380,7 +388,8 @@ void scan_file(const char* file)
          info.category = "class_name";
          if(index_terms.count(info) == 0)
          {
-            std::cout << "Indexing class " << info.term << std::endl;
+            if(verbose)
+               std::cout << "Indexing class " << info.term << std::endl;
             index_terms.insert(info);
          }
          ++i;
@@ -391,8 +400,10 @@ void scan_file(const char* file)
    // Now typedefs:
    //
    {
+      if(verbose)
+         std::cout << "Scanning for typedef names... " << std::endl;
       static const boost::regex typedef_exp(
-         "typedef.+?(\\w+)\\s*;");
+         "typedef[^;{}#]+?(\\w+)\\s*;");
       boost::sregex_token_iterator i(text.begin(), text.end(), typedef_exp, 1), j;
       while(i != j)
       {
@@ -402,7 +413,8 @@ void scan_file(const char* file)
          info.category = "typedef_name";
          if(index_terms.count(info) == 0)
          {
-            std::cout << "Indexing typedef " << info.term << std::endl;
+            if(verbose)
+               std::cout << "Indexing typedef " << info.term << std::endl;
             index_terms.insert(info);
          }
          ++i;
@@ -413,6 +425,8 @@ void scan_file(const char* file)
    // Now macros:
    //
    {
+      if(verbose)
+         std::cout << "Scanning for macro names... " << std::endl;
       static const boost::regex e(
          "^\\s*#\\s*define\\s+(\\w+)"
          );
@@ -425,7 +439,8 @@ void scan_file(const char* file)
          info.category = "macro_name";
          if(index_terms.count(info) == 0)
          {
-            std::cout << "Indexing macro " << info.term << std::endl;
+            if(verbose)
+               std::cout << "Indexing macro " << info.term << std::endl;
             index_terms.insert(info);
          }
          ++i;
@@ -435,6 +450,8 @@ void scan_file(const char* file)
    // Now functions:
    //
    {
+      if(verbose)
+         std::cout << "Scanning for function names... " << std::endl;
       static const boost::regex e(
          "\\w+\\s+(\\w+)\\s*\\([^\\)]*\\)\\s*\\{"
          );
@@ -447,7 +464,8 @@ void scan_file(const char* file)
          info.category = "function_name";
          if(index_terms.count(info) == 0)
          {
-            std::cout << "Indexing function " << info.term << std::endl;
+            if(verbose)
+               std::cout << "Indexing function " << info.term << std::endl;
             index_terms.insert(info);
          }
          ++i;
@@ -506,13 +524,13 @@ void process_script(const char* script)
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
       "(?:"
          "[[:space:]]+"
-         "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
+         "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)*\")"
          "(?:"
             "[[:space:]]+"
-            "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
+            "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)*\")"
             "(?:"
                "[[:space:]]+"
-               "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
+               "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)*\")"
             ")?"
          ")?"
       ")?"
@@ -522,19 +540,24 @@ void process_script(const char* script)
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
       );
+   if(verbose)
+      std::cout << "Processing script " << script << std::endl;
    boost::smatch what;
    std::string line;
    std::ifstream is(script);
    if(is.bad())
    {
-      std::cerr << "Could not open script " << script << std::endl;
-      return;
+      throw std::runtime_error("Could not open script file");
    }
    while(std::getline(is, line).good())
    {
       if(regex_match(line, what, scan_parser))
       {
          std::string f = unquote(what[1].str());
+         boost::filesystem::path base(script);
+         base.remove_filename();
+         base /= f;
+         f = base.file_string();
          scan_file(f.c_str());
       }
       else if(regex_match(line, what, scan_dir_parser))
@@ -542,6 +565,12 @@ void process_script(const char* script)
          std::string d = unquote(what[1].str());
          std::string m = unquote(what[2].str());
          bool r = unquote(what[3].str()) == "true";
+         boost::filesystem::path base(script);
+         base.remove_filename();
+         base /= d;
+         d = base.directory_string();
+         if(verbose)
+            std::cout << "Scanning directory " << d << std::endl;
          scan_dir(d, m, r);
       }
       else if(regex_match(line, what, rewrite_parser))
@@ -577,8 +606,10 @@ void process_script(const char* script)
             info.search_text = boost::regex(s, boost::regex::icase|boost::regex::perl);
          else
             info.search_text = boost::regex("\\<" + what.str(1) + "\\>", boost::regex::icase|boost::regex::perl);
-         if(what[3].matched)
-            info.search_id = unquote(what.str(3));
+
+         s = unquote(what.str(3));
+         if(s.size())
+            info.search_id = s;
          if(what[4].matched)
             info.category = unquote(what.str(4));
          index_terms.insert(info);
@@ -613,11 +644,7 @@ void generate_indexes()
       }
 
       boost::tiny_xml::element_ptr navbar(new boost::tiny_xml::element());
-      navbar->name = "simplelist";
-      boost::tiny_xml::attribute attr;
-      attr.name = "type";
-      attr.value = "horiz";
-      navbar->attributes.push_back(attr);
+      navbar->name = "para";
       node->elements.push_back(navbar);
 
       char last_c = 0;
@@ -639,8 +666,9 @@ void generate_indexes()
                listentry.reset(new boost::tiny_xml::element());
                listentry->name = "varlistentry";
                boost::tiny_xml::attribute id;
-               id.name = "ID";
+               id.name = "id";
                id.value = id_name;
+               listentry->attributes.push_back(id);
                boost::tiny_xml::element_ptr term(new boost::tiny_xml::element());
                term->name = "term";
                term->content.assign(&last_c, 1);
@@ -652,8 +680,10 @@ void generate_indexes()
                sublist->name = "variablelist";
                listitem->elements.push_back(sublist);
                listentry->elements.push_back(listitem);
+
                boost::tiny_xml::element_ptr nav(new boost::tiny_xml::element());
-               nav->name = "member";
+               nav->name = "";
+               nav->content = " ";
                boost::tiny_xml::element_ptr navlink(new boost::tiny_xml::element());
                navlink->name = "link";
                navlink->content = term->content;
@@ -661,7 +691,7 @@ void generate_indexes()
                navid.name = "linkend";
                navid.value = id_name;
                navlink->attributes.push_back(navid);
-               nav->elements.push_back(navlink);
+               navbar->elements.push_back(navlink);
                navbar->elements.push_back(nav);
             }
             boost::tiny_xml::element_ptr subentry(new boost::tiny_xml::element());
@@ -731,6 +761,8 @@ std::string infile, outfile;
 
 int main(int argc, char* argv[])
 {
+   try{
+
    if(argc < 2)
       return help();
 
@@ -762,6 +794,15 @@ int main(int argc, char* argv[])
       else if(std::strcmp(argv[i], "--internal-index") == 0)
       {
          internal_indexes = true;
+      }
+      else if(std::strcmp(argv[i], "--verbose") == 0)
+      {
+         verbose = true;
+      }
+      else
+      {
+         std::cerr << "Unrecognosed option " << argv[i] << std::endl;
+         return 1;
       }
    }
 
@@ -799,6 +840,18 @@ int main(int argc, char* argv[])
    std::ofstream os(outfile.c_str());
    os << header << std::endl;
    boost::tiny_xml::write(*xml, os);
+
+   }
+   catch(const std::exception& e)
+   {
+      std::cerr << e.what() << std::endl;
+      return 1;
+   }
+   catch(const std::string& s)
+   {
+      std::cerr << s << std::endl;
+      return 1;
+   }
 
    return 0;
 }
