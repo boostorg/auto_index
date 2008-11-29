@@ -80,6 +80,8 @@ at the start of each Index:
 
 [h4 Step 1: Build the tool]
 
+[note This step is strictly optional, but can speed up build times.]
+
 cd into `tools/auto_index/build` and invoke bjam as:
 
    bjam release
@@ -87,12 +89,68 @@ cd into `tools/auto_index/build` and invoke bjam as:
 Optionally pass the name of the compiler toolset you want to use to bjam as well:
 
    bjam release gcc
+   
+Now open up your user-config.jam file and add the line:
+
+[pre 
+using auto-index : ['path-to-executable] ; 
+]
 
 [h4 Step 2: Configure Boost.Build]
 
-TODO: we need BoostBook integration!!!
+Assuming you have a Jamfile for building your documentation that looks
+something like:
 
-Currently the tool can only be run manually.
+[pre 
+boostbook standalone
+    :
+        type_traits
+    :
+        # build requirements go here:
+    ;
+]
+
+Then add the line:
+
+[pre using auto-index ; ]
+   
+to the start of the Jamfile, and then add whatever auto-index options
+you want to the build requirements section, for example:
+
+[pre
+   boostbook standalone
+    :
+        type_traits
+    :
+        # build requirements go here:
+        
+        # this one turns on indexing:
+        <auto-index>on
+        # choose indexing method for pdf's:
+        <format>pdf:<auto-index-internal>off
+        # choose indexing method for html:
+        <format>html:<auto-index-internal>on
+        # set the name of the script file to use:
+        <auto-index-script>index.idx
+    ;
+]
+
+The available options are:
+
+[variablelist
+[[<auto-index>off/on][Turns indexing of the document on, defaults to
+"off", so be sure to set this if you want AutoIndex invoked!]]
+[[<auto-index-internal>off/on][Chooses whether AutoIndex creates the index
+itself (feature on), or whether it simply inserts the necessary DocBook
+markup so that the DocBook XSL stylesheets can create the index.]]
+[[<auto-index-script>filename][Specifies the name of the script to load.]]
+[[<auto-index-no-duplicates>off/on][When "on" AutoIndex will only index a term
+once in any given section, otherwise (the default) multiple index entries per
+term may be created if the term occurs more than once in the section.]]
+[[<auto-index-verbose>off/on][Defaults to "off".  When turned on the AutoIndex
+prints progress information - generally useful only for debugging purposes.]]
+]
+
 
 [h4 Step 3: Add indexes to your documentation]
 
@@ -107,6 +165,7 @@ to place the ['function], ['class], ['macro] or ['typedef] names
 indexed by ['auto_index] in separate indexes along with a main
 "include everything" index as well, one could add:
 
+[pre
   <index type="class_name">
   <title>Class Index</title>
   </index>
@@ -124,6 +183,7 @@ indexed by ['auto_index] in separate indexes along with a main
   </index>
 
   <index/>
+]
   
 In quickbook, you add the same markup but enclose it in an escape:
 
@@ -141,7 +201,7 @@ should be indexed in the documentation.  So for example to scan
 Or we can recursively scan through directories looking for all
 the files to scan whose name matches a particular regular expression:
 
-   !scan-path "../../../../boost/math" ".*\.hpp" true
+[pre !scan-path "../../../../boost/math" ".*\.hpp" true ]
    
 Note how each argument is whitespace separated and can be optionally
 enclosed in "double quotes".  The final ['true] argument indicates
@@ -188,7 +248,29 @@ when AutoIndex uses them as an index entry:
 
    !rewrite-name "(?i)(?:A|The)\s+(.*)" "\1"
    
-[h4 Step 5: Iterate]
+[h4 Step 5: Build the Your Docs]
+
+Make sure that auto-index.jam is in your BOOST_BUILD_PATH, by either
+setting the environment variable BOOST_BUILD_PATH to point to the directory
+containing it, or by copying the file into 
+`boost-root/tools/build/v2/tools`.  Then you build the docs with either:
+
+   bjam release
+
+To build the html docs or:
+
+   bjam pdf release
+
+To build the pdf.
+
+During the build process you should see AutoIndex emit a message
+such as:
+
+[pre Indexing 990 terms... ]
+   
+If you don't see that, or if it's indexing 0 terms then something is wrong!
+   
+[h4 Step 6: Iterate]
 
 Creating a good index is an iterative process, often the first step is
 just to add a header scanning rule to the script file and then generate

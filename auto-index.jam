@@ -163,6 +163,26 @@ class auto-index-generator : generator
     }
 }
 
+# Initialization of toolset.
+#
+# Parameters:
+#   command ?    -> path to AutoIndex executable.
+#
+# When command is not supplied toolset will search for AutoIndex directory and
+# compile the executable from source. If that fails we still search the path for
+# 'auto_index'.
+#
+rule init (
+        command ?   # path to the AutoIndex executable.
+    )
+{
+    if ! $(.initialized)
+    {
+        .initialized = true ;
+        .command = $(command) ;
+    }
+}
+
 toolset.flags auto-index.auto-index AI-COMMAND      <auto-index-binary> ;
 toolset.flags auto-index.auto-index AI-DEPENDENCIES <auto-index-binary-dependencies> ;
 

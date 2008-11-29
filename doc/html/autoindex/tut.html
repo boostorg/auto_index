@@ -27,9 +27,18 @@
 <a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial"> Getting Started and Tutorial</a>
 </h2></div></div></div>
 <a name="autoindex.tut.step_1__build_the_tool"></a><h5>
-<a name="id473689"></a>
+<a name="id473472"></a>
       <a class="link" href="tut.html#autoindex.tut.step_1__build_the_tool">Step 1: Build the tool</a>
     </h5>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/html/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        This step is strictly optional, but can speed up build times.
+      </p></td></tr>
+</table></div>
 <p>
       cd into <code class="computeroutput"><span class="identifier">tools</span><span class="special">/</span><span class="identifier">auto_index</span><span class="special">/</span><span class="identifier">build</span></code> and invoke bjam as:
     </p>
@@ -41,19 +50,87 @@
     </p>
 <pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">release</span> <span class="identifier">gcc</span>
 </pre>
+<p>
+      Now open up your user-config.jam file and add the line:
+    </p>
+<pre class="programlisting">using auto-index : <span class="emphasis"><em>path-to-executable</em></span> ; 
+</pre>
 <a name="autoindex.tut.step_2__configure_boost_build"></a><h5>
-<a name="id473797"></a>
+<a name="id473590"></a>
       <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build">Step 2: Configure
       Boost.Build</a>
     </h5>
 <p>
-      TODO: we need BoostBook integration!!!
+      Assuming you have a Jamfile for building your documentation that looks something
+      like:
     </p>
+<pre class="programlisting">boostbook standalone
+    :
+        type_traits
+    :
+        # build requirements go here:
+    ;
+</pre>
 <p>
-      Currently the tool can only be run manually.
+      Then add the line:
     </p>
+<pre class="programlisting">using auto-index ; </pre>
+<p>
+      to the start of the Jamfile, and then add whatever auto-index options you want
+      to the build requirements section, for example:
+    </p>
+<pre class="programlisting">boostbook standalone
+    :
+        type_traits
+    :
+        # build requirements go here:
+        
+        # this one turns on indexing:
+        &lt;auto-index&gt;on
+        # choose indexing method for pdf's:
+        &lt;format&gt;pdf:&lt;auto-index-internal&gt;off
+        # choose indexing method for html:
+        &lt;format&gt;html:&lt;auto-index-internal&gt;on
+        # set the name of the script file to use:
+        &lt;auto-index-script&gt;index.idx
+    ;
+</pre>
+<p>
+      The available options are:
+    </p>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl>
+<dt><span class="term">&lt;auto-index&gt;off/on</span></dt>
+<dd><p>
+          Turns indexing of the document on, defaults to "off", so be sure
+          to set this if you want AutoIndex invoked!
+        </p></dd>
+<dt><span class="term">&lt;auto-index-internal&gt;off/on</span></dt>
+<dd><p>
+          Chooses whether AutoIndex creates the index itself (feature on), or whether
+          it simply inserts the necessary DocBook markup so that the DocBook XSL
+          stylesheets can create the index.
+        </p></dd>
+<dt><span class="term">&lt;auto-index-script&gt;filename</span></dt>
+<dd><p>
+          Specifies the name of the script to load.
+        </p></dd>
+<dt><span class="term">&lt;auto-index-no-duplicates&gt;off/on</span></dt>
+<dd><p>
+          When "on" AutoIndex will only index a term once in any given
+          section, otherwise (the default) multiple index entries per term may be
+          created if the term occurs more than once in the section.
+        </p></dd>
+<dt><span class="term">&lt;auto-index-verbose&gt;off/on</span></dt>
+<dd><p>
+          Defaults to "off". When turned on the AutoIndex prints progress
+          information - generally useful only for debugging purposes.
+        </p></dd>
+</dl>
+</div>
 <a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
-<a name="id475023"></a>
+<a name="id473741"></a>
       <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
       3: Add indexes to your documentation</a>
     </h5>
@@ -69,23 +146,23 @@
       <span class="emphasis"><em>auto_index</em></span> in separate indexes along with a main "include
       everything" index as well, one could add:
     </p>
-<pre class="programlisting"><span class="special">&lt;</span><span class="identifier">index</span> <span class="identifier">type</span><span class="special">=</span><span class="string">"class_name"</span><span class="special">&gt;</span>
-<span class="special">&lt;</span><span class="identifier">title</span><span class="special">&gt;</span><span class="identifier">Class</span> <span class="identifier">Index</span><span class="special">&lt;/</span><span class="identifier">title</span><span class="special">&gt;</span>
-<span class="special">&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span>
+<pre class="programlisting">&lt;index type<code class="literal">"class_name"&gt;
+  &lt;title&gt;Class Index&lt;/title&gt;
+  &lt;/index&gt;
 
-<span class="special">&lt;</span><span class="identifier">index</span> <span class="identifier">type</span><span class="special">=</span><span class="string">"typedef_name"</span><span class="special">&gt;</span>
-<span class="special">&lt;</span><span class="identifier">title</span><span class="special">&gt;</span><span class="identifier">Typedef</span> <span class="identifier">Index</span><span class="special">&lt;/</span><span class="identifier">title</span><span class="special">&gt;</span>
-<span class="special">&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span>
+  &lt;index type</code>"typedef_name"&gt;
+  &lt;title&gt;Typedef Index&lt;/title&gt;
+  &lt;/index&gt;
 
-<span class="special">&lt;</span><span class="identifier">index</span> <span class="identifier">type</span><span class="special">=</span><span class="string">"function_name"</span><span class="special">&gt;</span>
-<span class="special">&lt;</span><span class="identifier">title</span><span class="special">&gt;</span><span class="identifier">Function</span> <span class="identifier">Index</span><span class="special">&lt;/</span><span class="identifier">title</span><span class="special">&gt;</span>
-<span class="special">&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span>
+  &lt;index type<code class="literal">"function_name"&gt;
+  &lt;title&gt;Function Index&lt;/title&gt;
+  &lt;/index&gt;
 
-<span class="special">&lt;</span><span class="identifier">index</span> <span class="identifier">type</span><span class="special">=</span><span class="string">"macro_name"</span><span class="special">&gt;</span>
-<span class="special">&lt;</span><span class="identifier">title</span><span class="special">&gt;</span><span class="identifier">Macro</span> <span class="identifier">Index</span><span class="special">&lt;/</span><span class="identifier">title</span><span class="special">&gt;</span>
-<span class="special">&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span>
+  &lt;index type</code>"macro_name"&gt;
+  &lt;title&gt;Macro Index&lt;/title&gt;
+  &lt;<span class="emphasis"><em>index&gt;
 
-<span class="special">&lt;</span><span class="identifier">index</span><span class="special">/&gt;</span>
+  &lt;index</em></span>&gt;
 </pre>
 <p>
       In quickbook, you add the same markup but enclose it in an escape:
@@ -93,7 +170,7 @@
 <pre class="programlisting"><span class="char">''</span><span class="char">'&lt;index/&gt;'</span><span class="char">''</span>
 </pre>
 <a name="autoindex.tut.step_4__create_the_script_file"></a><h5>
-<a name="id473477"></a>
+<a name="id475177"></a>
       <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file">Step 4: Create
       the script file</a>
     </h5>
@@ -109,8 +186,7 @@
       Or we can recursively scan through directories looking for all the files to
       scan whose name matches a particular regular expression:
     </p>
-<pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span><span class="special">-</span><span class="identifier">path</span> <span class="string">"../../../../boost/math"</span> <span class="string">".*\.hpp"</span> <span class="keyword">true</span>
-</pre>
+<pre class="programlisting">!scan-path "..<span class="emphasis"><em>..</em></span>../../boost/math" ".*.hpp" true </pre>
 <p>
       Note how each argument is whitespace separated and can be optionally enclosed
       in "double quotes". The final <span class="emphasis"><em>true</em></span> argument
@@ -166,9 +242,36 @@
     </p>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>
-<a name="autoindex.tut.step_5__iterate"></a><h5>
-<a name="id527476"></a>
-      <a class="link" href="tut.html#autoindex.tut.step_5__iterate">Step 5: Iterate</a>
+<a name="autoindex.tut.step_5__build_the_your_docs"></a><h5>
+<a name="id490121"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_5__build_the_your_docs">Step 5: Build the
+      Your Docs</a>
+    </h5>
+<p>
+      Make sure that auto-index.jam is in your BOOST_BUILD_PATH, by either setting
+      the environment variable BOOST_BUILD_PATH to point to the directory containing
+      it, or by copying the file into <code class="computeroutput"><span class="identifier">boost</span><span class="special">-</span><span class="identifier">root</span><span class="special">/</span><span class="identifier">tools</span><span class="special">/</span><span class="identifier">build</span><span class="special">/</span><span class="identifier">v2</span><span class="special">/</span><span class="identifier">tools</span></code>. Then you build the docs with either:
+    </p>
+<pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">release</span>
+</pre>
+<p>
+      To build the html docs or:
+    </p>
+<pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">pdf</span> <span class="identifier">release</span>
+</pre>
+<p>
+      To build the pdf.
+    </p>
+<p>
+      During the build process you should see AutoIndex emit a message such as:
+    </p>
+<pre class="programlisting">Indexing 990 terms... </pre>
+<p>
+      If you don't see that, or if it's indexing 0 terms then something is wrong!
+    </p>
+<a name="autoindex.tut.step_6__iterate"></a><h5>
+<a name="id490268"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_6__iterate">Step 6: Iterate</a>
     </h5>
 <p>
       Creating a good index is an iterative process, often the first step is just
