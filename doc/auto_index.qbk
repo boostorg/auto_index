@@ -90,11 +90,20 @@ Optionally pass the name of the compiler toolset you want to use to bjam as well
 
    bjam release gcc
    
-Now open up your user-config.jam file and add the line:
+Now open up your user-config.jam file and at the end add the line:
 
 [pre 
-using auto-index : ['path-to-executable] ; 
+using auto-index : ['full-path-to-executable] ; 
 ]
+
+[note 
+This declaration must go towards the end of user-config.jam, or in any case after the Boostbook initialisation.
+
+Also note that Windows users must use forward slashes in the paths in user-config.jam]
+
+Finally copy `tools/auto_index/auto-index.jam` into the same directory as the rest of the Boost.Build tools
+(under `tools/build/v2/tools` in your main Boost tree): this is a temporary requirement that will go away 
+if the tool is accepted into Boost.
 
 [h4 Step 2: Configure Boost.Build]
 

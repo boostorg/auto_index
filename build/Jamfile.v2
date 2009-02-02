@@ -11,7 +11,8 @@ exe auto_index :
 : release
 ;
 
-install dist : auto_index ;
+install . : auto_index ;
+
 
 
 
