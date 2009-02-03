@@ -101,6 +101,22 @@ namespace boost
             eat_comment(c, in);
             return e;
          }
+         if(c == '?')
+         {
+            // XML processing instruction.
+            do
+            {
+               e->name += c;
+               if(!in.get( c )) // next char
+                  throw std::string("xml: unexpected eof");
+            }while(c != '?');
+            e->name += c;
+            if(!in.get( c )) // next char
+               throw std::string("xml: unexpected eof");
+            if(c != '>')
+               throw std::string("Invalid XML processing instruction.");
+            return e;
+         }
 
          e->name = get_name( c, in );
          eat_whitespace( c, in );
@@ -211,7 +227,7 @@ namespace boost
          {
             out << e.content;
          }
-         if(e.name.size())
+         if(e.name.size() && (e.name[0] != '?'))
          {
             out << "</" << e.name << ">";
          }

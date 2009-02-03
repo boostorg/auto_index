@@ -12,9 +12,11 @@ feature.feature auto-index-internal : off "on" ;
 feature.feature auto-index-verbose : off "on" ;
 feature.feature auto-index-no-duplicates : off "on" ;
 feature.feature auto-index-script : : free ;
+feature.feature auto-index-prefix : : free ;
 
 toolset.flags auto-index.auto-index FLAGS <auto-index-internal>on : --internal-index ;
 toolset.flags auto-index.auto-index SCRIPT <auto-index-script> ;
+toolset.flags auto-index.auto-index PREFIX <auto-index-prefix> ;
 toolset.flags auto-index.auto-index FLAGS <auto-index-verbose>on : --verbose ;
 toolset.flags auto-index.auto-index FLAGS <auto-index-no-duplicates>on : --no-duplicates ;
 
@@ -200,7 +202,7 @@ rule auto-index ( target : source : properties * )
 
 actions auto-index
 {
-    $(AI-COMMAND) $(FLAGS) script=$(SCRIPT) in=$(>) out=$(<)
+    $(AI-COMMAND) $(FLAGS) prefix=$(PREFIX) script=$(SCRIPT) in=$(>) out=$(<)
 }
 
 

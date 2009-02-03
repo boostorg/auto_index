@@ -158,6 +158,7 @@ once in any given section, otherwise (the default) multiple index entries per
 term may be created if the term occurs more than once in the section.]]
 [[<auto-index-verbose>off/on][Defaults to "off".  When turned on the AutoIndex
 prints progress information - generally useful only for debugging purposes.]]
+[[<auto-index-prefix>filename][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
 ]
 
 
@@ -175,19 +176,19 @@ indexed by ['auto_index] in separate indexes along with a main
 "include everything" index as well, one could add:
 
 [pre
-  <index type="class_name">
+  <index type\="class_name">
   <title>Class Index</title>
   </index>
 
-  <index type="typedef_name">
+  <index type\="typedef_name">
   <title>Typedef Index</title>
   </index>
 
-  <index type="function_name">
+  <index type\="function_name">
   <title>Function Index</title>
   </index>
 
-  <index type="macro_name">
+  <index type\="macro_name">
   <title>Macro Index</title>
   </index>
 
@@ -413,6 +414,7 @@ include only one index entry.]]
 [[--internal-index][Specifies that auto_index should generate the actual
 indexes rather than inserting `<indexterm>`'s and leaving index generation
 to the XSL stylesheets.]]
+[[prefix=pathname][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
 ]
 
 [endsect]

@@ -287,7 +287,7 @@ void process_nodes(boost::tiny_xml::element_ptr node)
    process_node(node, &id, &t);
 }
 
-std::string infile, outfile;
+std::string infile, outfile, prefix;
 std::multiset<index_info> index_terms;
 std::set<std::pair<std::string, std::string> > found_terms;
 bool no_duplicates = false;
@@ -336,6 +336,10 @@ int main(int argc, char* argv[])
       else if(std::strcmp(argv[i], "--verbose") == 0)
       {
          verbose = true;
+      }
+      else if(std::strncmp(argv[i], "prefix=", 7) == 0)
+      {
+         prefix = argv[i] + 7;
       }
       else
       {

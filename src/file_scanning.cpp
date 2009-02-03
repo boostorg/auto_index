@@ -239,10 +239,22 @@ void process_script(const char* script)
       if(regex_match(line, what, scan_parser))
       {
          std::string f = unquote(what[1].str());
-         boost::filesystem::path base(script);
-         base.remove_filename();
-         base /= f;
-         f = base.file_string();
+         if(!boost::filesystem::path(f).is_complete())
+         {
+            if(prefix.size())
+            {
+               boost::filesystem::path base(prefix);
+               base /= f;
+               f = base.file_string();
+            }
+            else
+            {
+               boost::filesystem::path base(script);
+               base.remove_filename();
+               base /= f;
+               f = base.file_string();
+            }
+         }
          scan_file(f.c_str());
       }
       else if(regex_match(line, what, scan_dir_parser))
@@ -250,10 +262,22 @@ void process_script(const char* script)
          std::string d = unquote(what[1].str());
          std::string m = unquote(what[2].str());
          bool r = unquote(what[3].str()) == "true";
-         boost::filesystem::path base(script);
-         base.remove_filename();
-         base /= d;
-         d = base.directory_string();
+         if(!boost::filesystem::path(d).is_complete())
+         {
+            if(prefix.size())
+            {
+               boost::filesystem::path base(prefix);
+               base /= d;
+               d = base.directory_string();
+            }
+            else
+            {
+               boost::filesystem::path base(script);
+               base.remove_filename();
+               base /= d;
+               d = base.directory_string();
+            }
+         }
          if(verbose)
             std::cout << "Scanning directory " << d << std::endl;
          scan_dir(d, m, r);

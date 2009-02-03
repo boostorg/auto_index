@@ -8,6 +8,9 @@ using auto-index ;
 
 path-constant images_location : html ;
 
+path-constant local-boost-root : [ get_boost_root ] ;
+path-constant pdf-images : $(local-boost-root)/doc/src/images ;
+
 xml math : math.qbk ;
 boostbook standalone
     :
@@ -17,12 +20,13 @@ boostbook standalone
         <format>pdf:<auto-index-internal>off
         <format>html:<auto-index-internal>on
         <auto-index-script>index.idx
+        <auto-index-prefix>$(local-boost-root)
         # Path for links to Boost:
-        #<xsl:param>boost.root=../../../../../../../trunk
+        <xsl:param>boost.root=http://svn.boost.org/svn/boost/trunk
         # Path for libraries index:
-        <xsl:param>boost.libraries=$(boost-root)/libs/libraries.htm
+        <xsl:param>boost.libraries=http://svn.boost.org/svn/boost/trunk/libs/libraries.htm
         # Use the main Boost stylesheet:
-        #<xsl:param>html.stylesheet=../../../../../../../trunk/doc/html/boostbook.css
+        <xsl:param>html.stylesheet=http://svn.boost.org/svn/boost/trunk/doc/html/boostbook.css
         
         # Some general style settings:
         <xsl:param>table.footnote.number.format=1

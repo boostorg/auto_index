@@ -1,5 +1,5 @@
 
-!scan-path ../../../../../../trunk/boost/type_traits .*\.hpp true
+!scan-path boost/type_traits .*\.hpp true
 
 !exclude type arg1_type arg2_type arg3_type arg4_type arg5_type B D
 !exclude result

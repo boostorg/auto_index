@@ -27,7 +27,7 @@
 <a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial"> Getting Started and Tutorial</a>
 </h2></div></div></div>
 <a name="autoindex.tut.step_1__build_the_tool"></a><h5>
-<a name="id736077"></a>
+<a name="id773230"></a>
       <a class="link" href="tut.html#autoindex.tut.step_1__build_the_tool">Step 1: Build the tool</a>
     </h5>
 <div class="note"><table border="0" summary="Note">
@@ -53,7 +53,7 @@
 <p>
       Now open up your user-config.jam file and at the end add the line:
     </p>
-<pre class="programlisting">using auto-index : <span class="emphasis"><em>full-path-to-executable</em></span> ; 
+<pre class="programlisting">using auto-index : <span class="emphasis"><em>full-path-of-executable</em></span> ; 
 </pre>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -76,7 +76,7 @@
       temporary requirement that will go away if the tool is accepted into Boost.
     </p>
 <a name="autoindex.tut.step_2__configure_boost_build"></a><h5>
-<a name="id736248"></a>
+<a name="id773402"></a>
       <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build">Step 2: Configure
       Boost.Build</a>
     </h5>
@@ -147,10 +147,15 @@
           Defaults to "off". When turned on the AutoIndex prints progress
           information - generally useful only for debugging purposes.
         </p></dd>
+<dt><span class="term">&lt;auto-index-prefix&gt;filename</span></dt>
+<dd><p>
+          Specifies a directory to apply as a prefix to all relative file paths in
+          the script file.
+        </p></dd>
 </dl>
 </div>
 <a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
-<a name="id744124"></a>
+<a name="id773530"></a>
       <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
       3: Add indexes to your documentation</a>
     </h5>
@@ -166,19 +171,19 @@
       <span class="emphasis"><em>auto_index</em></span> in separate indexes along with a main "include
       everything" index as well, one could add:
     </p>
-<pre class="programlisting">&lt;index type<code class="literal">"class_name"&gt;
+<pre class="programlisting">&lt;index type="class_name"&gt;
   &lt;title&gt;Class Index&lt;/title&gt;
   &lt;/index&gt;
 
-  &lt;index type</code>"typedef_name"&gt;
+  &lt;index type="typedef_name"&gt;
   &lt;title&gt;Typedef Index&lt;/title&gt;
   &lt;/index&gt;
 
-  &lt;index type<code class="literal">"function_name"&gt;
+  &lt;index type="function_name"&gt;
   &lt;title&gt;Function Index&lt;/title&gt;
   &lt;/index&gt;
 
-  &lt;index type</code>"macro_name"&gt;
+  &lt;index type="macro_name"&gt;
   &lt;title&gt;Macro Index&lt;/title&gt;
   &lt;<span class="emphasis"><em>index&gt;
 
@@ -190,7 +195,7 @@
 <pre class="programlisting"><span class="char">''</span><span class="char">'&lt;index/&gt;'</span><span class="char">''</span>
 </pre>
 <a name="autoindex.tut.step_4__create_the_script_file"></a><h5>
-<a name="id744221"></a>
+<a name="id773618"></a>
       <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file">Step 4: Create
       the script file</a>
     </h5>
@@ -263,7 +268,7 @@
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>
 <a name="autoindex.tut.step_5__build_the_your_docs"></a><h5>
-<a name="id744477"></a>
+<a name="id773874"></a>
       <a class="link" href="tut.html#autoindex.tut.step_5__build_the_your_docs">Step 5: Build the
       Your Docs</a>
     </h5>
@@ -290,7 +295,7 @@
       If you don't see that, or if it's indexing 0 terms then something is wrong!
     </p>
 <a name="autoindex.tut.step_6__iterate"></a><h5>
-<a name="id744587"></a>
+<a name="id773984"></a>
       <a class="link" href="tut.html#autoindex.tut.step_6__iterate">Step 6: Iterate</a>
     </h5>
 <p>

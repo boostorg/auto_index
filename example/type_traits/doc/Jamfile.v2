@@ -6,7 +6,9 @@
 using quickbook ;
 using auto-index ;
 
-path-constant boost-images : html/images ;
+
+path-constant local-boost-root : [ get_boost_root ] ;
+path-constant pdf-images : $(local-boost-root)/doc/src/images ;
 
 xml type_traits : type_traits.qbk ;
 boostbook standalone
@@ -17,12 +19,13 @@ boostbook standalone
         <format>pdf:<auto-index-internal>off
         <format>html:<auto-index-internal>on
         <auto-index-script>index.idx
+        <auto-index-prefix>$(local-boost-root)
         # Path for links to Boost:
-        #<xsl:param>boost.root=../../../..
+        <xsl:param>boost.root=http://svn.boost.org/svn/boost/trunk
         # Path for libraries index:
-        #<xsl:param>boost.libraries=../../../libraries.htm
+        <xsl:param>boost.libraries=http://svn.boost.org/svn/boost/trunk/libs/libraries.htm
         # Use the main Boost stylesheet:
-        #<xsl:param>html.stylesheet=../../../../doc/html/boostbook.css
+        <xsl:param>html.stylesheet=http://svn.boost.org/svn/boost/trunk/doc/html/boostbook.css
         
         # Some general style settings:
         <xsl:param>table.footnote.number.format=1
@@ -62,7 +65,7 @@ boostbook standalone
         # default pnd graphics are awful in PDF form,
         # better use SVG's instead:
         <format>pdf:<xsl:param>admon.graphics.extension=".svg"
-        <format>pdf:<xsl:param>admon.graphics.path=$(boost-images)/
+        <format>pdf:<xsl:param>admon.graphics.path=$(pdf-images)/
         <format>pdf:<xsl:param>index.on.type=1
     ;
 
