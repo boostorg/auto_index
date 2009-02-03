@@ -93,7 +93,7 @@ Optionally pass the name of the compiler toolset you want to use to bjam as well
 Now open up your user-config.jam file and at the end add the line:
 
 [pre 
-using auto-index : ['full-path-to-executable] ; 
+using auto-index : ['full-path-of-executable] ; 
 ]
 
 [note 
