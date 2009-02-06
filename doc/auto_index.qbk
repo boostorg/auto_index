@@ -74,6 +74,20 @@ at the start of each Index:
 
 [$../students_t_eg_4.png]
 
+Finally, you can choose what kind of XML container wraps an internally generated index - 
+this defaults to `<section>...</section>` but you can use either command line options 
+or bjam Jamfile features, so select an alternative wrapper - for example "appendix"
+or "chapter" would be good choices, whatever fits best into the flow of the
+document.  You can even set the container wrapper to type "index" provided you turn
+off index generation by the XSL stylesheets, for example by setting the following
+build requirements in the Jamfile:
+
+[pre
+<format>html:<auto-index-internal>on       # Use internally generated indexes
+<auto-index-type>index                     # Use <index>...</index> as the XML wrapper
+<format>html:<xsl:param>generate.index=0   # Don't let the XSL stylesheets generate indexes.
+]
+
 [endsect]
 
 [section:tut Getting Started and Tutorial]
@@ -159,6 +173,8 @@ term may be created if the term occurs more than once in the section.]]
 [[<auto-index-verbose>off/on][Defaults to "off".  When turned on the AutoIndex
 prints progress information - generally useful only for debugging purposes.]]
 [[<auto-index-prefix>filename][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
+[[auto-index-type=element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
+	defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.]]
 ]
 
 
@@ -176,28 +192,65 @@ indexed by ['auto_index] in separate indexes along with a main
 "include everything" index as well, one could add:
 
 [pre
-  <index type\="class_name">
-  <title>Class Index</title>
-  </index>
+<index type\="class_name">
+<title>Class Index</title>
+</index>
 
-  <index type\="typedef_name">
-  <title>Typedef Index</title>
-  </index>
+<index type\="typedef_name">
+<title>Typedef Index</title>
+</index>
 
-  <index type\="function_name">
-  <title>Function Index</title>
-  </index>
+<index type\="function_name">
+<title>Function Index</title>
+</index>
 
-  <index type\="macro_name">
-  <title>Macro Index</title>
-  </index>
+<index type\="macro_name">
+<title>Macro Index</title>
+</index>
 
-  <index/>
+<index/>
 ]
   
 In quickbook, you add the same markup but enclose it in an escape:
 
    '''<index/>'''
+   
+If you are using auto-index's internal index generation (usually recomended for HTML output)
+then you can also decide what kind of XML wrapper the generated index is placed in.
+By default this is a `<section>...</section>` XML block (this replaces the original
+`<index>...</index>` block).  However, depending upon the structure of the document
+and whether or not you want the index on a separate page - or else on the front page after
+the TOC - you may want to place the index inside a different type of XML block.  For example
+if your document uses `<chapter>` top level content rather than `<section>`'s then
+it may be preferable to place the index in a `<chapter>` or `<appendix>` block.
+You can also place the index inside an `<index>` block if you prefer, in which case the index
+does not appear in on a page of it's own, but after the TOC in the HTML output.
+
+You control the type of XML block used by setting the `<auto-index-type>element-name` 
+attribute in the Jamfile, or via the `index-type=element-name` command line option to
+auto-index itself.  For example, to place the index in an appendix your Jamfile might 
+look like:
+
+[pre
+using quickbook ;
+using auto-index ;
+
+xml type_traits : type_traits.qbk ;
+boostbook standalone
+    :
+        type_traits
+    :
+        # indexing is on:
+        <auto-index>on                          
+        # PDF's rely on the XSL stylesheets to generate the index:
+        <format>pdf:<auto-index-internal>off    
+        # HTML output uses auto-index to generate the index:
+        <format>html:<auto-index-internal>on
+        # Name of script file to use:
+        <auto-index-script>index.idx
+        # Set the XML wrapper for HML Indexes to "appendix":
+        <format>html:<auto-index-type>appendix
+]
    
 [h4 Step 4: Create the script file]
 
@@ -258,7 +311,18 @@ when AutoIndex uses them as an index entry:
 
    !rewrite-name "(?i)(?:A|The)\s+(.*)" "\1"
    
-[h4 Step 5: Build the Your Docs]
+[h4 Step 5: Add Manual Index Entries - Optional]
+
+If you add manual `<indexentry>` markup to your docbook XML then these will be 
+passed through unchanged.  Please note however, that if you are using 
+auto-index's internal index generation then it only recognises
+`<primary>` and `<secondary>` elements within the `<indexterm>`.
+`<tertiary>`, `<see>` and `<seealso>` elements are not currently recognised
+and auto-index will emit a warning if these are used.  Likewise none of the 
+attributes which can be applied to these elements are used when
+auto-index generates the index itself, with the exception of the "type" attribute.
+   
+[h4 Step 6: Build the Your Docs]
 
 Make sure that auto-index.jam is in your BOOST_BUILD_PATH, by either
 setting the environment variable BOOST_BUILD_PATH to point to the directory
@@ -280,7 +344,7 @@ such as:
    
 If you don't see that, or if it's indexing 0 terms then something is wrong!
    
-[h4 Step 6: Iterate]
+[h4 Step 7: Iterate]
 
 Creating a good index is an iterative process, often the first step is
 just to add a header scanning rule to the script file and then generate
@@ -415,6 +479,8 @@ include only one index entry.]]
 indexes rather than inserting `<indexterm>`'s and leaving index generation
 to the XSL stylesheets.]]
 [[prefix=pathname][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
+[[index-type=element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
+	defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.]]
 ]
 
 [endsect]

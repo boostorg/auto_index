@@ -103,6 +103,20 @@
 <p>
       <span class="inlinemediaobject"><img src="../../students_t_eg_4.png" alt="students_t_eg_4"></span>
     </p>
+<p>
+      Finally, you can choose what kind of XML container wraps an internally generated
+      index - this defaults to <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;...&lt;/</span><span class="identifier">section</span><span class="special">&gt;</span></code>
+      but you can use either command line options or bjam Jamfile features, so select
+      an alternative wrapper - for example "appendix" or "chapter"
+      would be good choices, whatever fits best into the flow of the document. You
+      can even set the container wrapper to type "index" provided you turn
+      off index generation by the XSL stylesheets, for example by setting the following
+      build requirements in the Jamfile:
+    </p>
+<pre class="programlisting">&lt;format&gt;html:&lt;auto-index-internal&gt;on       # Use internally generated indexes
+&lt;auto-index-type&gt;index                     # Use &lt;index&gt;...&lt;/index&gt; as the XML wrapper
+&lt;format&gt;html:&lt;xsl:param&gt;generate.index=0   # Don't let the XSL stylesheets generate indexes.
+</pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

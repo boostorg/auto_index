@@ -19,10 +19,10 @@
 
 struct index_info
 {
-   std::string term;
-   boost::regex search_text;
-   boost::regex search_id;
-   std::string category;
+   std::string term;            // The term goes in the index entry
+   boost::regex search_text;    // What to search for when indexing the term.
+   boost::regex search_id;      // What id's this term may be indexed in.
+   std::string category;        // Index category (function, class, macro etc).
 };
 inline bool operator < (const index_info& a, const index_info& b)
 {
@@ -45,11 +45,11 @@ inline std::string make_upper_key(const std::string& s)
 
 struct index_entry
 {
-   std::string key;
-   std::string sort_key;
-   std::string id;
-   std::string category;
-   index_entry_set sub_keys;
+   std::string key;        // The index term.
+   std::string sort_key;   // upper case version of term used for sorting.
+   std::string id;         // The id of the block that we will link to.
+   std::string category;   // The category of this entry (function, class, macro etc).
+   index_entry_set sub_keys;  // All our sub-keys.
 
    index_entry(){}
    index_entry(const std::string& k) : key(k) { sort_key = make_upper_key(key); }
@@ -65,9 +65,9 @@ inline bool operator < (const index_entry_ptr& a, const index_entry_ptr& b)
 
 struct id_rewrite_rule
 {
-   bool base_on_id;
-   boost::regex id;
-   std::string new_name;
+   bool base_on_id;          // rewrite the title if "id" matches the section id, otherwise rewrite if title matches "id".
+   boost::regex id;          // regex for the id or title to match
+   std::string new_name;     // either literal string or format string for the new name.
 
    id_rewrite_rule(const std::string& i, const std::string& n, bool b)
       : base_on_id(b), id(i), new_name(n) {}
@@ -100,5 +100,6 @@ extern boost::tiny_xml::element_list indexes;
 extern std::list<id_rewrite_rule> id_rewrite_list;
 extern bool internal_indexes;
 extern std::string prefix;
+extern std::string internal_index_type;
 
 #endif

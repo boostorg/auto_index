@@ -27,7 +27,7 @@
 <a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial"> Getting Started and Tutorial</a>
 </h2></div></div></div>
 <a name="autoindex.tut.step_1__build_the_tool"></a><h5>
-<a name="id773230"></a>
+<a name="id762338"></a>
       <a class="link" href="tut.html#autoindex.tut.step_1__build_the_tool">Step 1: Build the tool</a>
     </h5>
 <div class="note"><table border="0" summary="Note">
@@ -76,7 +76,7 @@
       temporary requirement that will go away if the tool is accepted into Boost.
     </p>
 <a name="autoindex.tut.step_2__configure_boost_build"></a><h5>
-<a name="id773402"></a>
+<a name="id762509"></a>
       <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build">Step 2: Configure
       Boost.Build</a>
     </h5>
@@ -152,10 +152,17 @@
           Specifies a directory to apply as a prefix to all relative file paths in
           the script file.
         </p></dd>
+<dt><span class="term">auto-index-type=element-name</span></dt>
+<dd><p>
+          Specifies the name of the XML element to enclose internally generated indexes
+          in: defaults to "section", but could equally be "appendix"
+          or "chapter" or some other block level element that has a formal
+          title.
+        </p></dd>
 </dl>
 </div>
 <a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
-<a name="id773530"></a>
+<a name="id762651"></a>
       <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
       3: Add indexes to your documentation</a>
     </h5>
@@ -172,30 +179,71 @@
       everything" index as well, one could add:
     </p>
 <pre class="programlisting">&lt;index type="class_name"&gt;
-  &lt;title&gt;Class Index&lt;/title&gt;
-  &lt;/index&gt;
+&lt;title&gt;Class Index&lt;/title&gt;
+&lt;/index&gt;
 
-  &lt;index type="typedef_name"&gt;
-  &lt;title&gt;Typedef Index&lt;/title&gt;
-  &lt;/index&gt;
+&lt;index type="typedef_name"&gt;
+&lt;title&gt;Typedef Index&lt;/title&gt;
+&lt;/index&gt;
 
-  &lt;index type="function_name"&gt;
-  &lt;title&gt;Function Index&lt;/title&gt;
-  &lt;/index&gt;
+&lt;index type="function_name"&gt;
+&lt;title&gt;Function Index&lt;/title&gt;
+&lt;/index&gt;
 
-  &lt;index type="macro_name"&gt;
-  &lt;title&gt;Macro Index&lt;/title&gt;
-  &lt;<span class="emphasis"><em>index&gt;
+&lt;index type="macro_name"&gt;
+&lt;title&gt;Macro Index&lt;/title&gt;
+&lt;<span class="emphasis"><em>index&gt;
 
-  &lt;index</em></span>&gt;
+&lt;index</em></span>&gt;
 </pre>
 <p>
       In quickbook, you add the same markup but enclose it in an escape:
     </p>
 <pre class="programlisting"><span class="char">''</span><span class="char">'&lt;index/&gt;'</span><span class="char">''</span>
 </pre>
+<p>
+      If you are using auto-index's internal index generation (usually recomended
+      for HTML output) then you can also decide what kind of XML wrapper the generated
+      index is placed in. By default this is a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;...&lt;/</span><span class="identifier">section</span><span class="special">&gt;</span></code>
+      XML block (this replaces the original <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;...&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span></code>
+      block). However, depending upon the structure of the document and whether or
+      not you want the index on a separate page - or else on the front page after
+      the TOC - you may want to place the index inside a different type of XML block.
+      For example if your document uses <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">chapter</span><span class="special">&gt;</span></code>
+      top level content rather than <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;</span></code>'s
+      then it may be preferable to place the index in a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">chapter</span><span class="special">&gt;</span></code>
+      or <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">appendix</span><span class="special">&gt;</span></code> block. You can also place the index inside
+      an <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;</span></code> block if you prefer, in which case the
+      index does not appear in on a page of it's own, but after the TOC in the HTML
+      output.
+    </p>
+<p>
+      You control the type of XML block used by setting the <code class="computeroutput"><span class="special">&lt;</span><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">-</span><span class="identifier">type</span><span class="special">&gt;</span><span class="identifier">element</span><span class="special">-</span><span class="identifier">name</span></code> attribute in the Jamfile, or via the
+      <code class="computeroutput"><span class="identifier">index</span><span class="special">-</span><span class="identifier">type</span><span class="special">=</span><span class="identifier">element</span><span class="special">-</span><span class="identifier">name</span></code> command
+      line option to auto-index itself. For example, to place the index in an appendix
+      your Jamfile might look like:
+    </p>
+<pre class="programlisting">using quickbook ;
+using auto-index ;
+
+xml type_traits : type_traits.qbk ;
+boostbook standalone
+    :
+        type_traits
+    :
+        # indexing is on:
+        &lt;auto-index&gt;on                          
+        # PDF's rely on the XSL stylesheets to generate the index:
+        &lt;format&gt;pdf:&lt;auto-index-internal&gt;off    
+        # HTML output uses auto-index to generate the index:
+        &lt;format&gt;html:&lt;auto-index-internal&gt;on
+        # Name of script file to use:
+        &lt;auto-index-script&gt;index.idx
+        # Set the XML wrapper for HML Indexes to "appendix":
+        &lt;format&gt;html:&lt;auto-index-type&gt;appendix
+</pre>
 <a name="autoindex.tut.step_4__create_the_script_file"></a><h5>
-<a name="id773618"></a>
+<a name="id762937"></a>
       <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file">Step 4: Create
       the script file</a>
     </h5>
@@ -267,9 +315,25 @@
     </p>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>
-<a name="autoindex.tut.step_5__build_the_your_docs"></a><h5>
-<a name="id773874"></a>
-      <a class="link" href="tut.html#autoindex.tut.step_5__build_the_your_docs">Step 5: Build the
+<a name="autoindex.tut.step_5__add_manual_index_entries___optional"></a><h5>
+<a name="id763195"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_5__add_manual_index_entries___optional">Step
+      5: Add Manual Index Entries - Optional</a>
+    </h5>
+<p>
+      If you add manual <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexentry</span><span class="special">&gt;</span></code> markup to your docbook XML then these will
+      be passed through unchanged. Please note however, that if you are using auto-index's
+      internal index generation then it only recognises <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">primary</span><span class="special">&gt;</span></code>
+      and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">secondary</span><span class="special">&gt;</span></code> elements within the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code>.
+      <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">tertiary</span><span class="special">&gt;</span></code>, <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">see</span><span class="special">&gt;</span></code> and
+      <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">seealso</span><span class="special">&gt;</span></code> elements are not currently recognised and
+      auto-index will emit a warning if these are used. Likewise none of the attributes
+      which can be applied to these elements are used when auto-index generates the
+      index itself, with the exception of the "type" attribute.
+    </p>
+<a name="autoindex.tut.step_6__build_the_your_docs"></a><h5>
+<a name="id763315"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_6__build_the_your_docs">Step 6: Build the
       Your Docs</a>
     </h5>
 <p>
@@ -294,9 +358,9 @@
 <p>
       If you don't see that, or if it's indexing 0 terms then something is wrong!
     </p>
-<a name="autoindex.tut.step_6__iterate"></a><h5>
-<a name="id773984"></a>
-      <a class="link" href="tut.html#autoindex.tut.step_6__iterate">Step 6: Iterate</a>
+<a name="autoindex.tut.step_7__iterate"></a><h5>
+<a name="id763425"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_7__iterate">Step 7: Iterate</a>
     </h5>
 <p>
       Creating a good index is an iterative process, often the first step is just

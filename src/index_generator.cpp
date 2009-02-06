@@ -140,7 +140,7 @@ void generate_indexes()
             }
          }
       }
-      node->name = "section";
+      node->name = internal_index_type;
       node->attributes.clear();
       if(!has_title)
       {

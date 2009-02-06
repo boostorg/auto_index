@@ -7,6 +7,17 @@
 
 #include "auto_index.hpp"
 
+std::string infile, outfile, prefix, last_primary, last_secondary;
+std::multiset<index_info> index_terms;
+std::set<std::pair<std::string, std::string> > found_terms;
+bool no_duplicates = false;
+bool verbose = false;
+index_entry_set index_entries;
+boost::tiny_xml::element_list indexes;
+std::list<id_rewrite_rule> id_rewrite_list;
+bool internal_indexes = false;
+std::string internal_index_type = "section";
+
 int help()
 {
    std::cout << "Please refer to the documentation for the correct command line syntax" << std::endl;
@@ -161,6 +172,26 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
       if(parent_node->name == "para")
          parent_node->name = "";
    }
+   else if(node->name == "primary")
+   {
+      last_primary = get_consolidated_content(node);
+   }
+   else if(node->name == "secondary")
+   {
+      last_secondary = get_consolidated_content(node);
+   }
+   else if((node->name == "see") && internal_indexes)
+   {
+      std::cerr << "WARNING: <see> in XML source will be ignored for the index generation" << std::endl;
+   }
+   else if((node->name == "seealso") && internal_indexes)
+   {
+      std::cerr << "WARNING: <seealso> in XML source will be ignored for the index generation" << std::endl;
+   }
+   else if((node->name == "tertiary") && internal_indexes)
+   {
+      std::cerr << "WARNING: <tertiary> in XML source will be ignored for the index generation" << std::endl;
+   }
 
    //
    // Search content for items: we only search if the name of this node is
@@ -278,6 +309,35 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    {
       process_node(*i, &id, &title, node);
    }
+   //
+   // Process manual index entries last of all:
+   //
+   if(node->name == "indexterm")
+   {
+      // Track the entry in our internal index:
+      const std::string* pid = get_current_block_id(&id);
+      const std::string* attr = find_attr(node, "type");
+      index_entry_ptr item1;
+      if(last_secondary.size())
+         item1.reset(new index_entry(last_primary));
+      else
+         item1.reset(new index_entry(last_primary, *pid));
+      if(index_entries.find(item1) == index_entries.end())
+      {
+         index_entries.insert(item1);
+      }
+      if(last_secondary.size())
+      {
+         index_entry_ptr item2(new index_entry(last_secondary, *pid));
+         (**index_entries.find(item1)).sub_keys.insert(item2);
+      }
+      if(attr && attr->size())
+      {
+         (**index_entries.find(item1)).category = *attr;
+      }
+      last_primary = "";
+      last_secondary = "";
+   }
 }
 
 void process_nodes(boost::tiny_xml::element_ptr node)
@@ -286,16 +346,6 @@ void process_nodes(boost::tiny_xml::element_ptr node)
    title_info t = { "", 0 };
    process_node(node, &id, &t);
 }
-
-std::string infile, outfile, prefix;
-std::multiset<index_info> index_terms;
-std::set<std::pair<std::string, std::string> > found_terms;
-bool no_duplicates = false;
-bool verbose = false;
-index_entry_set index_entries;
-boost::tiny_xml::element_list indexes;
-std::list<id_rewrite_rule> id_rewrite_list;
-bool internal_indexes = false;
 
 int main(int argc, char* argv[])
 {
@@ -340,6 +390,10 @@ int main(int argc, char* argv[])
       else if(std::strncmp(argv[i], "prefix=", 7) == 0)
       {
          prefix = argv[i] + 7;
+      }
+      else if(std::strncmp(argv[i], "index-type=", 11) == 0)
+      {
+         internal_index_type = argv[i] + 11;
       }
       else
       {
