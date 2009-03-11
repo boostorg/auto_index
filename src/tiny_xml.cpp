@@ -155,7 +155,9 @@ namespace boost
             {
                if ( in.peek() == '/' ) 
                   break;
-               e->elements.push_back( parse( in, msg ) );
+               element_ptr child(parse( in, msg ));
+               child->parent = e;
+               e->elements.push_back(child);
                in.get( c ); // next after '>'
                //eat_whitespace( c, in );
             }
@@ -172,6 +174,7 @@ namespace boost
                   if(!in.get( c ))
                      throw std::string("xml: unexpected eof");
                }
+               sub->parent = e;
                e->elements.push_back( sub );
             }
 

@@ -35,6 +35,7 @@ namespace boost
             : name(name), value(value) {}
       };
       typedef boost::shared_ptr< element >  element_ptr;
+      typedef boost::weak_ptr< element >    weak_element_ptr;
       typedef std::list< element_ptr  >     element_list;
       typedef std::list< attribute >        attribute_list;
 
@@ -42,10 +43,11 @@ namespace boost
          : private boost::noncopyable  // because deep copy sematics would be required
       {
       public:
-         std::string     name;
-         attribute_list  attributes;
-         element_list    elements;
-         std::string     content;
+         std::string       name;
+         attribute_list    attributes;
+         element_list      elements;
+         std::string       content;
+         weak_element_ptr  parent;
 
          element() {}
          explicit element( const std::string & name ) : name(name) {}

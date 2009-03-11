@@ -5,6 +5,9 @@
 // (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#include <set>
+#include <cstring>
+#include <boost/array.hpp>
 #include "auto_index.hpp"
 
 std::string infile, outfile, prefix, last_primary, last_secondary;
@@ -143,11 +146,40 @@ std::string rewrite_title(const std::string& title, const std::string& id)
    }
    return title;
 }
+
+struct string_cmp
+{
+   bool operator()(const char* a, const char* b)const
+   {
+      return std::strcmp(a, b) < 0;
+   }
+};
+//
+// Determine whether this node can contain an indexterm or not:
+//
+bool can_contain_indexterm(const char* name)
+{
+   static const boost::array<const char*, 257> names = 
+   {
+      "abbrev", "accel", "ackno", "acronym", "action", "answer", "appendix", "appendixinfo", "application", "article", "articleinfo", "artpagenums", "attribution", "authorinitials", "bibliocoverage", "bibliodiv", "biblioentry", "bibliography", "bibliographyinfo", "biblioid", "bibliomisc", "bibliomixed", "bibliomset", "bibliorelation", "biblioset", "bibliosource", "blockinfo", "blockquote", "bookinfo", "bridgehead", "callout", "caution", "chapter", "chapterinfo", "citation", "citebiblioid", "citetitle", "city", "classname", "classsynopsisinfo", "code", "collabname", "command", "computeroutput", "confdates", "confnum", "confsponsor", "conftitle", "constant", "constraintdef", "contractnum", "contractsponsor", "contrib", "corpauthor", "corpcredit", "corpname", "country", "database", "date", "dedication", "edition", "email", "emphasis", "entry", "envar", "errorcode", "errorname", "errortext", "errortype", "example", "exceptionname", "fax", "figure", "filename", "firstname", "firstterm", "foreignphrase", "formalpara", "funcparams", "funcsynopsisinfo", "function", "glossary", "glossaryinfo", "glossdef", "glossdiv", "glossentry", "glosssee", "glossseealso", "glossterm", "guibutton", "guiicon", "guilabel", "guimenu", "guimenuitem", "guisubmenu", "hardware", "highlights", "holder", "honorific", "important", "index", "indexinfo", "informalexample", "informalfigure", "initializer", "interface", "interfacename", "invpartnumber", "isbn", "issn", "issuenum", "itemizedlist", "itermset", "jobtitle", "keycap", "keycode", "keysym", "label", "legalnotice", "lineage", "lineannotation", /*"link", */"listitem", "literal", "literallayout", "lotentry", "manvolnum", "markup", "medialabel", "member", "methodname", "modespec", "modifier", "mousebutton", "msgaud", "msgexplan", "msglevel", "msgorig", "msgtext", "note", "objectinfo", "olink", "option", "optional", "orderedlist", "orgdiv", "orgname", "otheraddr", "othername", "package", "pagenums", "para", "parameter", "partinfo", "partintro", "phone", "phrase", "pob", "postcode", "preface", "prefaceinfo", "procedure", "productname", "productnumber", "programlisting", "prompt", "property", "pubdate", "publishername", "pubsnumber", "qandadiv", "qandaset", "question", "quote", "refentry", "refentryinfo", "refentrytitle", "referenceinfo", "refmeta", "refmiscinfo", "refpurpose", "refsect1", "refsect1info", "refsect2", "refsect2info", "refsect3", "refsect3info", "refsection", "refsectioninfo", "refsynopsisdiv", "refsynopsisdivinfo", "releaseinfo", "remark", "returnvalue", "revdescription", "revnumber", "revremark", "screen", "screeninfo", "sect1", "sect1info", "sect2", "sect2info", "sect3", "sect3info", "sect4", "sect4info", "sect5", "sect5info", "section", "sectioninfo", "seg", "segtitle", "seriesvolnums", "setindex", "setindexinfo", "setinfo", "sgmltag", "shortaffil", "sidebar", "sidebarinfo", "simpara", "simplesect", "state", "step", "street", "structfield", "structname", "subtitle", "surname", "symbol", "synopsis", "systemitem", "table", "task", "taskprerequisites", "taskrelated", "tasksummary", "td", "term", "termdef", "th", "tip", /*"title",*/ "titleabbrev", "tocback", "tocentry", "tocfront", "token", "type", "ulink", "uri", "userinput", "variablelist", "varname", "volumenum", "warning", "wordasword", "year"
+   };
+   static std::set<const char*, string_cmp> permitted;
+
+   if(permitted.empty())
+   {
+      for(unsigned i = 0; i < names.size(); ++i)
+      {
+         permitted.insert(names[i]);
+      }
+   }
+
+   return permitted.find(name) != permitted.end();
+}
 //
 // This does most of the work: process the node pointed to, and any children
 // that it may have:
 //
-void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* pt, boost::tiny_xml::element_ptr parent_node = boost::tiny_xml::element_ptr())
+void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* pt)
 {
    //
    // Store the current ID and title as nested scoped objects:
@@ -169,8 +201,8 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    {
       // Keep track of all the indexes we see:
       indexes.push_back(node);
-      if(parent_node->name == "para")
-         parent_node->name = "";
+      if(node->parent.lock()->name == "para")
+         node->parent.lock()->name = "";
    }
    else if(node->name == "primary")
    {
@@ -223,39 +255,51 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
                // We have something to index!
                found_terms.insert(item_index);
 
-               //
-               // First off insert index entry with primary term
-               // consisting of the section title, and secondary term the
-               // actual index term:
-               //
-               if(internal_indexes == false)
+               if(simple_title != i->term)
                {
-                  // Insert an <indexterm> into the XML:
-                  boost::tiny_xml::element_ptr p(new boost::tiny_xml::element());
-                  p->name = "indexterm";
-                  boost::tiny_xml::element_ptr prim(new boost::tiny_xml::element());
-                  prim->name = "primary";
-                  prim->elements.push_front(boost::tiny_xml::element_ptr(new boost::tiny_xml::element()));
-                  prim->elements.front()->content = simple_title;
-                  p->elements.push_front(prim);
+                  //
+                  // First off insert index entry with primary term
+                  // consisting of the section title, and secondary term the
+                  // actual index term, this gets skipped if the title and index 
+                  // term are the same:
+                  //
+                  if(internal_indexes == false)
+                  {
+                     // Insert an <indexterm> into the XML:
+                     boost::tiny_xml::element_ptr p(new boost::tiny_xml::element());
+                     p->name = "indexterm";
+                     boost::tiny_xml::element_ptr prim(new boost::tiny_xml::element());
+                     prim->name = "primary";
+                     prim->elements.push_front(boost::tiny_xml::element_ptr(new boost::tiny_xml::element()));
+                     prim->elements.front()->content = simple_title;
+                     p->elements.push_front(prim);
 
-                  boost::tiny_xml::element_ptr sec(new boost::tiny_xml::element());
-                  sec->name = "secondary";
-                  sec->elements.push_front(boost::tiny_xml::element_ptr(new boost::tiny_xml::element()));
-                  sec->elements.front()->content = i->term;
-                  p->elements.push_back(sec);
-                  if(parent_node)
-                     parent_node->elements.push_front(p);
+                     boost::tiny_xml::element_ptr sec(new boost::tiny_xml::element());
+                     sec->name = "secondary";
+                     sec->elements.push_front(boost::tiny_xml::element_ptr(new boost::tiny_xml::element()));
+                     sec->elements.front()->content = i->term;
+                     p->elements.push_back(sec);
+                     try{
+                        // Insert the Indexterm:
+                        boost::tiny_xml::element_ptr parent(node->parent);
+                        while(!can_contain_indexterm(parent->name.c_str()))
+                           parent = parent->parent.lock();
+                        parent->elements.push_front(p);
+                     }
+                     catch(const std::exception&)
+                     {
+                        std::cerr << "Unable to find location to insert <indexterm>" << std::endl;
+                     }
+                  }
+                  // Track the entry in our internal index:
+                  index_entry_ptr item1(new index_entry(simple_title));
+                  index_entry_ptr item2(new index_entry(i->term, *pid));
+                  if(index_entries.find(item1) == index_entries.end())
+                  {
+                     index_entries.insert(item1);
+                  }
+                  (**index_entries.find(item1)).sub_keys.insert(item2);
                }
-               // Track the entry in our internal index:
-               index_entry_ptr item1(new index_entry(simple_title));
-               index_entry_ptr item2(new index_entry(i->term, *pid));
-               if(index_entries.find(item1) == index_entries.end())
-               {
-                  index_entries.insert(item1);
-               }
-               (**index_entries.find(item1)).sub_keys.insert(item2);
-
                //
                // Now insert another index entry with the index term
                // as the primary key, and the section title as the 
@@ -282,8 +326,17 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
                   sec2->elements.push_front(boost::tiny_xml::element_ptr(new boost::tiny_xml::element()));
                   sec2->elements.front()->content = rtitle;
                   p2->elements.push_back(sec2);
-                  if(parent_node)
-                     parent_node->elements.push_front(p2);
+                  try{
+                     // Insert the Indexterm:
+                     boost::tiny_xml::element_ptr parent(node->parent);
+                     while(!can_contain_indexterm(parent->name.c_str()))
+                        parent = parent->parent.lock();
+                     parent->elements.push_front(p2);
+                  }
+                  catch(const std::exception&)
+                  {
+                     std::cerr << "Unable to find location to insert <indexterm>" << std::endl;
+                  }
                }
                // Track the entry in our internal index:
                index_entry_ptr item3(new index_entry(i->term));
@@ -307,7 +360,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    for(boost::tiny_xml::element_list::const_iterator i = node->elements.begin();
       i != node->elements.end(); ++i)
    {
-      process_node(*i, &id, &title, node);
+      process_node(*i, &id, &title);
    }
    //
    // Process manual index entries last of all:
