@@ -45,16 +45,17 @@ inline std::string make_upper_key(const std::string& s)
 
 struct index_entry
 {
-   std::string key;        // The index term.
-   std::string sort_key;   // upper case version of term used for sorting.
-   std::string id;         // The id of the block that we will link to.
-   std::string category;   // The category of this entry (function, class, macro etc).
-   index_entry_set sub_keys;  // All our sub-keys.
+   std::string key;            // The index term.
+   std::string sort_key;       // upper case version of term used for sorting.
+   std::string id;             // The id of the block that we will link to.
+   std::string category;       // The category of this entry (function, class, macro etc).
+   index_entry_set sub_keys;   // All our sub-keys.
+   bool preferred;             // This entry is the preferred one for this key
 
-   index_entry(){}
-   index_entry(const std::string& k) : key(k) { sort_key = make_upper_key(key); }
-   index_entry(const std::string& k, const std::string& i) : key(k), id(i) { sort_key = make_upper_key(key); }
-   index_entry(const std::string& k, const std::string& i, const std::string& c) : key(k), id(i), category(c) { sort_key = make_upper_key(key); }
+   index_entry() : preferred(false) {}
+   index_entry(const std::string& k) : key(k), preferred(false)  { sort_key = make_upper_key(key); }
+   index_entry(const std::string& k, const std::string& i) : key(k), id(i), preferred(false)  { sort_key = make_upper_key(key); }
+   index_entry(const std::string& k, const std::string& i, const std::string& c) : key(k), id(i), category(c), preferred(false)  { sort_key = make_upper_key(key); }
 };
 
 

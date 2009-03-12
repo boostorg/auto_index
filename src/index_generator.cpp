@@ -132,7 +132,19 @@ void generate_indexes()
                   at.name = "linkend";
                   at.value = (**k).id;
                   link->attributes.push_back(at);
-                  link->content = (**k).key;
+                  if((**k).preferred)
+                  {
+                     boost::tiny_xml::element_ptr em(new boost::tiny_xml::element());
+                     em->name = "emphasis";
+                     em->content = (**k).key;
+                     boost::tiny_xml::attribute b("role", "bold");
+                     em->attributes.push_back(b);
+                     link->elements.push_back(em);
+                  }
+                  else
+                  {
+                     link->content = (**k).key;
+                  }
                   para->elements.push_back(link);
                }
                member->elements.push_back(para);

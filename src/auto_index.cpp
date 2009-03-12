@@ -306,6 +306,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
                // secondary key, this one gets assigned to the 
                // appropriate index category if there is one:
                //
+               bool preferred_term = false;
                if(internal_indexes == false)
                {
                   // Insert <indexterm> into the XML:
@@ -330,7 +331,17 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
                      // Insert the Indexterm:
                      boost::tiny_xml::element_ptr parent(node->parent);
                      while(!can_contain_indexterm(parent->name.c_str()))
+                     {
+                        // If the search text was found in a title then make it a preferred term:
+                        if(parent->name == "title")
+                           preferred_term = true;
                         parent = parent->parent.lock();
+                     }
+                     if(preferred_term)
+                     {
+                        boost::tiny_xml::attribute a("significance", "preferred");
+                        p2->attributes.push_back(a);
+                     }
                      parent->elements.push_front(p2);
                   }
                   catch(const std::exception&)
@@ -338,9 +349,26 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
                      std::cerr << "Unable to find location to insert <indexterm>" << std::endl;
                   }
                }
+               
                // Track the entry in our internal index:
+               try{
+                  // figure out if it's preferred or not:
+                  boost::tiny_xml::element_ptr parent(node->parent);
+                  while(!can_contain_indexterm(parent->name.c_str()))
+                  {
+                     // If the search text was found in a title then make it a preferred term:
+                     if(parent->name == "title")
+                     {
+                        preferred_term = true;
+                     }
+                     parent = parent->parent.lock();
+                  }
+               }
+               catch(const std::exception&){}
+
                index_entry_ptr item3(new index_entry(i->term));
                index_entry_ptr item4(new index_entry(rtitle, *pid));
+               item4->preferred = preferred_term;
                if(index_entries.find(item3) == index_entries.end())
                {
                   index_entries.insert(item3);
