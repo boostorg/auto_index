@@ -176,10 +176,48 @@ bool can_contain_indexterm(const char* name)
    return permitted.find(name) != permitted.end();
 }
 //
+// Decide whether to flatten this node for searching purposes:
+//
+bool should_flatten_node(const char* name)
+{
+   //
+   // The list of nodes to flatten is basically the list of elements that
+   // can appear inside a <section> - see http://www.docbook.org/tdg/en/html/section.html.
+   // In other words basically anything at the level of a paragraph/table/listing etc.
+   //
+   static const boost::array<const char*, 65> names = 
+   {
+      "title", "subtitle", "titleabbrev", 
+      "toc", "lot", "glossary", "bibliography", 
+      "calloutlist", "glosslist", "bibliolist", "itemizedlist", "orderedlist", 
+      "segmentedlist", "simplelist", "variablelist", "caution", "important", "note", 
+      "tip", "warning", "literallayout", "programlisting", "programlistingco", 
+      "screen", "screenco", "screenshot", "synopsis", "cmdsynopsis", "funcsynopsis", 
+      "classsynopsis", "fieldsynopsis", "constructorsynopsis", 
+      "destructorsynopsis", "methodsynopsis", "formalpara", "para", "simpara", 
+      "address", "blockquote", "graphic", "graphicco", "mediaobject", 
+      "mediaobjectco", "informalequation", "informalexample", "informalfigure", 
+      "informaltable", "equation", "example", "figure", "table", "msgset", "procedure", 
+      "sidebar", "qandaset", "task", "productionset", "constraintdef", "anchor", 
+      "bridgehead", "remark", "highlights", "abstract", "authorblurb", "epigraph", 
+   };
+   static std::set<const char*, string_cmp> terminals;
+
+   if(terminals.empty())
+   {
+      for(unsigned i = 0; i < names.size(); ++i)
+      {
+         terminals.insert(names[i]);
+      }
+   }
+
+   return terminals.find(name) != terminals.end();
+}
+//
 // This does most of the work: process the node pointed to, and any children
 // that it may have:
 //
-void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* pt)
+void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* pt, bool seen = false)
 {
    //
    // Store the current ID and title as nested scoped objects:
@@ -187,6 +225,8 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    node_id id = { 0, prev };
    id.id = find_attr(node, "id");
    title_info title = { "", pt};
+   bool flatten = should_flatten_node(node->name.c_str());
+
    if(node->name == "title")
    {
       //
@@ -225,13 +265,25 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
       std::cerr << "WARNING: <tertiary> in XML source will be ignored for the index generation" << std::endl;
    }
 
+   std::string flattenned_text;
+   const std::string* ptext;
+   if(flatten)
+   {
+      flattenned_text = get_consolidated_content(node);
+      ptext = &flattenned_text;
+   }
+   else
+   {
+      ptext = &(node->content);
+   }
+
    //
-   // Search content for items: we only search if the name of this node is
-   // empty, and the content is not empty, and the content is not whitespace
-   // alone.
+   // Search content for items: we only search if the content is not empty, 
+   // and the content is not whitespace alone, and we haven't already searched this
+   // text in one of our parent nodes that got flattened.
    //
    static const boost::regex space_re("[[:space:]]+");
-   if((node->name == "") && node->content.size() && !regex_match(node->content, space_re))
+   if(!seen && ptext->size() && !regex_match(*ptext, space_re))
    {
       // Save block ID and title in case we find some hits:
       const std::string* pid = get_current_block_id(&id);
@@ -241,7 +293,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
       for(std::multiset<index_info>::const_iterator i = index_terms.begin();
             i != index_terms.end(); ++i)
       {
-         if(regex_search(node->content, i->search_text))
+         if(regex_search(*ptext, i->search_text))
          {
             //
             // We need to check to see if this term has already been indexed
@@ -388,7 +440,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    for(boost::tiny_xml::element_list::const_iterator i = node->elements.begin();
       i != node->elements.end(); ++i)
    {
-      process_node(*i, &id, &title);
+      process_node(*i, &id, &title, flatten);
    }
    //
    // Process manual index entries last of all:

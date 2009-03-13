@@ -63,7 +63,7 @@ void scan_file(const char* file)
       {
          index_info info;
          info.term = i->str();
-         info.search_text = "\\<" + i->str() + "\\>";
+         info.search_text = "class[^;{]+\\<" + i->str() + "\\>[^;{]+\\{";
          info.category = "class_name";
          if(index_terms.count(info) == 0)
          {
@@ -88,7 +88,7 @@ void scan_file(const char* file)
       {
          index_info info;
          info.term = i->str();
-         info.search_text = "\\<" + i->str() + "\\>";
+         info.search_text = "typedef[^;]+\\<" + i->str() + "\\>\\s*;";
          info.category = "typedef_name";
          if(index_terms.count(info) == 0)
          {
@@ -139,12 +139,12 @@ void scan_file(const char* file)
       {
          index_info info;
          info.term = i->str();
-         info.search_text = "\\<" + i->str() + "\\>";
+         info.search_text = "\\<\\w+\\>\\s+\\<" + i->str() + "\\>\\s*\\([^;{]*\\)\\s*[;{]";
          info.category = "function_name";
          if(index_terms.count(info) == 0)
          {
             if(verbose)
-               std::cout << "Indexing function " << info.term << std::endl;
+               std::cout << "Indexing function " << info.term << " with search text: " << info.search_text.str() << std::endl;
             index_terms.insert(info);
          }
          ++i;
