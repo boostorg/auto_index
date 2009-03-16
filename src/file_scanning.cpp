@@ -132,7 +132,7 @@ void scan_file(const char* file)
       if(verbose)
          std::cout << "Scanning for function names... " << std::endl;
       static const boost::regex e(
-         "\\w+\\s+(\\w+)\\s*\\([^\\)]*\\)\\s*\\{"
+         "\\w+\\s+(\\w+)\\s*\\([^\\)]*\\)\\s*[;{]"
          );
       boost::sregex_token_iterator i(text.begin(), text.end(), e, 1), j;
       while(i != j)
@@ -144,7 +144,7 @@ void scan_file(const char* file)
          if(index_terms.count(info) == 0)
          {
             if(verbose)
-               std::cout << "Indexing function " << info.term << " with search text: " << info.search_text.str() << std::endl;
+               std::cout << "Indexing function " << info.term << std::endl;
             index_terms.insert(info);
          }
          ++i;

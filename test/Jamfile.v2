@@ -47,6 +47,7 @@ rule auto-index-test ( target-name : input-file : output-file ? : options * )
                 <testing.arg>$(target-name).gold
                 <preserve-test-targets>on
                 <dependency>$(target_name)
+                <implicit-dependency>$(target_name)
                 <dependency>Jamfile.v2
                 <dependency>$(input-file)
         ]

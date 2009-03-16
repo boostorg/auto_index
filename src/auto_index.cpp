@@ -237,6 +237,14 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
       if(verbose)
          std::cout << "Indexing section: " << title.prev->title << std::endl;
    }
+   if(node->name == "anchor")
+   {
+      if(node->parent.lock()->name == "title")
+      {
+         // We have a title with a nested anchor ID, change the ID of our parents parent to match:
+         id.prev->prev->id = id.id;
+      }
+   }
    else if(node->name == "index")
    {
       // Keep track of all the indexes we see:
