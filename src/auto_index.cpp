@@ -185,12 +185,12 @@ bool should_flatten_node(const char* name)
    // can appear inside a <section> - see http://www.docbook.org/tdg/en/html/section.html.
    // In other words basically anything at the level of a paragraph/table/listing etc.
    //
-   static const boost::array<const char*, 65> names = 
+   static const boost::array<const char*, 57> names = 
    {
       "title", "subtitle", "titleabbrev", 
       "toc", "lot", "glossary", "bibliography", 
-      "calloutlist", "glosslist", "bibliolist", "itemizedlist", "orderedlist", 
-      "segmentedlist", "simplelist", "variablelist", "caution", "important", "note", 
+      /*"calloutlist", "glosslist", "bibliolist", "itemizedlist", "orderedlist", 
+      "segmentedlist", "simplelist", "variablelist",*/ "caution", "important", "note", 
       "tip", "warning", "literallayout", "programlisting", "programlistingco", 
       "screen", "screenco", "screenshot", "synopsis", "cmdsynopsis", "funcsynopsis", 
       "classsynopsis", "fieldsynopsis", "constructorsynopsis", 
@@ -199,7 +199,9 @@ bool should_flatten_node(const char* name)
       "mediaobjectco", "informalequation", "informalexample", "informalfigure", 
       "informaltable", "equation", "example", "figure", "table", "msgset", "procedure", 
       "sidebar", "qandaset", "task", "productionset", "constraintdef", "anchor", 
-      "bridgehead", "remark", "highlights", "abstract", "authorblurb", "epigraph", 
+      "bridgehead", "remark", "highlights", "abstract", "authorblurb", "epigraph"
+      /*"biblioentry", "bibliomixed", "callout", "glossentry", "listitem", "seg", "seglistitem", "member",
+      "term", */
    };
    static std::set<const char*, string_cmp> terminals;
 
@@ -306,7 +308,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
             //
             // We need to check to see if this term has already been indexed
             // in this zone, in order to prevent duplicate entries, also check
-            // that any constrait placed on the terms ID is satisfied:
+            // that any constrait placed on the term's ID is satisfied:
             //
             std::pair<std::string, std::string> item_index(*pid, i->term);
             if(((no_duplicates == false) || (0 == found_terms.count(item_index))) 
@@ -448,7 +450,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    for(boost::tiny_xml::element_list::const_iterator i = node->elements.begin();
       i != node->elements.end(); ++i)
    {
-      process_node(*i, &id, &title, flatten);
+      process_node(*i, &id, &title, flatten || seen);
    }
    //
    // Process manual index entries last of all:
