@@ -48,7 +48,7 @@ what you're looking for: often you'll get a few spurious entries, a few missing 
 and a few entries where the section name used as an index entry is less than ideal.
 So AutoIndex provides some powerful regular expression based rules that allow you
 to add, remove, constrain, or rewrite entries.  Normally just a few lines in
-AutoIndex's script file are enough to tailor the output to match the authors
+AutoIndex's script file are enough to tailor the output to match the author's
 expectations.
 
 AutoIndex also supports multiple indexes (as does Docbook), and since it knows
@@ -76,7 +76,7 @@ at the start of each Index:
 
 Finally, you can choose what kind of XML container wraps an internally generated index - 
 this defaults to `<section>...</section>` but you can use either command line options 
-or bjam Jamfile features, so select an alternative wrapper - for example "appendix"
+or bjam Jamfile features, to select an alternative wrapper - for example "appendix"
 or "chapter" would be good choices, whatever fits best into the flow of the
 document.  You can even set the container wrapper to type "index" provided you turn
 off index generation by the XSL stylesheets, for example by setting the following
@@ -94,7 +94,7 @@ build requirements in the Jamfile:
 
 [h4 Step 1: Build the tool]
 
-[note This step is strictly optional, but can speed up build times.]
+[/ [note This step is strictly optional, but can speed up build times.]]
 
 cd into `tools/auto_index/build` and invoke bjam as:
 
@@ -165,12 +165,12 @@ The available options are:
 "off", so be sure to set this if you want AutoIndex invoked!]]
 [[<auto-index-internal>off/on][Chooses whether AutoIndex creates the index
 itself (feature on), or whether it simply inserts the necessary DocBook
-markup so that the DocBook XSL stylesheets can create the index.]]
+markup so that the DocBook XSL stylesheets can create the index.  Defaults to "off".]]
 [[<auto-index-script>filename][Specifies the name of the script to load.]]
 [[<auto-index-no-duplicates>off/on][When "on" AutoIndex will only index a term
 once in any given section, otherwise (the default) multiple index entries per
 term may be created if the term occurs more than once in the section.]]
-[[<auto-index-verbose>off/on][Defaults to "off".  When turned on the AutoIndex
+[[<auto-index-verbose>off/on][Defaults to "off".  When turned on AutoIndex
 prints progress information - generally useful only for debugging purposes.]]
 [[<auto-index-prefix>filename][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
 [[auto-index-type=element-name][Specifies the name of the XML element to enclose internally generated indexes in: 

@@ -5,10 +5,11 @@
 
 using quickbook ;
 using auto-index ;
+import modules ;
 
 path-constant images_location : html ;
 
-path-constant local-boost-root : [ get_boost_root ] ;
+path-constant local-boost-root : [ modules.peek : BOOST ] ;
 path-constant pdf-images : $(local-boost-root)/doc/src/images ;
 
 xml math : math.qbk ;
@@ -75,8 +76,6 @@ boostbook standalone
         <format>pdf:<xsl:param>index.on.type=1
     ;
 
-install pdf-install : standalone : <install-type>PDF <location>. ;
-
-
+install pdf-install : standalone : <install-type>PDF <location>. <name>math.pdf ;
 
 

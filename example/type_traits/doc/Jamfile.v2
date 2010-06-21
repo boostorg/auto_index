@@ -5,9 +5,9 @@
 
 using quickbook ;
 using auto-index ;
+import modules ;
 
-
-path-constant local-boost-root : [ get_boost_root ] ;
+path-constant local-boost-root : [ modules.peek : BOOST ] ;
 path-constant pdf-images : $(local-boost-root)/doc/src/images ;
 
 xml type_traits : type_traits.qbk ;
@@ -69,10 +69,6 @@ boostbook standalone
         <format>pdf:<xsl:param>index.on.type=1
     ;
 
-#install html : ../../../doc/html/boostbook.css ;
-#install ../ : ../../../boost.png ;
-
-install pdf-install : standalone : <location>. <install-type>PDF ;
-
+install pdf-install : standalone : <location>. <install-type>PDF <name>type_traits.pdf ;
 
 
