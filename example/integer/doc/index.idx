@@ -1,0 +1,18 @@
+
+#
+# The Boost.Integer docs do not include full
+# declarations for the types described, as a 
+# result we end up indexing nothing unless we
+# use more permissive scanning rules for the types
+# we find in the headers:
+!set-regex class     "\<" "\>"
+!set-regex function  "\<" "\>"
+!set-regex typedef   "\<" "\>"
+
+!scan-dir boost/intreger true
+!scan boost/cstdint.hpp
+!scan boost/integer.hpp
+!scan boost/integer_fwd.hpp
+!scan boost/integer_traits.hpp
+!exclude BOOST_NO_INT64_T
+!exclude Synopsis type

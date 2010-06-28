@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tut.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="comm_ref.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="tut.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="comm_ref.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -22,8 +22,17 @@
 <p>
       The following elements can occur in a script:
     </p>
+<a name="autoindex.script_ref.comments_and_blank_lines"></a><h5>
+<a name="id911500"></a>
+      <a class="link" href="script_ref.html#autoindex.script_ref.comments_and_blank_lines">Comments and
+      blank lines</a>
+    </h5>
+<p>
+      Blank lines consisting of only whitespace are ignored, so are lines that start
+      with a '#'.
+    </p>
 <a name="autoindex.script_ref.simple_inclusions"></a><h5>
-<a name="id981349"></a>
+<a name="id911517"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.simple_inclusions">Simple Inclusions</a>
     </h5>
 <pre class="programlisting"><span class="identifier">term</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression1</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression2</span> <span class="special">[</span><span class="identifier">category</span><span class="special">]]]</span>
@@ -33,60 +42,64 @@
 <dl>
 <dt><span class="term">term</span></dt>
 <dd><p>
-          The term to index: this will form a primary entry in the Index with the
-          section title(s) containing the term as secondary entries, and also will
-          be used as a secondary entry beneath each of the section titles that the
-          term occurs in.
-        </p></dd>
+            The term to index: this will form a primary entry in the Index with the
+            section title(s) containing the term as secondary entries, and also will
+            be used as a secondary entry beneath each of the section titles that
+            the term occurs in.
+          </p></dd>
 <dt><span class="term">regular-expression1</span></dt>
 <dd>
 <p>
-          An optional regular expression: each occurance of the regular expression
-          in the text of the document will result in one index term being emitted.
-        </p>
+            An optional regular expression: each occurance of the regular expression
+            in the text of the document will result in one index term being emitted.
+          </p>
 <p>
-          If the regular expression is omitted or is "", then the <span class="emphasis"><em>term</em></span>
-          itself will be used as the search text - and only occurance of whole words
-          matching <span class="emphasis"><em>term</em></span> will be indexed.
-        </p>
+            If the regular expression is omitted or is "", then the <span class="emphasis"><em>term</em></span>
+            itself will be used as the search text - and only occurance of whole
+            words matching <span class="emphasis"><em>term</em></span> will be indexed.
+          </p>
 </dd>
 <dt><span class="term">regular-expression2</span></dt>
 <dd>
 <p>
-          A constraint that specifies which sections are indexed for <span class="emphasis"><em>term</em></span>:
-          only if the ID of the section matches <span class="emphasis"><em>regular-expression2</em></span>
-          exactly will that section be indexed for occurances of <span class="emphasis"><em>term</em></span>.
-        </p>
+            A constraint that specifies which sections are indexed for <span class="emphasis"><em>term</em></span>:
+            only if the ID of the section matches <span class="emphasis"><em>regular-expression2</em></span>
+            exactly will that section be indexed for occurances of <span class="emphasis"><em>term</em></span>.
+          </p>
 <p>
-          For example:
-        </p>
+            For example:
+          </p>
 <p>
-          <code class="computeroutput"><span class="identifier">myclass</span> <span class="string">""</span>
-          <span class="string">"mylib.examples.*"</span></code>
-        </p>
+            <code class="computeroutput"><span class="identifier">myclass</span> <span class="string">""</span>
+            <span class="string">"mylib.examples.*"</span></code>
+          </p>
 <p>
-          Will index occurances of "myclass" as a whole word only in sections
-          whose ID begins "mylib.examples", while:
-        </p>
+            Will index occurances of "myclass" as a whole word only in
+            sections whose ID begins "mylib.examples", while:
+          </p>
 <p>
-          <code class="computeroutput"><span class="identifier">myclass</span> <span class="string">""</span>
-          <span class="string">"(?!mylib.introduction.*).*"</span></code>
-        </p>
+            <code class="computeroutput"><span class="identifier">myclass</span> <span class="string">""</span>
+            <span class="string">"(?!mylib.introduction.*).*"</span></code>
+          </p>
 <p>
-          will index occurances of "myclass" in any section, except those
-          whose ID's begin "mylib.introduction".
-        </p>
+            will index occurances of "myclass" in any section, except those
+            whose ID's begin "mylib.introduction".
+          </p>
+<p>
+            If this field is omitted or is "", then all sections are indexed
+            for this term.
+          </p>
 </dd>
 <dt><span class="term">category</span></dt>
 <dd><p>
-          Optionally an index category to place occurances of <span class="emphasis"><em>term</em></span>
-          in. If you have multiple indexes then this is the name assigned to the
-          indexes "type" attribute.
-        </p></dd>
+            Optionally an index category to place occurances of <span class="emphasis"><em>term</em></span>
+            in. If you have multiple indexes then this is the name assigned to the
+            indexes "type" attribute.
+          </p></dd>
 </dl>
 </div>
 <a name="autoindex.script_ref.source_file_scanning"></a><h5>
-<a name="id981550"></a>
+<a name="id911726"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.source_file_scanning">Source File Scanning</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">source</span><span class="special">-</span><span class="identifier">file</span><span class="special">-</span><span class="identifier">name</span>
@@ -100,8 +113,22 @@
       seen in the source file. These may then be included in a specialised index
       whose "type" attribute has the same category name.
     </p>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        When actually indexing a document, the scanner will not index just any old
+        occurance of the terms found in the source files. Instead it searches for
+        class definitions or function or typedef declarations. This reduces the number
+        of spurious matches placed in the index, but may also miss some legitimate
+        terms: refer to the <span class="emphasis"><em>set-regex</em></span> command for information
+        on how to change this.
+      </p></td></tr>
+</table></div>
 <a name="autoindex.script_ref.directory_and_source_file_scanning"></a><h5>
-<a name="id981616"></a>
+<a name="id911804"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.directory_and_source_file_scanning">Directory
       and Source File Scanning</a>
     </h5>
@@ -112,23 +139,25 @@
 <dl>
 <dt><span class="term">directory-name</span></dt>
 <dd><p>
-          The directory to scan: this should be a path relative to the script file
-          and should use all forward slashes in it's file name.
-        </p></dd>
+            The directory to scan: this should be a path relative to the script file
+            (or to the path specified with the prefix=path option on the command
+            line) and should use all forward slashes in it's file name.
+          </p></dd>
 <dt><span class="term">file-name-regex</span></dt>
 <dd><p>
-          A regular expression: any file in the directory whose name matches the
-          regular expression will be scanned for terms to index.
-        </p></dd>
+            A regular expression: any file in the directory whose name matches the
+            regular expression will be scanned for terms to index.
+          </p></dd>
 <dt><span class="term">recurse</span></dt>
 <dd><p>
-          An optional boolian value - either "true" or "false"
-          - that indicates whether to recurse into subdirectories.
-        </p></dd>
+            An optional boolian value - either "true" or "false"
+            - that indicates whether to recurse into subdirectories. This defaults
+            to "false"
+          </p></dd>
 </dl>
 </div>
 <a name="autoindex.script_ref.excluding_terms"></a><h5>
-<a name="id981737"></a>
+<a name="id911929"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.excluding_terms">Excluding Terms</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">exclude</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">list</span>
@@ -137,28 +166,28 @@
       Excludes all the terms in whitespace separated <span class="emphasis"><em>term-list</em></span>
       from being indexed. This should be placed <span class="emphasis"><em>after</em></span> any <span class="emphasis"><em>!scan</em></span>
       or <span class="emphasis"><em>!scan-path</em></span> rules which may result in the terms becoming
-      included.
+      included. In other words this removes terms from the scanners internal list
+      of things to index.
     </p>
 <a name="autoindex.script_ref.rewriting_section_names"></a><h5>
-<a name="id981793"></a>
+<a name="id911984"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.rewriting_section_names">Rewriting Section
       Names</a>
     </h5>
-<pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">id</span> <span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression</span> <span class="keyword">new</span><span class="special">-</span><span class="identifier">name</span>
-</pre>
+<pre class="programlisting">!rewrite-id regular-expression new-name</pre>
 <div class="variablelist">
 <p class="title"><b></b></p>
 <dl>
 <dt><span class="term">regular-expression</span></dt>
 <dd><p>
-          A regular expression: all section ID's that match the expression exactly
-          will have index entries <span class="emphasis"><em>new-name</em></span> instead of their
-          title(s).
-        </p></dd>
+            A regular expression: all section ID's that match the expression exactly
+            will have index entries <span class="emphasis"><em>new-name</em></span> instead of their
+            title(s).
+          </p></dd>
 <dt><span class="term">new-name</span></dt>
 <dd><p>
-          The name that the section will appear under in the index.
-        </p></dd>
+            The name that the section will appear under in the index.
+          </p></dd>
 </dl>
 </div>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression</span> <span class="identifier">format</span><span class="special">-</span><span class="identifier">text</span>
@@ -168,14 +197,155 @@
 <dl>
 <dt><span class="term">regular-expression</span></dt>
 <dd><p>
-          A regular expression: all sections whose titles match the regular expression
-          exactly, will have index entries composed of the regular expression match
-          combined with the regex format string <span class="emphasis"><em>format-text</em></span>.
-        </p></dd>
+            A regular expression: all sections whose titles match the regular expression
+            exactly, will have index entries composed of the regular expression match
+            combined with the regex format string <span class="emphasis"><em>format-text</em></span>.
+          </p></dd>
 <dt><span class="term">format-text</span></dt>
 <dd><p>
-          The Perl-style format string used to reformat the title.
-        </p></dd>
+            The Perl-style format string used to reformat the title.
+          </p></dd>
+</dl>
+</div>
+<a name="autoindex.script_ref.changing_the_regular_expressions_used_when_scanning"></a><h5>
+<a name="id912122"></a>
+      <a class="link" href="script_ref.html#autoindex.script_ref.changing_the_regular_expressions_used_when_scanning">Changing
+      the regular expressions used when scanning</a>
+    </h5>
+<pre class="programlisting"><span class="special">!</span><span class="identifier">set</span><span class="special">-</span><span class="identifier">regex</span> <span class="identifier">type</span> <span class="identifier">prefix</span> <span class="identifier">suffix</span>
+</pre>
+<p>
+      When a class, function, typedef or macro name is found as a result of scanning
+      a source file the scanner constructs a regular expression from that name that
+      is used to actually perform the search of the text for occurances of the name.
+      This regular expression is constructed by joining together 3 parts - a prefix,
+      the name of the class, function, typedef or macro, and a suffix. By default
+      the regular expressions constructed in this way are designed to narrow the
+      number of occurences of the term found - so for example given a class "myclass"
+      only a synopsis of that class that looks like:
+    </p>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">myclass</span>
+<span class="special">{</span>
+   <span class="comment">// details...
+</span><span class="special">};</span>
+</pre>
+<p>
+      will be found by the scanner and indexed. The default regular expression prefix
+      and suffix terms are:
+    </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Type
+              </p>
+            </th>
+<th>
+              <p>
+                Prefix
+              </p>
+            </th>
+<th>
+              <p>
+                Suffix
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                class
+              </p>
+            </td>
+<td>
+              <p>
+                "class<code class="literal">;{</code>+\&lt;"
+              </p>
+            </td>
+<td>
+              <p>
+                "\&gt;<code class="literal">;{</code>+\{"
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                function
+              </p>
+            </td>
+<td>
+              <p>
+                "\&lt;\w+\&gt;\s+\&lt;"
+              </p>
+            </td>
+<td>
+              <p>
+                "\&gt;\s*\([^;{]*\)\s*[;{]"
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                typedef
+              </p>
+            </td>
+<td>
+              <p>
+                "typedef[^;]+\&lt;"
+              </p>
+            </td>
+<td>
+              <p>
+                "\&gt;\s*;"
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                macro
+              </p>
+            </td>
+<td>
+              <p>
+                "\&lt;"
+              </p>
+            </td>
+<td>
+              <p>
+                "\&gt;"
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+      The arguments to the set-regex rule as follows:
+    </p>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl>
+<dt><span class="term">type</span></dt>
+<dd><p>
+            One of "class", "function", "typedef" or
+            "macro".
+          </p></dd>
+<dt><span class="term">prefix</span></dt>
+<dd><p>
+            The prefix regular expression, or "" to reset to the default.
+          </p></dd>
+<dt><span class="term">suffix</span></dt>
+<dd><p>
+            The suffix regular expression, or "" to reset to the default.
+          </p></dd>
 </dl>
 </div>
 </div>
@@ -189,7 +359,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tut.html"><img src="../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="comm_ref.html"><img src="../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="tut.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="comm_ref.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

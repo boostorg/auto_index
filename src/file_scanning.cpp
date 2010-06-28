@@ -8,6 +8,27 @@
 #include "auto_index.hpp"
 
 //
+// The regexes we will be using to search for class/function/typedef 
+// names that we locate in source files.  So for example when we
+// scan the xml for class names we'll use 
+//     class_prefix_regex + class_name + class_suffix_regex
+// as the regular expression.  These have defaults but can be changed
+// in the script file.
+//
+const char* default_class_prefix_regex = "class[^;{]+\\<";
+const char* default_class_suffix_regex = "\\>[^;{]+\\{";
+const char* default_function_prefix_regex = "\\<\\w+\\>\\s+\\<";
+const char* default_function_suffix_regex = "\\>\\s*\\([^;{]*\\)\\s*[;{]";
+const char* default_typedef_prefix_regex = "typedef[^;]+\\<";
+const char* default_typedef_suffix_regex = "\\>\\s*;";
+std::string class_prefix_regex = default_class_prefix_regex;
+std::string class_suffix_regex = default_class_suffix_regex;
+std::string function_prefix_regex = default_function_prefix_regex;
+std::string function_suffix_regex = default_function_suffix_regex;
+std::string typedef_prefix_regex = default_typedef_prefix_regex;
+std::string typedef_suffix_regex = default_typedef_suffix_regex;
+
+//
 // Helper to dump file contents into a std::string:
 //
 void load_file(std::string& s, std::istream& is)
@@ -63,7 +84,7 @@ void scan_file(const char* file)
       {
          index_info info;
          info.term = i->str();
-         info.search_text = "class[^;{]+\\<" + i->str() + "\\>[^;{]+\\{";
+         info.search_text = class_prefix_regex + i->str() + class_suffix_regex;
          info.category = "class_name";
          if(index_terms.count(info) == 0)
          {
@@ -88,7 +109,7 @@ void scan_file(const char* file)
       {
          index_info info;
          info.term = i->str();
-         info.search_text = "typedef[^;]+\\<" + i->str() + "\\>\\s*;";
+         info.search_text = typedef_prefix_regex + i->str() + typedef_suffix_regex;
          info.category = "typedef_name";
          if(index_terms.count(info) == 0)
          {
@@ -139,7 +160,7 @@ void scan_file(const char* file)
       {
          index_info info;
          info.term = i->str();
-         info.search_text = "\\<\\w+\\>\\s+\\<" + i->str() + "\\>\\s*\\([^;{]*\\)\\s*[;{]";
+         info.search_text = function_prefix_regex + i->str() + function_suffix_regex;
          info.category = "function_name";
          if(index_terms.count(info) == 0)
          {
@@ -191,6 +212,9 @@ std::string unquote(const std::string& s)
 //
 void process_script(const char* script)
 {
+   static const boost::regex comment_parser(
+      "\\s*(?:#.*)?$"
+      );
    static const boost::regex scan_parser(
       "!scan[[:space:]]+"
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
@@ -225,6 +249,12 @@ void process_script(const char* script)
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
       );
+   static const boost::regex set_regex_parser(
+      "!set-regex\\s+(?:(class)|(function)|(typedef)|(macro))\\s+"
+      "(?<prefix>[^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"
+      "(?<suffix>[^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
+      );
+
    if(verbose)
       std::cout << "Processing script " << script << std::endl;
    boost::smatch what;
@@ -236,7 +266,11 @@ void process_script(const char* script)
    }
    while(std::getline(is, line).good())
    {
-      if(regex_match(line, what, scan_parser))
+      if(regex_match(line, what, comment_parser))
+      {
+         // Nothing to do here...
+      }
+      else if(regex_match(line, what, scan_parser))
       {
          std::string f = unquote(what[1].str());
          if(!boost::filesystem::path(f).is_complete())
@@ -299,6 +333,63 @@ void process_script(const char* script)
             info.term = unquote(*i);
             index_terms.erase(info);
             ++i;
+         }
+      }
+      else if(regex_match(line, what, set_regex_parser))
+      {
+         // what[1|2|3|4] indicates which regex we are setting.
+         // what["prefix"] and what["suffix"] are the prefix and suffix regexes
+         // for the expression we're setting.
+         const char* prefix_default = 0;
+         const char* suffix_default;
+         std::string* p_prefix_string;
+         std::string* p_suffix_string;
+         if(what[1].matched)
+         {
+            if(verbose)
+               std::cout << "Changing the regexes used for class name scanning" << std::endl;
+            prefix_default = default_class_prefix_regex;
+            suffix_default = default_class_suffix_regex;
+            p_prefix_string = &class_prefix_regex;
+            p_suffix_string = &class_suffix_regex;
+         }
+         else if(what[2].matched)
+         {
+            if(verbose)
+               std::cout << "Changing the regexes used for function name scanning" << std::endl;
+            prefix_default = default_function_prefix_regex;
+            suffix_default = default_function_suffix_regex;
+            p_prefix_string = &function_prefix_regex;
+            p_suffix_string = &function_suffix_regex;
+         }
+         else if(what[3].matched)
+         {
+            if(verbose)
+               std::cout << "Changing the regexes used for typedef name scanning" << std::endl;
+            prefix_default = default_typedef_prefix_regex;
+            suffix_default = default_typedef_suffix_regex;
+            p_prefix_string = &typedef_prefix_regex;
+            p_suffix_string = &typedef_suffix_regex;
+         }
+         else if(what[4].matched)
+         {
+            std::cout << "WARNING: Changing the regexes used for macro name scanning is not supported yet." << std::endl;
+         }
+         else
+         {
+            std::cerr << "ERROR: We should never get here." << std::endl;
+            abort();
+         }
+         if(prefix_default)
+         {
+            if(what["prefix"].length())
+               *p_prefix_string = unquote(what["prefix"]);
+            else
+               *p_prefix_string = prefix_default;
+            if(what["suffix"].length())
+               *p_suffix_string = unquote(what["suffix"]);
+            else
+               *p_suffix_string = suffix_default;
          }
       }
       else if(regex_match(line, what, entry_parser))

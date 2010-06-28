@@ -15,6 +15,7 @@ std::multiset<index_info> index_terms;
 std::set<std::pair<std::string, std::string> > found_terms;
 bool no_duplicates = false;
 bool verbose = false;
+bool use_section_names = true;
 index_entry_set index_entries;
 boost::tiny_xml::element_list indexes;
 std::list<id_rewrite_rule> id_rewrite_list;
@@ -317,7 +318,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
                // We have something to index!
                found_terms.insert(item_index);
 
-               if(simple_title != i->term)
+               if(use_section_names && (simple_title != i->term))
                {
                   //
                   // First off insert index entry with primary term
@@ -521,6 +522,10 @@ int main(int argc, char* argv[])
       else if(std::strcmp(argv[i], "--no-duplicates") == 0)
       {
          no_duplicates = true;
+      }
+      else if(std::strcmp(argv[i], "--no-section-names") == 0)
+      {
+         use_section_names = false;
       }
       else if(std::strcmp(argv[i], "--internal-index") == 0)
       {

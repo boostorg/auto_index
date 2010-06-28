@@ -22,6 +22,7 @@ boostbook standalone
         <format>html:<auto-index-internal>on
         <auto-index-script>index.idx
         <auto-index-prefix>$(local-boost-root)
+        <auto-index-verbose>on
         # Path for links to Boost:
         <xsl:param>boost.root=http://svn.boost.org/svn/boost/trunk
         # Path for libraries index:
@@ -77,5 +78,6 @@ boostbook standalone
     ;
 
 install pdf-install : standalone : <install-type>PDF <location>. <name>math.pdf ;
+
 
 

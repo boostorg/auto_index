@@ -31,7 +31,9 @@ as the primary index key and the title of the section it appears in as
 a subterm, the other has the section title as the main index entry and the
 search term as the subentry.  Thus the user has two chances to find what their
 looking for, based upon either the section name or the ['function], ['class], ['macro] 
-or ['typedef] name.
+or ['typedef] name.  Note that this behaviour can be changed so that only one
+index entry is created - using the search term as the key - and not using the
+section name except as a sub-entry of the search term.
 
 So for example in Boost.Math the class name `students_t_distribution` has a primary
 entry that lists all sections it appears in:
@@ -115,8 +117,8 @@ This declaration must go towards the end of user-config.jam, or in any case afte
 
 Also note that Windows users must use forward slashes in the paths in user-config.jam]
 
-Finally copy `tools/auto_index/auto-index.jam` into the same directory as the rest of the Boost.Build tools
-(under `tools/build/v2/tools` in your main Boost tree): this is a temporary requirement that will go away 
+Finally note that `tools/auto_index/auto-index.jam` gets copied into the same directory as the rest of the Boost.Build tools
+(under `tools/build/v2/tools` in your main Boost tree): this is a temporary fix that will go away 
 if the tool is accepted into Boost.
 
 [h4 Step 2: Configure Boost.Build]
@@ -170,6 +172,10 @@ markup so that the DocBook XSL stylesheets can create the index.  Defaults to "o
 [[<auto-index-no-duplicates>off/on][When "on" AutoIndex will only index a term
 once in any given section, otherwise (the default) multiple index entries per
 term may be created if the term occurs more than once in the section.]]
+[[<auto-index-section-names>off/on][When "on" AutoIndex will use create two
+index entries for each term found - one uses the term itself as the primary
+index key, the other uses the enclosing section name.  When off the index
+entry that uses the section title is not created.  Defaults to "on"]]
 [[<auto-index-verbose>off/on][Defaults to "off".  When turned on AutoIndex
 prints progress information - generally useful only for debugging purposes.]]
 [[<auto-index-prefix>filename][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
@@ -193,23 +199,28 @@ indexed by ['auto_index] in separate indexes along with a main
 
 [pre
 <index type\="class_name">
-<title>Class Index</title>
-</index>
+<title>Class Index<\/title>
+<\/index>
 
 <index type\="typedef_name">
-<title>Typedef Index</title>
-</index>
+<title>Typedef Index<\/title>
+<\/index>
 
 <index type\="function_name">
-<title>Function Index</title>
-</index>
+<title>Function Index<\/title>
+<\/index>
 
 <index type\="macro_name">
-<title>Macro Index</title>
-</index>
+<title>Macro Index<\/title>
+<\/index>
 
-<index/>
+<index\/>
 ]
+
+[note Multiple indexes like this only work correctly if you tell the XSL stylesheets
+to honor the "type" attribute on each index as by default [/[*they do not do this]].
+You can turn the feature on by adding `<xsl:param>index.on.type=1` to your projects
+requirements in the Jamfile.]
   
 In quickbook, you add the same markup but enclose it in an escape:
 
@@ -226,7 +237,7 @@ it may be preferable to place the index in a `<chapter>` or `<appendix>` block.
 You can also place the index inside an `<index>` block if you prefer, in which case the index
 does not appear in on a page of it's own, but after the TOC in the HTML output.
 
-You control the type of XML block used by setting the `<auto-index-type>element-name` 
+You control the type of XML block used by setting the =<auto-index-type>element-name= 
 attribute in the Jamfile, or via the `index-type=element-name` command line option to
 auto-index itself.  For example, to place the index in an appendix your Jamfile might 
 look like:
@@ -250,6 +261,8 @@ boostbook standalone
         <auto-index-script>index.idx
         # Set the XML wrapper for HML Indexes to "appendix":
         <format>html:<auto-index-type>appendix
+        # Turn on multiple index support:
+        <xsl:param>index.on.type=1
 ]
    
 [h4 Step 4: Create the script file]
@@ -363,6 +376,10 @@ and the next iteration examined, and so on.
 
 The following elements can occur in a script:
 
+[h4 Comments and blank lines]
+
+Blank lines consisting of only whitespace are ignored, so are lines that start with a '#'.
+
 [h4 Simple Inclusions]
 
    term [regular-expression1 [regular-expression2 [category]]]
@@ -396,7 +413,9 @@ whose ID begins "mylib.examples", while:
    `myclass "" "(?!mylib.introduction.*).*"`
    
 will index occurances of "myclass" in any section, except those whose
-ID's begin "mylib.introduction".]]
+ID's begin "mylib.introduction".
+
+If this field is omitted or is "", then all sections are indexed for this term.]]
 
 [[category][Optionally an index category to place occurances of
 ['term] in.  If you have multiple indexes then this is the name
@@ -416,19 +435,28 @@ these a term to be indexed.  Terms found are assigned to the index category
 on how they were seen in the source file.  These may then be included
 in a specialised index whose "type" attribute has the same category name.
 
+[important
+When actually indexing a document, the scanner will not index just any old occurance of the
+terms found in the source files.  Instead it searches for class definitions or function or
+typedef declarations.  This reduces the number of spurious matches placed in the index, but 
+may also miss some legitimate terms: refer to the /set-regex/ command for information on how to
+change this.
+]
+
 [h4 Directory and Source File Scanning]
 
    !scan-path directory-name file-name-regex [recurse]
    
 [variablelist
 [[directory-name][The directory to scan: this should be a path relative
-to the script file and should use all forward slashes in it's file name.]]
+to the script file (or to the path specified with the prefix=path option on the command line) 
+and should use all forward slashes in it's file name.]]
 
 [[file-name-regex][A regular expression: any file in the directory whose name
 matches the regular expression will be scanned for terms to index.]]
 
 [[recurse][An optional boolian value - either "true" or "false" - that
-indicates whether to recurse into subdirectories.]]
+indicates whether to recurse into subdirectories.  This defaults to "false"]]
 ]
 
 [h4 Excluding Terms]
@@ -437,11 +465,12 @@ indicates whether to recurse into subdirectories.]]
    
 Excludes all the terms in whitespace separated ['term-list] from being indexed.
 This should be placed /after/ any ['!scan] or ['!scan-path] rules which may
-result in the terms becoming included.
+result in the terms becoming included.  In other words this removes terms from
+the scanners internal list of things to index.
 
 [h4 Rewriting Section Names]
 
-   !rewrite-id regular-expression new-name
+[pre !rewrite-id regular-expression new-name]
    
 [variablelist
 [[regular-expression][A regular expression: all section ID's that match
@@ -461,6 +490,41 @@ of the regular expression match combined with the regex format string
 [[format-text][The Perl-style format string used to reformat the title.]]
 ]
 
+[h4 Changing the regular expressions used when scanning]
+
+   !set-regex type prefix suffix
+   
+When a class, function, typedef or macro name is found as a result of scanning a source file
+the scanner constructs a regular expression from that name that is used to actually perform 
+the search of the text for occurances of the name.  This regular expression is constructed by
+joining together 3 parts - a prefix, the name of the class, function, typedef or macro, and a 
+suffix.  By default the regular expressions constructed in this way are designed to narrow
+the number of occurences of the term found - so for example given a class "myclass" only a
+synopsis of that class that looks like:
+
+   class myclass
+   {
+      // details...
+   };
+   
+will be found by the scanner and indexed.  The default regular expression prefix and suffix terms are:
+
+[table
+[[Type][Prefix][Suffix]]
+[[class]["class[^;{]+\\<"]["\\>[^;{]+\\{"]]
+[[function]["\\<\\w+\\>\\s+\\<"]["\\>\\s\*\\(\[^;{\]\*\\)\\s\*\[;{\]"]]
+[[typedef]["typedef\[^;\]+\\<"]["\\>\\s\*;"]]
+[[macro]["\\<"]["\\>"]]
+]
+
+The arguments to the set-regex rule as follows:
+
+[variablelist
+[[type][One of "class", "function", "typedef" or "macro".]]
+[[prefix][The prefix regular expression, or "" to reset to the default.]]
+[[suffix][The suffix regular expression, or "" to reset to the default.]]
+]
+
 [endsect]
 
 [section:comm_ref Command Line Reference]
@@ -478,6 +542,7 @@ include only one index entry.]]
 [[--internal-index][Specifies that auto_index should generate the actual
 indexes rather than inserting `<indexterm>`'s and leaving index generation
 to the XSL stylesheets.]]
+[[--no-section-names][Prevents auto_index from using section names as index entries.]]
 [[prefix=pathname][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
 [[index-type=element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
 	defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.]]

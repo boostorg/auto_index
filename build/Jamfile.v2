@@ -13,7 +13,9 @@ exe auto_index :
    $(boost)/libs/system/build//boost_system 
 : <define>BOOST_ALL_NO_LIB=1 <link>static ;
 
-install bin : auto_index ;
+install aii : auto_index : <location>. ;
+install ai2 : ../auto-index.jam : <location>$(boost)/tools/build/v2/tools ;
+
 
 
 
