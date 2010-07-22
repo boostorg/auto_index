@@ -8,6 +8,7 @@
 #include <set>
 #include <cstring>
 #include <boost/array.hpp>
+#include <boost/exception/all.hpp>
 #include "auto_index.hpp"
 
 std::string infile, outfile, prefix, last_primary, last_secondary;
@@ -585,6 +586,10 @@ int main(int argc, char* argv[])
    os << header << std::endl;
    boost::tiny_xml::write(*xml, os);
 
+   }
+   catch(boost::exception& e)
+   {
+      std::cerr << diagnostic_information(e);
    }
    catch(const std::exception& e)
    {

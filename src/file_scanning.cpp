@@ -82,15 +82,29 @@ void scan_file(const char* file)
       boost::sregex_token_iterator i(text.begin(), text.end(), class_e, 5), j;
       while(i != j)
       {
-         index_info info;
-         info.term = i->str();
-         info.search_text = class_prefix_regex + i->str() + class_suffix_regex;
-         info.category = "class_name";
-         if(index_terms.count(info) == 0)
+         try
          {
-            if(verbose)
-               std::cout << "Indexing class " << info.term << std::endl;
-            index_terms.insert(info);
+            index_info info;
+            info.term = i->str();
+            info.search_text = class_prefix_regex + i->str() + class_suffix_regex;
+            info.category = "class_name";
+            if(index_terms.count(info) == 0)
+            {
+               if(verbose)
+                  std::cout << "Indexing class " << info.term << std::endl;
+               index_terms.insert(info);
+            }
+         }
+         catch(const boost::regex_error&)
+         {
+            std::cerr << "Unable to create regular expression from class name:\""
+               << i->str() << "\" In file " << file << std::endl;
+         }
+         catch(const std::exception&)
+         {
+            std::cerr << "Unable to create class entry:\""
+               << i->str() << "\" In file " << file << std::endl;
+            throw;
          }
          ++i;
       }
@@ -107,15 +121,29 @@ void scan_file(const char* file)
       boost::sregex_token_iterator i(text.begin(), text.end(), typedef_exp, 1), j;
       while(i != j)
       {
-         index_info info;
-         info.term = i->str();
-         info.search_text = typedef_prefix_regex + i->str() + typedef_suffix_regex;
-         info.category = "typedef_name";
-         if(index_terms.count(info) == 0)
+         try
          {
-            if(verbose)
-               std::cout << "Indexing typedef " << info.term << std::endl;
-            index_terms.insert(info);
+            index_info info;
+            info.term = i->str();
+            info.search_text = typedef_prefix_regex + i->str() + typedef_suffix_regex;
+            info.category = "typedef_name";
+            if(index_terms.count(info) == 0)
+            {
+               if(verbose)
+                  std::cout << "Indexing typedef " << info.term << std::endl;
+               index_terms.insert(info);
+            }
+         }
+         catch(const boost::regex_error&)
+         {
+            std::cerr << "Unable to create regular expression from typedef name:\""
+               << i->str() << "\" In file " << file << std::endl;
+         }
+         catch(const std::exception&)
+         {
+            std::cerr << "Unable to create typedef entry:\""
+               << i->str() << "\" In file " << file << std::endl;
+            throw;
          }
          ++i;
       }
@@ -133,15 +161,29 @@ void scan_file(const char* file)
       boost::sregex_token_iterator i(text.begin(), text.end(), e, 1), j;
       while(i != j)
       {
-         index_info info;
-         info.term = i->str();
-         info.search_text = "\\<" + i->str() + "\\>";
-         info.category = "macro_name";
-         if(index_terms.count(info) == 0)
+         try
          {
-            if(verbose)
-               std::cout << "Indexing macro " << info.term << std::endl;
-            index_terms.insert(info);
+            index_info info;
+            info.term = i->str();
+            info.search_text = "\\<" + i->str() + "\\>";
+            info.category = "macro_name";
+            if(index_terms.count(info) == 0)
+            {
+               if(verbose)
+                  std::cout << "Indexing macro " << info.term << std::endl;
+               index_terms.insert(info);
+            }
+         }
+         catch(const boost::regex_error&)
+         {
+            std::cerr << "Unable to create regular expression from macro name:\""
+               << i->str() << "\" In file " << file << std::endl;
+         }
+         catch(const std::exception&)
+         {
+            std::cerr << "Unable to create macro entry:\""
+               << i->str() << "\" In file " << file << std::endl;
+            throw;
          }
          ++i;
       }
@@ -158,15 +200,29 @@ void scan_file(const char* file)
       boost::sregex_token_iterator i(text.begin(), text.end(), e, 1), j;
       while(i != j)
       {
-         index_info info;
-         info.term = i->str();
-         info.search_text = function_prefix_regex + i->str() + function_suffix_regex;
-         info.category = "function_name";
-         if(index_terms.count(info) == 0)
+         try
          {
-            if(verbose)
-               std::cout << "Indexing function " << info.term << std::endl;
-            index_terms.insert(info);
+            index_info info;
+            info.term = i->str();
+            info.search_text = function_prefix_regex + i->str() + function_suffix_regex;
+            info.category = "function_name";
+            if(index_terms.count(info) == 0)
+            {
+               if(verbose)
+                  std::cout << "Indexing function " << info.term << std::endl;
+               index_terms.insert(info);
+            }
+         }
+         catch(const boost::regex_error&)
+         {
+            std::cerr << "Unable to create regular expression from function name:\""
+               << i->str() << "\" In file " << file << std::endl;
+         }
+         catch(const std::exception&)
+         {
+            std::cerr << "Unable to create function entry:\""
+               << i->str() << "\" In file " << file << std::endl;
+            throw;
          }
          ++i;
       }
@@ -217,7 +273,7 @@ void process_script(const char* script)
       );
    static const boost::regex scan_parser(
       "!scan[[:space:]]+"
-      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
+      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s*"
       );
    static const boost::regex scan_dir_parser(
       "!scan-path[[:space:]]+"
@@ -227,7 +283,7 @@ void process_script(const char* script)
       "(?:"
          "[[:space:]]+"
          "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
-      ")?"
+      ")?\\s*"
       );
    static const boost::regex entry_parser( 
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
@@ -247,12 +303,12 @@ void process_script(const char* script)
    static const boost::regex rewrite_parser(
       "!(rewrite-name|rewrite-id)\\s+"
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"
-      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
+      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s*"
       );
    static const boost::regex set_regex_parser(
       "!set-regex\\s+(?:(class)|(function)|(typedef)|(macro))\\s+"
       "(?<prefix>[^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"
-      "(?<suffix>[^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"
+      "(?<suffix>[^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s*"
       );
 
    if(verbose)
@@ -374,6 +430,7 @@ void process_script(const char* script)
          else if(what[4].matched)
          {
             std::cout << "WARNING: Changing the regexes used for macro name scanning is not supported yet." << std::endl;
+			return;
          }
          else
          {
@@ -394,25 +451,39 @@ void process_script(const char* script)
       }
       else if(regex_match(line, what, entry_parser))
       {
-         // what[1] is the Index entry
-         // what[2] is the regex to search for (optional)
-         // what[3] is a section id that must be matched 
-         // in order for the term to be indexed (optional)
-         // what[4] is the index category to place the term in (optional).
-         index_info info;
-         info.term = unquote(what.str(1));
-         std::string s = unquote(what.str(2));
-         if(s.size())
-            info.search_text = boost::regex(s, boost::regex::icase|boost::regex::perl);
-         else
-            info.search_text = boost::regex("\\<" + what.str(1) + "\\>", boost::regex::icase|boost::regex::perl);
+         try{
+            // what[1] is the Index entry
+            // what[2] is the regex to search for (optional)
+            // what[3] is a section id that must be matched 
+            // in order for the term to be indexed (optional)
+            // what[4] is the index category to place the term in (optional).
+            index_info info;
+            info.term = unquote(what.str(1));
+            std::string s = unquote(what.str(2));
+            if(s.size())
+               info.search_text = boost::regex(s, boost::regex::icase|boost::regex::perl);
+            else
+               info.search_text = boost::regex("\\<" + what.str(1) + "\\>", boost::regex::icase|boost::regex::perl);
 
-         s = unquote(what.str(3));
-         if(s.size())
-            info.search_id = s;
-         if(what[4].matched)
-            info.category = unquote(what.str(4));
-         index_terms.insert(info);
+            s = unquote(what.str(3));
+            if(s.size())
+               info.search_id = s;
+            if(what[4].matched)
+               info.category = unquote(what.str(4));
+            index_terms.insert(info);
+         }
+         catch(const boost::regex_error&)
+         {
+            std::cerr << "Unable to process regular expression in script line:\n  \""
+               << line << "\"" << std::endl;
+            throw;
+         }
+         catch(const std::exception&)
+         {
+            std::cerr << "Unable to process script line:\n  \""
+               << line << "\"" << std::endl;
+            throw;
+         }
       }
    }
 }
