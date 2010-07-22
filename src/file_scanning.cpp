@@ -259,7 +259,7 @@ std::string unquote(const std::string& s)
    if((s.size() >= 2) && (*s.begin() == '\"') && (*s.rbegin() == '\"'))
    {
       result.erase(result.begin());
-      result.erase(--result.end());
+      result.erase(result.end() - 1);
    }
    return result;
 }
