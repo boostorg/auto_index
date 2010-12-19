@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Rayleigh Distribution</title>
-<link rel="stylesheet" href="http://svn.boost.org/svn/boost/trunk/doc/html/boostbook.css" type="text/css">
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/html/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
 <link rel="home" href="../../../../index.html" title="Math Toolkit">
 <link rel="up" href="../dists.html" title="Distributions">
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="poisson_dist.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../dists.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="students_t_dist.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="poisson_dist.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dists.html"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="students_t_dist.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
@@ -79,7 +79,7 @@
             <span class="inlinemediaobject"><img src="../../../../../graphs/rayleigh_cdf.png" align="middle"></span>
           </p>
 <a name="math_toolkit.dist.dist_ref.dists.rayleigh.related_distributions"></a><h5>
-<a name="id1200350"></a>
+<a name="id1124654"></a>
             <a class="link" href="rayleigh.html#math_toolkit.dist.dist_ref.dists.rayleigh.related_distributions">Related
             distributions</a>
           </h5>
@@ -95,7 +95,7 @@
             distribution</a>.
           </p>
 <a name="math_toolkit.dist.dist_ref.dists.rayleigh.member_functions"></a><h5>
-<a name="id1200402"></a>
+<a name="id1124706"></a>
             <a class="link" href="rayleigh.html#math_toolkit.dist.dist_ref.dists.rayleigh.member_functions">Member
             Functions</a>
           </h5>
@@ -114,7 +114,7 @@
             Returns the <span class="emphasis"><em>sigma</em></span> parameter of this distribution.
           </p>
 <a name="math_toolkit.dist.dist_ref.dists.rayleigh.non_member_accessors"></a><h5>
-<a name="id1200506"></a>
+<a name="id1127300"></a>
             <a class="link" href="rayleigh.html#math_toolkit.dist.dist_ref.dists.rayleigh.non_member_accessors">Non-member
             Accessors</a>
           </h5>
@@ -134,7 +134,7 @@
             The domain of the random variable is [0, max_value].
           </p>
 <a name="math_toolkit.dist.dist_ref.dists.rayleigh.accuracy"></a><h5>
-<a name="id1200606"></a>
+<a name="id1127399"></a>
             <a class="link" href="rayleigh.html#math_toolkit.dist.dist_ref.dists.rayleigh.accuracy">Accuracy</a>
           </h5>
 <p>
@@ -144,7 +144,7 @@
             using NTL RR type with 150-bit accuracy, about 50 decimal digits.
           </p>
 <a name="math_toolkit.dist.dist_ref.dists.rayleigh.implementation"></a><h5>
-<a name="id1200639"></a>
+<a name="id1127433"></a>
             <a class="link" href="rayleigh.html#math_toolkit.dist.dist_ref.dists.rayleigh.implementation">Implementation</a>
           </h5>
 <p>
@@ -159,168 +159,172 @@
 </colgroup>
 <thead><tr>
 <th>
-                  <p>
-                    Function
-                  </p>
+                    <p>
+                      Function
+                    </p>
                   </th>
 <th>
-                  <p>
-                    Implementation Notes
-                  </p>
+                    <p>
+                      Implementation Notes
+                    </p>
                   </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-                  <p>
-                    pdf
-                  </p>
+                    <p>
+                      pdf
+                    </p>
                   </td>
 <td>
-                  <p>
-                    Using the relation: pdf = x * exp(-x<sup>2</sup>)/2 &#963;<sup>2</sup>
-                  </p>
-                  </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    cdf
-                  </p>
-                  </td>
-<td>
-                  <p>
-                    Using the relation: p = 1 - exp(-x<sup>2</sup>/2) &#963;<sup>2</sup> = -<a class="link" href="../../../special/powers/expm1.html" title="expm1">expm1</a>(-x<sup>2</sup>/2)
-                    &#963;<sup>2</sup>
-                  </p>
+                    <p>
+                      Using the relation: pdf = x * exp(-x<sup>2</sup>)/2 &#963;<sup>2</sup>
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    cdf complement
-                  </p>
+                    <p>
+                      cdf
+                    </p>
                   </td>
 <td>
-                  <p>
-                    Using the relation: q = exp(-x<sup>2</sup>/ 2) * &#963;<sup>2</sup>
-                  </p>
-                  </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    quantile
-                  </p>
-                  </td>
-<td>
-                  <p>
-                    Using the relation: x = sqrt(-2 * &#963; <sup>2</sup>) * log(1 - p)) = sqrt(-2
-                    * &#963; <sup>2</sup>) * <a class="link" href="../../../special/powers/log1p.html" title="log1p">log1p</a>(-p))
-                  </p>
+                    <p>
+                      Using the relation: p = 1 - exp(-x<sup>2</sup>/2) &#963;<sup>2</sup> = -<a class="link" href="../../../special/powers/expm1.html" title="expm1">expm1</a>(-x<sup>2</sup>/2)
+                      &#963;<sup>2</sup>
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    quantile from the complement
-                  </p>
+                    <p>
+                      cdf complement
+                    </p>
                   </td>
 <td>
-                  <p>
-                    Using the relation: x = sqrt(-2 * &#963; <sup>2</sup>) * log(q))
-                  </p>
-                  </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    mean
-                  </p>
-                  </td>
-<td>
-                  <p>
-                    &#963; * sqrt(&#960;/2)
-                  </p>
+                    <p>
+                      Using the relation: q = exp(-x<sup>2</sup>/ 2) * &#963;<sup>2</sup>
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    variance
-                  </p>
+                    <p>
+                      quantile
+                    </p>
                   </td>
 <td>
-                  <p>
-                    &#963;<sup>2</sup> * (4 - &#960;/2)
-                  </p>
-                  </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    mode
-                  </p>
-                  </td>
-<td>
-                  <p>
-                    &#963;
-                  </p>
+                    <p>
+                      Using the relation: x = sqrt(-2 * &#963; <sup>2</sup>) * log(1 - p)) = sqrt(-2
+                      * &#963; <sup>2</sup>) * <a class="link" href="../../../special/powers/log1p.html" title="log1p">log1p</a>(-p))
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    skewness
-                  </p>
+                    <p>
+                      quantile from the complement
+                    </p>
                   </td>
 <td>
-                  <p>
-                    Constant from <a href="http://mathworld.wolfram.com/RayleighDistribution.html" target="_top">Weisstein,
-                    Eric W. "Weibull Distribution." From MathWorld--A Wolfram
-                    Web Resource.</a>
-                  </p>
+                    <p>
+                      Using the relation: x = sqrt(-2 * &#963; <sup>2</sup>) * log(q))
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    kurtosis
-                  </p>
+                    <p>
+                      mean
+                    </p>
                   </td>
 <td>
-                  <p>
-                    Constant from <a href="http://mathworld.wolfram.com/RayleighDistribution.html" target="_top">Weisstein,
-                    Eric W. "Weibull Distribution." From MathWorld--A Wolfram
-                    Web Resource.</a>
-                  </p>
+                    <p>
+                      &#963; * sqrt(&#960;/2)
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    kurtosis excess
-                  </p>
+                    <p>
+                      variance
+                    </p>
                   </td>
 <td>
-                  <p>
-                    Constant from <a href="http://mathworld.wolfram.com/RayleighDistribution.html" target="_top">Weisstein,
-                    Eric W. "Weibull Distribution." From MathWorld--A Wolfram
-                    Web Resource.</a>
-                  </p>
+                    <p>
+                      &#963;<sup>2</sup> * (4 - &#960;/2)
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      mode
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      &#963;
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      skewness
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Constant from <a href="http://mathworld.wolfram.com/RayleighDistribution.html" target="_top">Weisstein,
+                      Eric W. "Weibull Distribution." From MathWorld--A
+                      Wolfram Web Resource.</a>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      kurtosis
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Constant from <a href="http://mathworld.wolfram.com/RayleighDistribution.html" target="_top">Weisstein,
+                      Eric W. "Weibull Distribution." From MathWorld--A
+                      Wolfram Web Resource.</a>
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      kurtosis excess
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      Constant from <a href="http://mathworld.wolfram.com/RayleighDistribution.html" target="_top">Weisstein,
+                      Eric W. "Weibull Distribution." From MathWorld--A
+                      Wolfram Web Resource.</a>
+                    </p>
                   </td>
 </tr>
 </tbody>
 </table></div>
 <a name="math_toolkit.dist.dist_ref.dists.rayleigh.references"></a><h5>
-<a name="id1200957"></a>
+<a name="id1127765"></a>
             <a class="link" href="rayleigh.html#math_toolkit.dist.dist_ref.dists.rayleigh.references">References</a>
           </h5>
 <div class="itemizedlist"><ul type="disc">
-<li><a href="http://en.wikipedia.org/wiki/Rayleigh_distribution" target="_top">http://en.wikipedia.org/wiki/Rayleigh_distribution</a></li>
-<li><a href="http://mathworld.wolfram.com/RayleighDistribution.html" target="_top">Weisstein,
-              Eric W. "Rayleigh Distribution." From MathWorld--A Wolfram
-              Web Resource.</a></li>
+<li>
+                <a href="http://en.wikipedia.org/wiki/Rayleigh_distribution" target="_top">http://en.wikipedia.org/wiki/Rayleigh_distribution</a>
+              </li>
+<li>
+                <a href="http://mathworld.wolfram.com/RayleighDistribution.html" target="_top">Weisstein,
+                Eric W. "Rayleigh Distribution." From MathWorld--A Wolfram
+                Web Resource.</a>
+              </li>
 </ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
@@ -334,7 +338,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="poisson_dist.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../dists.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="students_t_dist.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="poisson_dist.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dists.html"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="students_t_dist.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

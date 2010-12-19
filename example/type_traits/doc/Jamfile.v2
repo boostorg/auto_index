@@ -21,11 +21,11 @@ boostbook standalone
         <auto-index-script>index.idx
         <auto-index-prefix>$(local-boost-root)
         # Path for links to Boost:
-        <xsl:param>boost.root=http://svn.boost.org/svn/boost/trunk
+        <xsl:param>boost.root=http://www.boost.org/doc/libs/release
         # Path for libraries index:
-        <xsl:param>boost.libraries=http://svn.boost.org/svn/boost/trunk/libs/libraries.htm
+        <xsl:param>boost.libraries=http://www.boost.org/doc/libs/release/libs/libraries.htm
         # Use the main Boost stylesheet:
-        <xsl:param>html.stylesheet=http://svn.boost.org/svn/boost/trunk/doc/html/boostbook.css
+        <xsl:param>html.stylesheet=http://www.boost.org/doc/libs/release/doc/html/boostbook.css
         
         # Some general style settings:
         <xsl:param>table.footnote.number.format=1

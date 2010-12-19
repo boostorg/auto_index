@@ -116,7 +116,24 @@ void generate_indexes()
             secondary_list->name = "simplelist";
             subitem->elements.push_back(secondary_list);
 
-            for(index_entry_set::const_iterator k = (**i).sub_keys.begin(); k != (**i).sub_keys.end(); ++k)
+            //
+            // we need to examine subsequent entries to see if they're the same as this one
+            // (albeit with different "type" attributes) and if so merge with this entry
+            // if we're creating the main index:
+            //
+            index_entry_set sub_keys((**i).sub_keys);
+            if((0 == category) || (category->size() == 0) )
+            {
+               ++i;
+               while((i != index_entries.end()) && (subterm->content == (**i).key))
+               {
+                  sub_keys.insert((**i).sub_keys.begin(), (**i).sub_keys.end());
+                  ++i;
+               }
+               --i;
+            }
+
+            for(index_entry_set::const_iterator k = sub_keys.begin(); k != sub_keys.end(); ++k)
             {
                boost::tiny_xml::element_ptr member(new boost::tiny_xml::element());
                member->name = "member";

@@ -239,13 +239,13 @@ void scan_dir(const std::string& dir, const std::string& mask, bool recurse)
 
    while(i != j)
    {
-      if(regex_match(i->path().filename(), e))
+      if(regex_match(i->path().filename().string(), e))
       {
-         scan_file(i->path().directory_string().c_str());
+         scan_file(i->path().string().c_str());
       }
       else if(recurse && is_directory(i->status()))
       {
-         scan_dir(i->path().directory_string(), mask, recurse);
+         scan_dir(i->path().string(), mask, recurse);
       }
       ++i;
    }
@@ -335,14 +335,14 @@ void process_script(const char* script)
             {
                boost::filesystem::path base(prefix);
                base /= f;
-               f = base.file_string();
+               f = base.string();
             }
             else
             {
                boost::filesystem::path base(script);
                base.remove_filename();
                base /= f;
-               f = base.file_string();
+               f = base.string();
             }
          }
          scan_file(f.c_str());
@@ -358,14 +358,14 @@ void process_script(const char* script)
             {
                boost::filesystem::path base(prefix);
                base /= d;
-               d = base.directory_string();
+               d = base.string();
             }
             else
             {
                boost::filesystem::path base(script);
                base.remove_filename();
                base /= d;
-               d = base.directory_string();
+               d = base.string();
             }
          }
          if(verbose)

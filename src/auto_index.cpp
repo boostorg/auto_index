@@ -358,11 +358,8 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
                   // Track the entry in our internal index:
                   index_entry_ptr item1(new index_entry(simple_title));
                   index_entry_ptr item2(new index_entry(i->term, *pid));
-                  if(index_entries.find(item1) == index_entries.end())
-                  {
-                     index_entries.insert(item1);
-                  }
-                  (**index_entries.find(item1)).sub_keys.insert(item2);
+                  index_entry_set::iterator pos = index_entries.insert(item1).first;
+                  (**pos).sub_keys.insert(item2);
                }
                //
                // Now insert another index entry with the index term
@@ -431,17 +428,12 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
                catch(const std::exception&){}
 
                index_entry_ptr item3(new index_entry(i->term));
+               if(i->category.size())
+                  item3->category = i->category;
                index_entry_ptr item4(new index_entry(rtitle, *pid));
                item4->preferred = preferred_term;
-               if(index_entries.find(item3) == index_entries.end())
-               {
-                  index_entries.insert(item3);
-                  if(i->category.size())
-                  {
-                     (**index_entries.find(item3)).category = i->category;
-                  }
-               }
-               (**index_entries.find(item3)).sub_keys.insert(item4);
+               index_entry_set::iterator pos = index_entries.insert(item3).first;
+               (**pos).sub_keys.insert(item4);
             }
          }
       }

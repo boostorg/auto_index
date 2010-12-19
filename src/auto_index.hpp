@@ -8,6 +8,14 @@
 #ifndef BOOST_AUTO_INDEX_HPP
 #define BOOST_AUTO_INDEX_HPP
 
+#include <boost/version.hpp>
+
+#if BOOST_VERSION < 104400
+#  error "This tool requires Boost 1.44 or later to build."
+#endif
+
+#define BOOST_FILESYSTEM_VERSION 3
+
 #include "tiny_xml.hpp"
 #include <boost/regex.hpp>
 #include <boost/filesystem.hpp>
@@ -61,7 +69,7 @@ struct index_entry
 
 inline bool operator < (const index_entry_ptr& a, const index_entry_ptr& b)
 {
-   return a->sort_key < b->sort_key;
+   return ((a->sort_key != b->sort_key) ? (a->sort_key < b->sort_key) : (a->category < b->category));
 }
 
 struct id_rewrite_rule

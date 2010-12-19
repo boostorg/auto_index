@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>The Lanczos Approximation</title>
-<link rel="stylesheet" href="http://svn.boost.org/svn/boost/trunk/doc/html/boostbook.css" type="text/css">
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/html/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
 <link rel="home" href="../../index.html" title="Math Toolkit">
 <link rel="up" href="../backgrounders.html" title="Backgrounders">
@@ -13,14 +13,14 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="relative_error.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../backgrounders.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="remez.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="relative_error.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../backgrounders.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="remez.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="math_toolkit.backgrounders.lanczos"></a><a class="link" href="lanczos.html" title="The Lanczos Approximation"> The Lanczos Approximation</a>
 </h3></div></div></div>
 <a name="math_toolkit.backgrounders.lanczos.motivation"></a><h5>
-<a name="id1427346"></a>
+<a name="id1355585"></a>
         <a class="link" href="lanczos.html#math_toolkit.backgrounders.lanczos.motivation">Motivation</a>
       </h5>
 <p>
@@ -40,17 +40,18 @@
       </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-          The approximation has an easy to compute truncation error that holds for
-          all <span class="emphasis"><em>z &gt; 0</em></span>. In practice that means we can use the
-          same approximation for all <span class="emphasis"><em>z &gt; 0</em></span>, and be certain
-          that no matter how large or small <span class="emphasis"><em>z</em></span> is, the truncation
-          error will <span class="emphasis"><em>at worst</em></span> be bounded by some finite value.
-        </li>
+            The approximation has an easy to compute truncation error that holds
+            for all <span class="emphasis"><em>z &gt; 0</em></span>. In practice that means we can
+            use the same approximation for all <span class="emphasis"><em>z &gt; 0</em></span>, and
+            be certain that no matter how large or small <span class="emphasis"><em>z</em></span> is,
+            the truncation error will <span class="emphasis"><em>at worst</em></span> be bounded by
+            some finite value.
+          </li>
 <li>
-          The approximation has a form that is particularly amenable to analytic
-          manipulation, in particular ratios of gamma or gamma-like functions are
-          particularly easy to compute without resorting to logarithms.
-        </li>
+            The approximation has a form that is particularly amenable to analytic
+            manipulation, in particular ratios of gamma or gamma-like functions are
+            particularly easy to compute without resorting to logarithms.
+          </li>
 </ul></div>
 <p>
         It is the combination of these two properties that make the approximation
@@ -91,7 +92,7 @@
         functions divided by large powers into single (simpler) expressions.
       </p>
 <a name="math_toolkit.backgrounders.lanczos.the_approximation"></a><h5>
-<a name="id1427594"></a>
+<a name="id1355841"></a>
         <a class="link" href="lanczos.html#math_toolkit.backgrounders.lanczos.the_approximation">The
         Approximation</a>
       </h5>
@@ -141,7 +142,7 @@
       </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://svn.boost.org/svn/boost/trunk/doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
@@ -153,7 +154,7 @@
         </p></td></tr>
 </table></div>
 <a name="math_toolkit.backgrounders.lanczos.computing_the_coefficients"></a><h5>
-<a name="id1427786"></a>
+<a name="id1356557"></a>
         <a class="link" href="lanczos.html#math_toolkit.backgrounders.lanczos.computing_the_coefficients">Computing
         the Coefficients</a>
       </h5>
@@ -197,7 +198,7 @@
         multiplied by <span class="emphasis"><em>F</em></span> as the last step.
       </p>
 <a name="math_toolkit.backgrounders.lanczos.choosing_the_right_parameters"></a><h5>
-<a name="id1427943"></a>
+<a name="id1356714"></a>
         <a class="link" href="lanczos.html#math_toolkit.backgrounders.lanczos.choosing_the_right_parameters">Choosing
         the Right Parameters</a>
       </h5>
@@ -221,10 +222,10 @@
         computing to float precision with double precision arithmetic.
       </p>
 <div class="table">
-<a name="id1427997"></a><p class="title"><b>Table&#160;53.&#160;Optimal choices for N and g when computing with
-      guard digits (source: Pugh)</b></p>
-<div class="table-contents"><table class="table" summary="Optimal choices for N and g when computing with
-      guard digits (source: Pugh)">
+<a name="id1356768"></a><p class="title"><b>Table&#160;53.&#160;Optimal choices for N and g when computing with guard digits (source:
+        Pugh)</b></p>
+<div class="table-contents"><table class="table" summary="Optimal choices for N and g when computing with guard digits (source:
+        Pugh)">
 <colgroup>
 <col>
 <col>
@@ -233,70 +234,70 @@
 </colgroup>
 <thead><tr>
 <th>
-            <p>
-              Significand Size
-            </p>
-            </th>
+                <p>
+                  Significand Size
+                </p>
+              </th>
 <th>
-            <p>
-              N
-            </p>
-            </th>
+                <p>
+                  N
+                </p>
+              </th>
 <th>
-            <p>
-              g
-            </p>
-            </th>
+                <p>
+                  g
+                </p>
+              </th>
 <th>
-            <p>
-              Max Error
-            </p>
-            </th>
+                <p>
+                  Max Error
+                </p>
+              </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-            <p>
-              24
-            </p>
-            </td>
+                <p>
+                  24
+                </p>
+              </td>
 <td>
-            <p>
-              6
-            </p>
-            </td>
+                <p>
+                  6
+                </p>
+              </td>
 <td>
-            <p>
-              5.581
-            </p>
-            </td>
+                <p>
+                  5.581
+                </p>
+              </td>
 <td>
-            <p>
-              9.51e-12
-            </p>
-            </td>
+                <p>
+                  9.51e-12
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              53
-            </p>
-            </td>
+                <p>
+                  53
+                </p>
+              </td>
 <td>
-            <p>
-              13
-            </p>
-            </td>
+                <p>
+                  13
+                </p>
+              </td>
 <td>
-            <p>
-              13.144565
-            </p>
-            </td>
+                <p>
+                  13.144565
+                </p>
+              </td>
 <td>
-            <p>
-              9.2213e-23
-            </p>
-            </td>
+                <p>
+                  9.2213e-23
+                </p>
+              </td>
 </tr>
 </tbody>
 </table></div>
@@ -364,10 +365,8 @@
         exactly matches the machine epsilon for the type in question.
       </p>
 <div class="table">
-<a name="id1428217"></a><p class="title"><b>Table&#160;54.&#160;Optimum value for N and g when computing at fixed
-      precision</b></p>
-<div class="table-contents"><table class="table" summary="Optimum value for N and g when computing at fixed
-      precision">
+<a name="id1356991"></a><p class="title"><b>Table&#160;54.&#160;Optimum value for N and g when computing at fixed precision</b></p>
+<div class="table-contents"><table class="table" summary="Optimum value for N and g when computing at fixed precision">
 <colgroup>
 <col>
 <col>
@@ -377,139 +376,139 @@
 </colgroup>
 <thead><tr>
 <th>
-            <p>
-              Significand Size
-            </p>
-            </th>
+                <p>
+                  Significand Size
+                </p>
+              </th>
 <th>
-            <p>
-              Platform/Compiler Used
-            </p>
-            </th>
+                <p>
+                  Platform/Compiler Used
+                </p>
+              </th>
 <th>
-            <p>
-              N
-            </p>
-            </th>
+                <p>
+                  N
+                </p>
+              </th>
 <th>
-            <p>
-              g
-            </p>
-            </th>
+                <p>
+                  g
+                </p>
+              </th>
 <th>
-            <p>
-              Max Truncation Error
-            </p>
-            </th>
+                <p>
+                  Max Truncation Error
+                </p>
+              </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-            <p>
-              24
-            </p>
-            </td>
+                <p>
+                  24
+                </p>
+              </td>
 <td>
-            <p>
-              Win32, VC++ 7.1
-            </p>
-            </td>
+                <p>
+                  Win32, VC++ 7.1
+                </p>
+              </td>
 <td>
-            <p>
-              6
-            </p>
-            </td>
+                <p>
+                  6
+                </p>
+              </td>
 <td>
-            <p>
-              1.428456135094165802001953125
-            </p>
-            </td>
+                <p>
+                  1.428456135094165802001953125
+                </p>
+              </td>
 <td>
-            <p>
-              9.41e-007
-            </p>
-            </td>
+                <p>
+                  9.41e-007
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              53
-            </p>
-            </td>
+                <p>
+                  53
+                </p>
+              </td>
 <td>
-            <p>
-              Win32, VC++ 7.1
-            </p>
-            </td>
+                <p>
+                  Win32, VC++ 7.1
+                </p>
+              </td>
 <td>
-            <p>
-              13
-            </p>
-            </td>
+                <p>
+                  13
+                </p>
+              </td>
 <td>
-            <p>
-              6.024680040776729583740234375
-            </p>
-            </td>
+                <p>
+                  6.024680040776729583740234375
+                </p>
+              </td>
 <td>
-            <p>
-              3.23e-016
-            </p>
-            </td>
+                <p>
+                  3.23e-016
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              64
-            </p>
-            </td>
+                <p>
+                  64
+                </p>
+              </td>
 <td>
-            <p>
-              Suse Linux 9 IA64, gcc-3.3.3
-            </p>
-            </td>
+                <p>
+                  Suse Linux 9 IA64, gcc-3.3.3
+                </p>
+              </td>
 <td>
-            <p>
-              17
-            </p>
-            </td>
+                <p>
+                  17
+                </p>
+              </td>
 <td>
-            <p>
-              12.2252227365970611572265625
-            </p>
-            </td>
+                <p>
+                  12.2252227365970611572265625
+                </p>
+              </td>
 <td>
-            <p>
-              2.34e-024
-            </p>
-            </td>
+                <p>
+                  2.34e-024
+                </p>
+              </td>
 </tr>
 <tr>
 <td>
-            <p>
-              116
-            </p>
-            </td>
+                <p>
+                  116
+                </p>
+              </td>
 <td>
-            <p>
-              HP Tru64 Unix 5.1B / Alpha, Compaq C++ V7.1-006
-            </p>
-            </td>
+                <p>
+                  HP Tru64 Unix 5.1B / Alpha, Compaq C++ V7.1-006
+                </p>
+              </td>
 <td>
-            <p>
-              24
-            </p>
-            </td>
+                <p>
+                  24
+                </p>
+              </td>
 <td>
-            <p>
-              20.3209821879863739013671875
-            </p>
-            </td>
+                <p>
+                  20.3209821879863739013671875
+                </p>
+              </td>
 <td>
-            <p>
-              4.75e-035
-            </p>
-            </td>
+                <p>
+                  4.75e-035
+                </p>
+              </td>
 </tr>
 </tbody>
 </table></div>
@@ -529,27 +528,27 @@
         is exact, and so isn't used for the gamma function.
       </p>
 <a name="math_toolkit.backgrounders.lanczos.references"></a><h5>
-<a name="id1428462"></a>
+<a name="id1357249"></a>
         <a class="link" href="lanczos.html#math_toolkit.backgrounders.lanczos.references">References</a>
       </h5>
 <a name="godfrey"></a><a name="pugh"></a><div class="orderedlist"><ol type="1">
 <li>
-          Paul Godfrey, <a href="http://my.fit.edu/~gabdo/gamma.txt" target="_top">"A note
-          on the computation of the convergent Lanczos complex Gamma approximation"</a>.
-        </li>
+            Paul Godfrey, <a href="http://my.fit.edu/~gabdo/gamma.txt" target="_top">"A
+            note on the computation of the convergent Lanczos complex Gamma approximation"</a>.
+          </li>
 <li>
-          Glendon Ralph Pugh, <a href="http://bh0.physics.ubc.ca/People/matt/Doc/ThesesOthers/Phd/pugh.pdf" target="_top">"An
-          Analysis of the Lanczos Gamma Approximation"</a>, PhD Thesis November
-          2004.
-        </li>
+            Glendon Ralph Pugh, <a href="http://bh0.physics.ubc.ca/People/matt/Doc/ThesesOthers/Phd/pugh.pdf" target="_top">"An
+            Analysis of the Lanczos Gamma Approximation"</a>, PhD Thesis
+            November 2004.
+          </li>
 <li>
-          Viktor T. Toth, <a href="http://www.rskey.org/gamma.htm" target="_top">"Calculators
-          and the Gamma Function"</a>.
-        </li>
+            Viktor T. Toth, <a href="http://www.rskey.org/gamma.htm" target="_top">"Calculators
+            and the Gamma Function"</a>.
+          </li>
 <li>
-          Mathworld, <a href="http://mathworld.wolfram.com/LanczosApproximation.html" target="_top">The
-          Lanczos Approximation</a>.
-        </li>
+            Mathworld, <a href="http://mathworld.wolfram.com/LanczosApproximation.html" target="_top">The
+            Lanczos Approximation</a>.
+          </li>
 </ol></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
@@ -563,7 +562,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="relative_error.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../backgrounders.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="remez.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="relative_error.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../backgrounders.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="remez.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

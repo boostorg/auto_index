@@ -74,3 +74,5 @@ remove_pointer "" "" class_name
 remove_reference "" "" class_name
 remove_volatile "" "" class_name
 
+#type-traits "" ".*.intro" test_index_1
+#type-traits "" ".*.background" test_index_2

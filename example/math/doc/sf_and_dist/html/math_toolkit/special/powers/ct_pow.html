@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Compile Time Power of a Runtime Base</title>
-<link rel="stylesheet" href="http://svn.boost.org/svn/boost/trunk/doc/html/boostbook.css" type="text/css">
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/html/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
 <link rel="home" href="../../../index.html" title="Math Toolkit">
 <link rel="up" href="../powers.html" title="Logs, Powers, Roots and Exponentials">
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="hypot.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../powers.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../sinc.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="hypot.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../powers.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../sinc.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
@@ -25,7 +25,7 @@
           computes the compile-time integral power of a run-time base.
         </p>
 <a name="math_toolkit.special.powers.ct_pow.synopsis"></a><h5>
-<a name="id1292631"></a>
+<a name="id1220922"></a>
           <a class="link" href="ct_pow.html#math_toolkit.special.powers.ct_pow.synopsis">Synopsis</a>
         </h5>
 <p>
@@ -42,7 +42,7 @@
 <span class="special">}}</span>
 </pre>
 <a name="math_toolkit.special.powers.ct_pow.rationale_and_usage"></a><h5>
-<a name="id1292892"></a>
+<a name="id1221183"></a>
           <a class="link" href="ct_pow.html#math_toolkit.special.powers.ct_pow.rationale_and_usage">Rationale
           and Usage</a>
         </h5>
@@ -84,7 +84,7 @@
           Only 3 different products were actually computed.
         </p>
 <a name="math_toolkit.special.powers.ct_pow.return_type"></a><h5>
-<a name="id1294464"></a>
+<a name="id1221457"></a>
           <a class="link" href="ct_pow.html#math_toolkit.special.powers.ct_pow.return_type">Return Type</a>
         </h5>
 <p>
@@ -93,19 +93,19 @@
         </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-            If T is a <code class="computeroutput"><span class="keyword">float</span></code>, the return
-            type is a <code class="computeroutput"><span class="keyword">float</span></code>.
-          </li>
+              If T is a <code class="computeroutput"><span class="keyword">float</span></code>, the return
+              type is a <code class="computeroutput"><span class="keyword">float</span></code>.
+            </li>
 <li>
-            If T is a <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>,
-            the return type is a <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>.
-          </li>
+              If T is a <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>,
+              the return type is a <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>.
+            </li>
 <li>
-            Otherwise, the return type is a <code class="computeroutput"><span class="keyword">double</span></code>.
-          </li>
+              Otherwise, the return type is a <code class="computeroutput"><span class="keyword">double</span></code>.
+            </li>
 </ul></div>
 <a name="math_toolkit.special.powers.ct_pow.policies"></a><h5>
-<a name="id1294546"></a>
+<a name="id1221550"></a>
           <a class="link" href="ct_pow.html#math_toolkit.special.powers.ct_pow.policies">Policies</a>
         </h5>
 <p>
@@ -119,7 +119,7 @@
 <p>
         </p>
 <a name="math_toolkit.special.powers.ct_pow.error_handling"></a><h5>
-<a name="id1294576"></a>
+<a name="id1221580"></a>
           <a class="link" href="ct_pow.html#math_toolkit.special.powers.ct_pow.error_handling">Error
           Handling</a>
         </h5>
@@ -128,15 +128,15 @@
         </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-            In case of null base and negative exponent, an <a class="link" href="../../main_overview/error_handling.html#overflow_error">overflow_error</a>
-            occurs since this operation is a division by 0 (it equals to 1/0).
-          </li>
+              In case of null base and negative exponent, an <a class="link" href="../../main_overview/error_handling.html#overflow_error">overflow_error</a>
+              occurs since this operation is a division by 0 (it equals to 1/0).
+            </li>
 <li>
-            In case of null exponent, an <a class="link" href="../../main_overview/error_handling.html#indeterminate_result_error">indeterminate_result_error</a>
-            occurs since the result of a null power is indeterminate. Those errors
-            follow the <a class="link" href="../../main_overview/error_handling.html" title="Error Handling">general
-            policies of error handling in Boost.Math</a>.
-          </li>
+              In case of null exponent, an <a class="link" href="../../main_overview/error_handling.html#indeterminate_result_error">indeterminate_result_error</a>
+              occurs since the result of a null power is indeterminate. Those errors
+              follow the <a class="link" href="../../main_overview/error_handling.html" title="Error Handling">general
+              policies of error handling in Boost.Math</a>.
+            </li>
 </ul></div>
 <p>
           The default overflow error policy is <code class="computeroutput"><span class="identifier">throw_on_error</span></code>.
@@ -146,20 +146,20 @@
         </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<code class="computeroutput"><span class="identifier">errno_on_error</span></code>: Sets
-            <code class="computeroutput"><span class="special">::</span><span class="identifier">errno</span></code>
-            to <code class="computeroutput"><span class="identifier">ERANGE</span></code> and returns
-            <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">infinity</span><span class="special">()</span></code>.
-          </li>
+              <code class="computeroutput"><span class="identifier">errno_on_error</span></code>: Sets
+              <code class="computeroutput"><span class="special">::</span><span class="identifier">errno</span></code>
+              to <code class="computeroutput"><span class="identifier">ERANGE</span></code> and returns
+              <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">infinity</span><span class="special">()</span></code>.
+            </li>
 <li>
-<code class="computeroutput"><span class="identifier">ignore_error</span></code>: Returns
-            <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">infinity</span><span class="special">()</span></code>.
-          </li>
+              <code class="computeroutput"><span class="identifier">ignore_error</span></code>: Returns
+              <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">infinity</span><span class="special">()</span></code>.
+            </li>
 <li>
-<code class="computeroutput"><span class="identifier">user_error</span></code>: Returns the
-            result of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">policies</span><span class="special">::</span><span class="identifier">user_overflow_error</span></code>: this function
-            must be defined by the user.
-          </li>
+              <code class="computeroutput"><span class="identifier">user_error</span></code>: Returns
+              the result of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">policies</span><span class="special">::</span><span class="identifier">user_overflow_error</span></code>:
+              this function must be defined by the user.
+            </li>
 </ul></div>
 <p>
           The default indeterminate result error policy is <code class="computeroutput"><span class="identifier">ignore_error</span></code>,
@@ -168,19 +168,20 @@
         </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<code class="computeroutput"><span class="identifier">throw_on_error</span></code>: Throws
-            <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">domain_error</span></code>
-</li>
+              <code class="computeroutput"><span class="identifier">throw_on_error</span></code>: Throws
+              <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">domain_error</span></code>
+            </li>
 <li>
-<code class="computeroutput"><span class="identifier">errno_on_error</span></code>: Sets
-            <code class="computeroutput"><span class="special">::</span><span class="identifier">errno</span></code>
-            to <code class="computeroutput"><span class="identifier">EDOM</span></code> and returns 1.
-          </li>
+              <code class="computeroutput"><span class="identifier">errno_on_error</span></code>: Sets
+              <code class="computeroutput"><span class="special">::</span><span class="identifier">errno</span></code>
+              to <code class="computeroutput"><span class="identifier">EDOM</span></code> and returns
+              1.
+            </li>
 <li>
-<code class="computeroutput"><span class="identifier">user_error</span></code>: Returns the
-            result of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">policies</span><span class="special">::</span><span class="identifier">user_indeterminate_result_error</span></code>: this
-            function must be defined by the user.
-          </li>
+              <code class="computeroutput"><span class="identifier">user_error</span></code>: Returns
+              the result of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">policies</span><span class="special">::</span><span class="identifier">user_indeterminate_result_error</span></code>:
+              this function must be defined by the user.
+            </li>
 </ul></div>
 <p>
           Here is an example of error handling customization where we want to specify
@@ -224,7 +225,7 @@
 <span class="keyword">double</span> <span class="identifier">result</span> <span class="special">=</span> <span class="identifier">pow</span><span class="special">&lt;-</span><span class="number">5</span><span class="special">&gt;(</span><span class="identifier">base</span><span class="special">);</span>
 </pre>
 <a name="math_toolkit.special.powers.ct_pow.acknowledgements"></a><h5>
-<a name="id1295385"></a>
+<a name="id1222419"></a>
           <a class="link" href="ct_pow.html#math_toolkit.special.powers.ct_pow.acknowledgements">Acknowledgements</a>
         </h5>
 <p>
@@ -235,7 +236,7 @@
 improving the implementation.
         </p>
 <a name="math_toolkit.special.powers.ct_pow.references"></a><h5>
-<a name="id1295406"></a>
+<a name="id1222440"></a>
           <a class="link" href="ct_pow.html#math_toolkit.special.powers.ct_pow.references">References</a>
         </h5>
 <p>
@@ -254,7 +255,7 @@ improving the implementation.
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="hypot.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../powers.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../sinc.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="hypot.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../powers.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../sinc.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

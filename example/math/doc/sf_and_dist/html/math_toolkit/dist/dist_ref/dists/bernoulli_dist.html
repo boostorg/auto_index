@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Bernoulli Distribution</title>
-<link rel="stylesheet" href="http://svn.boost.org/svn/boost/trunk/doc/html/boostbook.css" type="text/css">
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/html/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
 <link rel="home" href="../../../../index.html" title="Math Toolkit">
 <link rel="up" href="../dists.html" title="Distributions">
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../dists.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../dists.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="beta_dist.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../dists.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dists.html"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="beta_dist.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h5 class="title">
@@ -80,7 +80,7 @@
             <span class="inlinemediaobject"><img src="../../../../../graphs/bernoulli_cdf.png" align="middle"></span>
           </p>
 <a name="math_toolkit.dist.dist_ref.dists.bernoulli_dist.member_functions"></a><h5>
-<a name="id1157529"></a>
+<a name="id1083458"></a>
             <a class="link" href="bernoulli_dist.html#math_toolkit.dist.dist_ref.dists.bernoulli_dist.member_functions">Member
             Functions</a>
           </h5>
@@ -96,7 +96,7 @@
             Returns the <span class="emphasis"><em>success_fraction</em></span> parameter of this distribution.
           </p>
 <a name="math_toolkit.dist.dist_ref.dists.bernoulli_dist.non_member_accessors"></a><h5>
-<a name="id1157608"></a>
+<a name="id1083537"></a>
             <a class="link" href="bernoulli_dist.html#math_toolkit.dist.dist_ref.dists.bernoulli_dist.non_member_accessors">Non-member
             Accessors</a>
           </h5>
@@ -121,7 +121,7 @@
             exception and make an error message available.
           </p>
 <a name="math_toolkit.dist.dist_ref.dists.bernoulli_dist.accuracy"></a><h5>
-<a name="id1157711"></a>
+<a name="id1083640"></a>
             <a class="link" href="bernoulli_dist.html#math_toolkit.dist.dist_ref.dists.bernoulli_dist.accuracy">Accuracy</a>
           </h5>
 <p>
@@ -129,7 +129,7 @@
             and so should have errors within an epsilon or two.
           </p>
 <a name="math_toolkit.dist.dist_ref.dists.bernoulli_dist.implementation"></a><h5>
-<a name="id1157733"></a>
+<a name="id1083662"></a>
             <a class="link" href="bernoulli_dist.html#math_toolkit.dist.dist_ref.dists.bernoulli_dist.implementation">Implementation</a>
           </h5>
 <p>
@@ -139,7 +139,7 @@
           </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://svn.boost.org/svn/boost/trunk/doc/html/images/note.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
@@ -162,172 +162,176 @@
 </colgroup>
 <thead><tr>
 <th>
-                  <p>
-                    Function
-                  </p>
+                    <p>
+                      Function
+                    </p>
                   </th>
 <th>
-                  <p>
-                    Implementation Notes
-                  </p>
+                    <p>
+                      Implementation Notes
+                    </p>
                   </th>
 </tr></thead>
 <tbody>
 <tr>
 <td>
-                  <p>
-                    Supported range
-                  </p>
+                    <p>
+                      Supported range
+                    </p>
                   </td>
 <td>
-                  <p>
-                    {0, 1}
-                  </p>
-                  </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    pdf
-                  </p>
-                  </td>
-<td>
-                  <p>
-                    Using the relation: pdf = 1 - p for k = 0, else p
-                  </p>
+                    <p>
+                      {0, 1}
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    cdf
-                  </p>
+                    <p>
+                      pdf
+                    </p>
                   </td>
 <td>
-                  <p>
-                    Using the relation: cdf = 1 - p for k = 0, else 1
-                  </p>
-                  </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    cdf complement
-                  </p>
-                  </td>
-<td>
-                  <p>
-                    q = 1 - p
-                  </p>
+                    <p>
+                      Using the relation: pdf = 1 - p for k = 0, else p
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    quantile
-                  </p>
+                    <p>
+                      cdf
+                    </p>
                   </td>
 <td>
-                  <p>
-                    if x &lt;= (1-p) 0 else 1
-                  </p>
-                  </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    quantile from the complement
-                  </p>
-                  </td>
-<td>
-                  <p>
-                    if x &lt;= (1-p) 1 else 0
-                  </p>
+                    <p>
+                      Using the relation: cdf = 1 - p for k = 0, else 1
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    mean
-                  </p>
+                    <p>
+                      cdf complement
+                    </p>
                   </td>
 <td>
-                  <p>
-                    p
-                  </p>
-                  </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    variance
-                  </p>
-                  </td>
-<td>
-                  <p>
-                    p * (1 - p)
-                  </p>
+                    <p>
+                      q = 1 - p
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    mode
-                  </p>
+                    <p>
+                      quantile
+                    </p>
                   </td>
 <td>
-                  <p>
-                    if (p &lt; 0.5) 0 else 1
-                  </p>
-                  </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    skewness
-                  </p>
-                  </td>
-<td>
-                  <p>
-                    (1 - 2 * p) / sqrt(p * q)
-                  </p>
+                    <p>
+                      if x &lt;= (1-p) 0 else 1
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    kurtosis
-                  </p>
+                    <p>
+                      quantile from the complement
+                    </p>
                   </td>
 <td>
-                  <p>
-                    6 * p * p - 6 * p +1/ p * q
-                  </p>
+                    <p>
+                      if x &lt;= (1-p) 1 else 0
+                    </p>
                   </td>
 </tr>
 <tr>
 <td>
-                  <p>
-                    kurtosis excess
-                  </p>
+                    <p>
+                      mean
+                    </p>
                   </td>
 <td>
-                  <p>
-                    kurtosis -3
-                  </p>
+                    <p>
+                      p
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      variance
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      p * (1 - p)
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      mode
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      if (p &lt; 0.5) 0 else 1
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      skewness
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      (1 - 2 * p) / sqrt(p * q)
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      kurtosis
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      6 * p * p - 6 * p +1/ p * q
+                    </p>
+                  </td>
+</tr>
+<tr>
+<td>
+                    <p>
+                      kurtosis excess
+                    </p>
+                  </td>
+<td>
+                    <p>
+                      kurtosis -3
+                    </p>
                   </td>
 </tr>
 </tbody>
 </table></div>
 <a name="math_toolkit.dist.dist_ref.dists.bernoulli_dist.references"></a><h5>
-<a name="id1158042"></a>
+<a name="id1083987"></a>
             <a class="link" href="bernoulli_dist.html#math_toolkit.dist.dist_ref.dists.bernoulli_dist.references">References</a>
           </h5>
 <div class="itemizedlist"><ul type="disc">
-<li><a href="http://en.wikipedia.org/wiki/Bernoulli_distribution" target="_top">Wikpedia
-              Bernoulli distribution</a></li>
-<li><a href="../../../../" target="_top">Weisstein, Eric W. "Bernoulli Distribution."
-              From MathWorld--A Wolfram Web Resource.</a></li>
+<li>
+                <a href="http://en.wikipedia.org/wiki/Bernoulli_distribution" target="_top">Wikpedia
+                Bernoulli distribution</a>
+              </li>
+<li>
+                <a href="../../../../" target="_top">Weisstein, Eric W. "Bernoulli Distribution."
+                From MathWorld--A Wolfram Web Resource.</a>
+              </li>
 </ul></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
@@ -341,7 +345,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../dists.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../dists.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="beta_dist.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="../dists.html"><img src="../../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dists.html"><img src="../../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../../index.html"><img src="../../../../images/home.png" alt="Home"></a><a accesskey="n" href="beta_dist.html"><img src="../../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

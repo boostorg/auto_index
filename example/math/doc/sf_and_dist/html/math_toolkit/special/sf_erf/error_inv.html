@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Error Function Inverses</title>
-<link rel="stylesheet" href="http://svn.boost.org/svn/boost/trunk/doc/html/boostbook.css" type="text/css">
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/html/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
 <link rel="home" href="../../../index.html" title="Math Toolkit">
 <link rel="up" href="../sf_erf.html" title="Error Functions">
@@ -13,7 +13,7 @@
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="error_function.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../sf_erf.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../sf_poly.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="error_function.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../sf_erf.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../sf_poly.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
@@ -21,7 +21,7 @@
         Inverses</a>
 </h4></div></div></div>
 <a name="math_toolkit.special.sf_erf.error_inv.synopsis"></a><h5>
-<a name="id1247443"></a>
+<a name="id1175597"></a>
           <a class="link" href="error_inv.html#math_toolkit.special.sf_erf.error_inv.synopsis">Synopsis</a>
         </h5>
 <p>
@@ -62,7 +62,7 @@
 <p>
         </p>
 <a name="math_toolkit.special.sf_erf.error_inv.description"></a><h5>
-<a name="id1250252"></a>
+<a name="id1176822"></a>
           <a class="link" href="error_inv.html#math_toolkit.special.sf_erf.error_inv.description">Description</a>
         </h5>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
@@ -96,7 +96,7 @@
           <span class="inlinemediaobject"><img src="../../../../graphs/erfc_inv.png" align="middle"></span>
         </p>
 <a name="math_toolkit.special.sf_erf.error_inv.accuracy"></a><h5>
-<a name="id1250640"></a>
+<a name="id1177210"></a>
           <a class="link" href="error_inv.html#math_toolkit.special.sf_erf.error_inv.accuracy">Accuracy</a>
         </h5>
 <p>
@@ -106,7 +106,7 @@
           error functions</a>.
         </p>
 <a name="math_toolkit.special.sf_erf.error_inv.testing"></a><h5>
-<a name="id1250661"></a>
+<a name="id1177231"></a>
           <a class="link" href="error_inv.html#math_toolkit.special.sf_erf.error_inv.testing">Testing</a>
         </h5>
 <p>
@@ -114,21 +114,22 @@
         </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-            Basic sanity checks attempt to "round-trip" from <span class="emphasis"><em>x</em></span>
-            to <span class="emphasis"><em>p</em></span> and back again. These tests have quite generous
-            tolerances: in general both the error functions and their inverses change
-            so rapidly in some places that round tripping to more than a couple of
-            significant digits isn't possible. This is especially true when <span class="emphasis"><em>p</em></span>
-            is very near one: in this case there isn't enough "information content"
-            in the input to the inverse function to get back where you started.
-          </li>
+              Basic sanity checks attempt to "round-trip" from <span class="emphasis"><em>x</em></span>
+              to <span class="emphasis"><em>p</em></span> and back again. These tests have quite generous
+              tolerances: in general both the error functions and their inverses
+              change so rapidly in some places that round tripping to more than a
+              couple of significant digits isn't possible. This is especially true
+              when <span class="emphasis"><em>p</em></span> is very near one: in this case there isn't
+              enough "information content" in the input to the inverse
+              function to get back where you started.
+            </li>
 <li>
-            Accuracy checks using high-precision test values. These measure the accuracy
-            of the result, given <span class="emphasis"><em>exact</em></span> input values.
-          </li>
+              Accuracy checks using high-precision test values. These measure the
+              accuracy of the result, given <span class="emphasis"><em>exact</em></span> input values.
+            </li>
 </ul></div>
 <a name="math_toolkit.special.sf_erf.error_inv.implementation"></a><h5>
-<a name="id1250704"></a>
+<a name="id1177280"></a>
           <a class="link" href="error_inv.html#math_toolkit.special.sf_erf.error_inv.implementation">Implementation</a>
         </h5>
 <p>
@@ -197,7 +198,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="error_function.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../sf_erf.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="../sf_poly.html"><img src="http://svn.boost.org/svn/boost/trunk/doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="error_function.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../sf_erf.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="../sf_poly.html"><img src="../../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
