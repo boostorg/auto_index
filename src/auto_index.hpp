@@ -110,5 +110,6 @@ extern std::list<id_rewrite_rule> id_rewrite_list;
 extern bool internal_indexes;
 extern std::string prefix;
 extern std::string internal_index_type;
+extern boost::regex debug;
 
 #endif

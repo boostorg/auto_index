@@ -310,6 +310,10 @@ void process_script(const char* script)
       "(?<prefix>[^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"
       "(?<suffix>[^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s*"
       );
+   static const boost::regex debug_parser(
+      "!debug\\s+"
+      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s*"
+      );
 
    if(verbose)
       std::cout << "Processing script " << script << std::endl;
@@ -346,6 +350,10 @@ void process_script(const char* script)
             }
          }
          scan_file(f.c_str());
+      }
+      else if(regex_match(line, what, debug_parser))
+      {
+         debug = unquote(what[1].str());
       }
       else if(regex_match(line, what, scan_dir_parser))
       {

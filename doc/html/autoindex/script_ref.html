@@ -17,13 +17,13 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="autoindex.script_ref"></a><a class="link" href="script_ref.html" title="Script File Reference"> Script File Reference</a>
+<a name="autoindex.script_ref"></a><a class="link" href="script_ref.html" title="Script File Reference">Script File Reference</a>
 </h2></div></div></div>
 <p>
       The following elements can occur in a script:
     </p>
 <a name="autoindex.script_ref.comments_and_blank_lines"></a><h5>
-<a name="id911500"></a>
+<a name="id1003329"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.comments_and_blank_lines">Comments and
       blank lines</a>
     </h5>
@@ -32,7 +32,7 @@
       with a '#'.
     </p>
 <a name="autoindex.script_ref.simple_inclusions"></a><h5>
-<a name="id911517"></a>
+<a name="id1003346"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.simple_inclusions">Simple Inclusions</a>
     </h5>
 <pre class="programlisting"><span class="identifier">term</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression1</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression2</span> <span class="special">[</span><span class="identifier">category</span><span class="special">]]]</span>
@@ -99,7 +99,7 @@
 </dl>
 </div>
 <a name="autoindex.script_ref.source_file_scanning"></a><h5>
-<a name="id911726"></a>
+<a name="id1003555"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.source_file_scanning">Source File Scanning</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">source</span><span class="special">-</span><span class="identifier">file</span><span class="special">-</span><span class="identifier">name</span>
@@ -128,7 +128,7 @@
       </p></td></tr>
 </table></div>
 <a name="autoindex.script_ref.directory_and_source_file_scanning"></a><h5>
-<a name="id911804"></a>
+<a name="id1003633"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.directory_and_source_file_scanning">Directory
       and Source File Scanning</a>
     </h5>
@@ -157,7 +157,7 @@
 </dl>
 </div>
 <a name="autoindex.script_ref.excluding_terms"></a><h5>
-<a name="id911929"></a>
+<a name="id1003758"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.excluding_terms">Excluding Terms</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">exclude</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">list</span>
@@ -170,7 +170,7 @@
       of things to index.
     </p>
 <a name="autoindex.script_ref.rewriting_section_names"></a><h5>
-<a name="id911984"></a>
+<a name="id1003813"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.rewriting_section_names">Rewriting Section
       Names</a>
     </h5>
@@ -208,7 +208,7 @@
 </dl>
 </div>
 <a name="autoindex.script_ref.changing_the_regular_expressions_used_when_scanning"></a><h5>
-<a name="id912122"></a>
+<a name="id1003951"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.changing_the_regular_expressions_used_when_scanning">Changing
       the regular expressions used when scanning</a>
     </h5>
@@ -348,6 +348,29 @@
           </p></dd>
 </dl>
 </div>
+<a name="autoindex.script_ref.debugging"></a><h5>
+<a name="id1004239"></a>
+      <a class="link" href="script_ref.html#autoindex.script_ref.debugging">Debugging</a>
+    </h5>
+<p>
+      If you see a term in the index, and you don't understand why it's there, add
+      a <span class="emphasis"><em>debug</em></span> directive:
+    </p>
+<pre class="programlisting">!debug regular-expression
+</pre>
+<p>
+      Now, whenever <span class="emphasis"><em>regular-expression</em></span> matches either the found
+      index term, or the section title it appears in, then some diagnostic information
+      will be printed that will look something like:
+    </p>
+<pre class="programlisting">Debug term found, in block with ID: spirit.qi.reference.parser_concepts.parser
+Current section title is: Notation
+The main index entry will be : Notation
+The indexed term is: parser
+The search regex is: [P|p]arser
+The section constraint is: .<span class="bold"><strong>qi.reference.parser_concepts.</strong></span>
+The index type for this entry is: qi_index
+</pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

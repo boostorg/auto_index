@@ -17,10 +17,10 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial"> Getting Started and Tutorial</a>
+<a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial">Getting Started and Tutorial</a>
 </h2></div></div></div>
 <a name="autoindex.tut.step_1__build_the_tool"></a><h5>
-<a name="id902662"></a>
+<a name="id994380"></a>
       <a class="link" href="tut.html#autoindex.tut.step_1__build_the_tool">Step 1: Build the tool</a>
     </h5>
 <p>
@@ -62,7 +62,7 @@
       is accepted into Boost.
     </p>
 <a name="autoindex.tut.step_2__configure_boost_build"></a><h5>
-<a name="id902826"></a>
+<a name="id994545"></a>
       <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build">Step 2: Configure
       Boost.Build</a>
     </h5>
@@ -155,7 +155,7 @@
 </dl>
 </div>
 <a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
-<a name="id902989"></a>
+<a name="id994708"></a>
       <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
       3: Add indexes to your documentation</a>
     </h5>
@@ -249,7 +249,7 @@ boostbook standalone
         &lt;xsl:param&gt;index.on.type=1
 </pre>
 <a name="autoindex.tut.step_4__create_the_script_file"></a><h5>
-<a name="id910948"></a>
+<a name="id1002762"></a>
       <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file">Step 4: Create
       the script file</a>
     </h5>
@@ -322,7 +322,7 @@ boostbook standalone
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>
 <a name="autoindex.tut.step_5__add_manual_index_entries___optional"></a><h5>
-<a name="id911206"></a>
+<a name="id1003020"></a>
       <a class="link" href="tut.html#autoindex.tut.step_5__add_manual_index_entries___optional">Step
       5: Add Manual Index Entries - Optional</a>
     </h5>
@@ -338,7 +338,7 @@ boostbook standalone
       index itself, with the exception of the "type" attribute.
     </p>
 <a name="autoindex.tut.step_6__build_the_your_docs"></a><h5>
-<a name="id911326"></a>
+<a name="id1003140"></a>
       <a class="link" href="tut.html#autoindex.tut.step_6__build_the_your_docs">Step 6: Build the
       Your Docs</a>
     </h5>
@@ -365,7 +365,7 @@ boostbook standalone
       If you don't see that, or if it's indexing 0 terms then something is wrong!
     </p>
 <a name="autoindex.tut.step_7__iterate"></a><h5>
-<a name="id911437"></a>
+<a name="id1003250"></a>
       <a class="link" href="tut.html#autoindex.tut.step_7__iterate">Step 7: Iterate</a>
     </h5>
 <p>
@@ -388,6 +388,17 @@ boostbook standalone
       Further rules can then be added to the script to handle these cases and the
       next iteration examined, and so on.
     </p>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        If you don't understand why a particular term is present in the index, try
+        adding a <span class="emphasis"><em>!debug regular-expression</em></span> directive to the
+        <a class="link" href="script_ref.html" title="Script File Reference">script file</a>.
+      </p></td></tr>
+</table></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

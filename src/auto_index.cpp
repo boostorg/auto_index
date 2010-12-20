@@ -22,6 +22,7 @@ boost::tiny_xml::element_list indexes;
 std::list<id_rewrite_rule> id_rewrite_list;
 bool internal_indexes = false;
 std::string internal_index_type = "section";
+boost::regex debug;
 
 int help()
 {
@@ -318,6 +319,17 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
             {
                // We have something to index!
                found_terms.insert(item_index);
+
+               if(!debug.empty() && (regex_match(i->term, debug) || regex_match(rtitle, debug) || regex_match(simple_title, debug)))
+               {
+                  std::cout << "Debug term found, in block with ID: " << *pid << std::endl;
+                  std::cout << "Current section title is: " << rtitle << std::endl;
+                  std::cout << "The main index entry will be : " << simple_title << std::endl;
+                  std::cout << "The indexed term is: " << i->term << std::endl;
+                  std::cout << "The search regex is: " << i->search_text << std::endl;
+                  std::cout << "The section constraint is: " << i->search_id << std::endl;
+                  std::cout << "The index type for this entry is: " << i->category << std::endl;
+               }
 
                if(use_section_names && (simple_title != i->term))
                {

@@ -370,6 +370,9 @@ the documentation and see:
 Further rules can then be added to the script to handle these cases
 and the next iteration examined, and so on.
 
+[tip If you don't understand why a particular term is present in the index, try adding a ['!debug regular-expression] 
+directive to the [link autoindex.script_ref script file].]
+
 [endsect]
 
 [section:script_ref Script File Reference]
@@ -523,6 +526,27 @@ The arguments to the set-regex rule as follows:
 [[type][One of "class", "function", "typedef" or "macro".]]
 [[prefix][The prefix regular expression, or "" to reset to the default.]]
 [[suffix][The suffix regular expression, or "" to reset to the default.]]
+]
+
+[h4 Debugging]
+
+If you see a term in the index, and you don't understand why it's there, add a ['debug] directive:
+
+[pre
+!debug regular-expression
+]
+
+Now, whenever ['regular-expression] matches either the found index term, or the section title it appears in, then
+some diagnostic information will be printed that will look something like:
+
+[pre
+Debug term found, in block with ID: spirit.qi.reference.parser_concepts.parser
+Current section title is: Notation
+The main index entry will be : Notation
+The indexed term is: parser
+The search regex is: \[P\|p\]arser
+The section constraint is: .*qi.reference.parser_concepts.*
+The index type for this entry is: qi_index
 ]
 
 [endsect]
