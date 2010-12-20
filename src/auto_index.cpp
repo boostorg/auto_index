@@ -232,7 +232,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    title_info title = { "", pt};
    bool flatten = should_flatten_node(node->name.c_str());
 
-   if(node->name == "title")
+   if((node->name == "title") && (id.prev->id))
    {
       //
       // This actually sets the title of the enclosing scope, 
