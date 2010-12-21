@@ -17,8 +17,8 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="math_toolkit.policy.pol_tutorial.understand_dis_quant"></a><a class="link" href="understand_dis_quant.html" title="Understanding Quantiles of Discrete Distributions">
-        Understanding Quantiles of Discrete Distributions</a>
+<a name="math_toolkit.policy.pol_tutorial.understand_dis_quant"></a><a class="link" href="understand_dis_quant.html" title="Understanding Quantiles of Discrete Distributions">Understanding
+        Quantiles of Discrete Distributions</a>
 </h4></div></div></div>
 <p>
           Discrete distributions present us with a problem when calculating the quantile:
@@ -170,7 +170,7 @@
           <span class="emphasis"><em>base your comparisons on CDF's instead</em></span>.
         </p>
 <a name="math_toolkit.policy.pol_tutorial.understand_dis_quant.other_rounding_policies_are_available"></a><h6>
-<a name="id1324318"></a>
+<a name="id1323754"></a>
           <a class="link" href="understand_dis_quant.html#math_toolkit.policy.pol_tutorial.understand_dis_quant.other_rounding_policies_are_available">Other
           Rounding Policies are Available</a>
         </h6>
@@ -232,37 +232,27 @@
 </dl>
 </div>
 <p>
-          </p>
+          To understand how the rounding policies for the discrete distributions
+          can be used, we'll use the 50-sample binomial distribution with a success
+          fraction of 0.5 once again, and calculate all the possible quantiles at
+          0.05 and 0.95.
+        </p>
 <p>
-            To understand how the rounding policies for the discrete distributions
-            can be used, we'll use the 50-sample binomial distribution with a success
-            fraction of 0.5 once again, and calculate all the possible quantiles
-            at 0.05 and 0.95.
-          </p>
+          Begin by including the needed headers:
+        </p>
 <p>
-          </p>
-<p>
-            Begin by including the needed headers:
-          </p>
-<p>
-          </p>
-<p>
-            
+          
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">distributions</span><span class="special">/</span><span class="identifier">binomial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></pre>
 <p>
-          </p>
+        </p>
 <p>
-          </p>
+          Next we'll bring the needed declarations into scope, and define distribution
+          types for all the available rounding policies:
+        </p>
 <p>
-            Next we'll bring the needed declarations into scope, and define distribution
-            types for all the available rounding policies:
-          </p>
-<p>
-          </p>
-<p>
-            
+          
 </p>
 <pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">policies</span><span class="special">;</span>
 <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">;</span>
@@ -297,16 +287,12 @@
             <span class="identifier">policy</span><span class="special">&lt;</span><span class="identifier">discrete_quantile</span><span class="special">&lt;</span><span class="identifier">real</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span> 
         <span class="identifier">binom_real_quantile</span><span class="special">;</span></pre>
 <p>
-          </p>
+        </p>
 <p>
-          </p>
+          Now let's set to work calling those quantiles:
+        </p>
 <p>
-            Now let's set to work calling those quantiles:
-          </p>
-<p>
-          </p>
-<p>
-            
+          
 </p>
 <pre class="programlisting"><span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
@@ -376,15 +362,10 @@
       <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 <span class="special">}</span></pre>
 <p>
-          </p>
+        </p>
 <p>
-          </p>
-<p>
-            Which produces the program output:
-          </p>
-<p>
-          
-</p>
+          Which produces the program output:
+        </p>
 <pre class="programlisting">Testing rounding policies for a 50 sample binomial distribution,
 with a success fraction of 0.5.
 
@@ -407,8 +388,6 @@ Upper quantiles at p = 0.95.
     integer_round_nearest                19                30
                      real            18.701            30.299
 </pre>
-<p>
-        </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

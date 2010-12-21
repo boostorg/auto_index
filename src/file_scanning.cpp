@@ -7,26 +7,88 @@
 
 #include "auto_index.hpp"
 
-//
-// The regexes we will be using to search for class/function/typedef 
-// names that we locate in source files.  So for example when we
-// scan the xml for class names we'll use 
-//     class_prefix_regex + class_name + class_suffix_regex
-// as the regular expression.  These have defaults but can be changed
-// in the script file.
-//
-const char* default_class_prefix_regex = "class[^;{]+\\<";
-const char* default_class_suffix_regex = "\\>[^;{]+\\{";
-const char* default_function_prefix_regex = "\\<\\w+\\>\\s+\\<";
-const char* default_function_suffix_regex = "\\>\\s*\\([^;{]*\\)\\s*[;{]";
-const char* default_typedef_prefix_regex = "typedef[^;]+\\<";
-const char* default_typedef_suffix_regex = "\\>\\s*;";
-std::string class_prefix_regex = default_class_prefix_regex;
-std::string class_suffix_regex = default_class_suffix_regex;
-std::string function_prefix_regex = default_function_prefix_regex;
-std::string function_suffix_regex = default_function_suffix_regex;
-std::string typedef_prefix_regex = default_typedef_prefix_regex;
-std::string typedef_suffix_regex = default_typedef_suffix_regex;
+bool need_defaults = true;
+
+void install_default_scanners()
+{
+   need_defaults = false;
+   //
+   // Set the default scanners if they're not defined already:
+   //
+   file_scanner s;
+   s.type = "class_name";
+   if(file_scanner_set.find(s) == file_scanner_set.end())
+   {
+      add_file_scanner(
+         "class_name",  // Index type
+         // Header file scanner regex:
+         // possibly leading whitespace:   
+         "^[[:space:]]*" 
+         // possible template declaration:
+         "(template[[:space:]]*<[^;:{]+>[[:space:]]*)?"
+         // class or struct:
+         "(class|struct)[[:space:]]*" 
+         // leading declspec macros etc:
+         "("
+            "\\<\\w+\\>"
+            "("
+               "[[:blank:]]*\\([^)]*\\)"
+            ")?"
+            "[[:space:]]*"
+         ")*" 
+         // the class name
+         "(\\<\\w*\\>)[[:space:]]*" 
+         // template specialisation parameters
+         "(<[^;:{]+>)?[[:space:]]*"
+         // terminate in { or :
+         "(\\{|:[^;\\{()]*\\{)",
+
+         "class[^;{]+\\\\<\\5\\\\>[^;{]+\\\\{",  // Format string to create indexing regex.
+         "\\5",   // Format string to create index term.
+         "",  // Filter regex for section id's.
+         ""   // Filter regex for filenames.
+         );
+   }
+
+   s.type = "typedef_name";
+   if(file_scanner_set.find(s) == file_scanner_set.end())
+   {
+      add_file_scanner(
+         "typedef_name",  // Index type
+         "typedef[^;{}#]+?(\\w+)\\s*;", // scanner regex
+         "typedef[^;]+\\\\<\\1\\\\>\\\\s*;",  // Format string to create indexing regex.
+         "\\1",   // Format string to create index term.
+         "",  // Filter regex for section id's.
+         ""   // Filter regex for filenames.
+         );
+   }
+
+   s.type = "macro_name";
+   if(file_scanner_set.find(s) == file_scanner_set.end())
+   {
+      add_file_scanner(
+         "macro_name",  // Index type
+         "^\\s*#\\s*define\\s+(\\w+)", // scanner regex
+         "\\\\<\\1\\\\>",  // Format string to create indexing regex.
+         "\\1",   // Format string to create index term.
+         "",  // Filter regex for section id's.
+         ""   // Filter regex for filenames.
+         );
+   }
+
+   s.type = "function_name";
+   if(file_scanner_set.find(s) == file_scanner_set.end())
+   {
+      add_file_scanner(
+         "function_name",  // Index type
+         "\\w+\\s+(\\w+)\\s*\\([^\\)]*\\)\\s*[;{]", // scanner regex
+         "\\\\<\\\\w+\\\\>\\\\s+\\\\<\\1\\\\>\\\\s*\\\\([^;{]*\\\\)\\\\s*[;{]",  // Format string to create indexing regex.
+         "\\1",   // Format string to create index term.
+         "",  // Filter regex for section id's.
+         ""   // Filter regex for filenames.
+         );
+   }
+}
 
 //
 // Helper to dump file contents into a std::string:
@@ -49,179 +111,52 @@ void load_file(std::string& s, std::istream& is)
 //
 void scan_file(const char* file)
 {
+   if(need_defaults)
+      install_default_scanners();
    if(verbose)
       std::cout << "Scanning file... " << file << std::endl;
-   static const boost::regex class_e(
-         // possibly leading whitespace:   
-         "^[[:space:]]*" 
-         // possible template declaration:
-         "(template[[:space:]]*<[^;:{]+>[[:space:]]*)?"
-         // class or struct:
-         "(class|struct)[[:space:]]*" 
-         // leading declspec macros etc:
-         "("
-            "\\<\\w+\\>"
-            "("
-               "[[:blank:]]*\\([^)]*\\)"
-            ")?"
-            "[[:space:]]*"
-         ")*" 
-         // the class name
-         "(\\<\\w*\\>)[[:space:]]*" 
-         // template specialisation parameters
-         "(<[^;:{]+>)?[[:space:]]*"
-         // terminate in { or :
-         "(\\{|:[^;\\{()]*\\{)"
-      );
    std::string text;
    std::ifstream is(file);
    load_file(text, is);
-   {
-      if(verbose)
-         std::cout << "Scanning for class names... " << std::endl;
-      boost::sregex_token_iterator i(text.begin(), text.end(), class_e, 5), j;
-      while(i != j)
-      {
-         try
-         {
-            index_info info;
-            info.term = i->str();
-            info.search_text = class_prefix_regex + i->str() + class_suffix_regex;
-            info.category = "class_name";
-            if(index_terms.count(info) == 0)
-            {
-               if(verbose)
-                  std::cout << "Indexing class " << info.term << std::endl;
-               index_terms.insert(info);
-            }
-         }
-         catch(const boost::regex_error&)
-         {
-            std::cerr << "Unable to create regular expression from class name:\""
-               << i->str() << "\" In file " << file << std::endl;
-         }
-         catch(const std::exception&)
-         {
-            std::cerr << "Unable to create class entry:\""
-               << i->str() << "\" In file " << file << std::endl;
-            throw;
-         }
-         ++i;
-      }
-   }
 
-   //
-   // Now typedefs:
-   //
+   for(file_scanner_set_type::iterator pscan = file_scanner_set.begin(); pscan != file_scanner_set.end(); ++pscan)
    {
-      if(verbose)
-         std::cout << "Scanning for typedef names... " << std::endl;
-      static const boost::regex typedef_exp(
-         "typedef[^;{}#]+?(\\w+)\\s*;");
-      boost::sregex_token_iterator i(text.begin(), text.end(), typedef_exp, 1), j;
-      while(i != j)
+      if(!pscan->file_name_filter.empty())
       {
-         try
-         {
-            index_info info;
-            info.term = i->str();
-            info.search_text = typedef_prefix_regex + i->str() + typedef_suffix_regex;
-            info.category = "typedef_name";
-            if(index_terms.count(info) == 0)
-            {
-               if(verbose)
-                  std::cout << "Indexing typedef " << info.term << std::endl;
-               index_terms.insert(info);
-            }
-         }
-         catch(const boost::regex_error&)
-         {
-            std::cerr << "Unable to create regular expression from typedef name:\""
-               << i->str() << "\" In file " << file << std::endl;
-         }
-         catch(const std::exception&)
-         {
-            std::cerr << "Unable to create typedef entry:\""
-               << i->str() << "\" In file " << file << std::endl;
-            throw;
-         }
-         ++i;
+         if(!regex_match(file, pscan->file_name_filter))
+            continue;  // skip this file
       }
-   }
-
-   //
-   // Now macros:
-   //
-   {
       if(verbose)
-         std::cout << "Scanning for macro names... " << std::endl;
-      static const boost::regex e(
-         "^\\s*#\\s*define\\s+(\\w+)"
-         );
-      boost::sregex_token_iterator i(text.begin(), text.end(), e, 1), j;
+         std::cout << "Scanning for type \"" << (*pscan).type << "\" ... " << std::endl;
+      boost::sregex_iterator i(text.begin(), text.end(), (*pscan).scanner), j;
       while(i != j)
       {
          try
          {
             index_info info;
-            info.term = i->str();
-            info.search_text = "\\<" + i->str() + "\\>";
-            info.category = "macro_name";
+            info.term = i->format(pscan->term_formatter);
+            info.search_text = i->format(pscan->format_string);
+            info.category = pscan->type;
+            if(!pscan->section_filter.empty())
+               info.search_id = pscan->section_filter;
             if(index_terms.count(info) == 0)
             {
                if(verbose)
-                  std::cout << "Indexing macro " << info.term << std::endl;
+                  std::cout << "Indexing " << info.term << " as type " << info.category << std::endl;
                index_terms.insert(info);
             }
          }
-         catch(const boost::regex_error&)
+         catch(const boost::regex_error& e)
          {
-            std::cerr << "Unable to create regular expression from macro name:\""
-               << i->str() << "\" In file " << file << std::endl;
+            std::cerr << "Unable to create regular expression from found index term:\""
+               << i->format(pscan->term_formatter) << "\" In file " << file << std::endl;
+            std::cerr << e.what() << std::endl;
          }
-         catch(const std::exception&)
+         catch(const std::exception& e)
          {
-            std::cerr << "Unable to create macro entry:\""
-               << i->str() << "\" In file " << file << std::endl;
-            throw;
-         }
-         ++i;
-      }
-   }
-   //
-   // Now functions:
-   //
-   {
-      if(verbose)
-         std::cout << "Scanning for function names... " << std::endl;
-      static const boost::regex e(
-         "\\w+\\s+(\\w+)\\s*\\([^\\)]*\\)\\s*[;{]"
-         );
-      boost::sregex_token_iterator i(text.begin(), text.end(), e, 1), j;
-      while(i != j)
-      {
-         try
-         {
-            index_info info;
-            info.term = i->str();
-            info.search_text = function_prefix_regex + i->str() + function_suffix_regex;
-            info.category = "function_name";
-            if(index_terms.count(info) == 0)
-            {
-               if(verbose)
-                  std::cout << "Indexing function " << info.term << std::endl;
-               index_terms.insert(info);
-            }
-         }
-         catch(const boost::regex_error&)
-         {
-            std::cerr << "Unable to create regular expression from function name:\""
-               << i->str() << "\" In file " << file << std::endl;
-         }
-         catch(const std::exception&)
-         {
-            std::cerr << "Unable to create function entry:\""
-               << i->str() << "\" In file " << file << std::endl;
+            std::cerr << "Unable to create index term:\""
+               << i->format(pscan->term_formatter) << "\" In file " << file << std::endl;
+            std::cerr << e.what() << std::endl;
             throw;
          }
          ++i;
@@ -305,14 +240,22 @@ void process_script(const char* script)
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s*"
       );
-   static const boost::regex set_regex_parser(
-      "!set-regex\\s+(?:(class)|(function)|(typedef)|(macro))\\s+"
-      "(?<prefix>[^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"
-      "(?<suffix>[^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s*"
-      );
    static const boost::regex debug_parser(
       "!debug\\s+"
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s*"
+      );
+   static const boost::regex define_scanner_parser(
+      "!define-scanner\\s+"
+      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"  // type, index 1
+      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"  // scanner regex, index 2
+      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"  // format string, index 3
+      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"  // format string for name, index 4
+      "(?:"
+         "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+" // id-filter, index 5
+         "(?:"
+            "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+" // filename-filter, index 6
+         ")?"
+      ")?"
       );
 
    if(verbose)
@@ -395,66 +338,15 @@ void process_script(const char* script)
          {
             index_info info;
             info.term = unquote(*i);
+            // Erase all entries that have a category in our scanner set,
+            // plus any entry with no category at all:
             index_terms.erase(info);
+            for(file_scanner_set_type::iterator pscan = file_scanner_set.begin(); pscan != file_scanner_set.end(); ++pscan)
+            {
+               info.category = (*pscan).type;
+               index_terms.erase(info);
+            }
             ++i;
-         }
-      }
-      else if(regex_match(line, what, set_regex_parser))
-      {
-         // what[1|2|3|4] indicates which regex we are setting.
-         // what["prefix"] and what["suffix"] are the prefix and suffix regexes
-         // for the expression we're setting.
-         const char* prefix_default = 0;
-         const char* suffix_default;
-         std::string* p_prefix_string;
-         std::string* p_suffix_string;
-         if(what[1].matched)
-         {
-            if(verbose)
-               std::cout << "Changing the regexes used for class name scanning" << std::endl;
-            prefix_default = default_class_prefix_regex;
-            suffix_default = default_class_suffix_regex;
-            p_prefix_string = &class_prefix_regex;
-            p_suffix_string = &class_suffix_regex;
-         }
-         else if(what[2].matched)
-         {
-            if(verbose)
-               std::cout << "Changing the regexes used for function name scanning" << std::endl;
-            prefix_default = default_function_prefix_regex;
-            suffix_default = default_function_suffix_regex;
-            p_prefix_string = &function_prefix_regex;
-            p_suffix_string = &function_suffix_regex;
-         }
-         else if(what[3].matched)
-         {
-            if(verbose)
-               std::cout << "Changing the regexes used for typedef name scanning" << std::endl;
-            prefix_default = default_typedef_prefix_regex;
-            suffix_default = default_typedef_suffix_regex;
-            p_prefix_string = &typedef_prefix_regex;
-            p_suffix_string = &typedef_suffix_regex;
-         }
-         else if(what[4].matched)
-         {
-            std::cout << "WARNING: Changing the regexes used for macro name scanning is not supported yet." << std::endl;
-			return;
-         }
-         else
-         {
-            std::cerr << "ERROR: We should never get here." << std::endl;
-            abort();
-         }
-         if(prefix_default)
-         {
-            if(what["prefix"].length())
-               *p_prefix_string = unquote(what["prefix"]);
-            else
-               *p_prefix_string = prefix_default;
-            if(what["suffix"].length())
-               *p_suffix_string = unquote(what["suffix"]);
-            else
-               *p_suffix_string = suffix_default;
          }
       }
       else if(regex_match(line, what, entry_parser))

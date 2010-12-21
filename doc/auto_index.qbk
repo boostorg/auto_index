@@ -514,7 +514,7 @@ will be found by the scanner and indexed.  The default regular expression prefix
 
 [table
 [[Type][Prefix][Suffix]]
-[[class]["class[^;{]+\\<"]["\\>[^;{]+\\{"]]
+[[class]["class\[\^;{\]+\\<"]["\\>\[\^;{\]+\\{"]]
 [[function]["\\<\\w+\\>\\s+\\<"]["\\>\\s\*\\(\[^;{\]\*\\)\\s\*\[;{\]"]]
 [[typedef]["typedef\[^;\]+\\<"]["\\>\\s\*;"]]
 [[macro]["\\<"]["\\>"]]

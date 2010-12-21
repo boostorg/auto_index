@@ -23,6 +23,7 @@ std::list<id_rewrite_rule> id_rewrite_list;
 bool internal_indexes = false;
 std::string internal_index_type = "section";
 boost::regex debug;
+file_scanner_set_type file_scanner_set;
 
 int help()
 {

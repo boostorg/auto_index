@@ -34,7 +34,7 @@ struct index_info
 };
 inline bool operator < (const index_info& a, const index_info& b)
 {
-   return a.term < b.term;
+   return (a.term != b.term) ? (a.term < b.term) : (a.category < b.category);
 }
 
 
@@ -94,11 +94,40 @@ struct title_info
    title_info* prev;
 };
 
+struct file_scanner
+{
+   boost::regex scanner, file_name_filter, section_filter;
+   std::string format_string, type, term_formatter;
+};
+
+inline bool operator < (const file_scanner & a, const file_scanner& b)
+{
+   return a.type < b.type;
+}
+
+typedef std::multiset<file_scanner> file_scanner_set_type;
+
 void process_script(const char* script);
 void scan_dir(const std::string& dir, const std::string& mask, bool recurse);
 void scan_file(const char* file);
 void generate_indexes();
 const std::string* find_attr(boost::tiny_xml::element_ptr node, const char* name);
+
+extern file_scanner_set_type file_scanner_set;
+
+inline void add_file_scanner(const std::string& type, const std::string& scanner, const std::string& format, const std::string& term_formatter, const std::string& id_filter, const std::string& file_filter)
+{
+   file_scanner s;
+   s.type = type;
+   s.scanner = scanner;
+   s.format_string = format;
+   s.term_formatter = term_formatter;
+   if(file_filter.size())
+      s.file_name_filter = file_filter; 
+   if(id_filter.size())
+      s.section_filter = id_filter;
+   file_scanner_set.insert(s);
+}
 
 extern std::multiset<index_info> index_terms;
 extern std::set<std::pair<std::string, std::string> > found_terms;
