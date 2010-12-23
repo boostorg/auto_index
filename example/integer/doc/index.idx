@@ -5,9 +5,10 @@
 # result we end up indexing nothing unless we
 # use more permissive scanning rules for the types
 # we find in the headers:
-!set-regex class     "\<" "\>"
-!set-regex function  "\<" "\>"
-!set-regex typedef   "\<" "\>"
+!define-scanner class_name "^[[:space:]]*(template[[:space:]]*<[^;:{]+>[[:space:]]*)?(class|struct)[[:space:]]*(\<\w+\>([[:blank:]]*\([^)]*\))?[[:space:]]*)*(\<\w*\>)[[:space:]]*(<[^;:{]+>)?[[:space:]]*(\{|:[^;\{()]*\{)" "\\<\5\\>" \5
+!define-scanner typedef_name "typedef[^;{}#]+?(\w+)\s*;"  "\\<\1\\>" "\1"
+!define-scanner "macro_name" "^\s*#\s*define\s+(\w+)" "\\<\1\\>" "\1"
+!define-scanner "function_name" "\w+\s+(\w+)\s*\([^\)]*\)\s*[;{]" "\\<\1\\>" "\1"
 
 !scan-dir boost/intreger true
 !scan boost/cstdint.hpp

@@ -7,13 +7,13 @@
 <link rel="home" href="../index.html" title="AutoIndex">
 <link rel="up" href="../index.html" title="AutoIndex">
 <link rel="prev" href="tut.html" title="Getting Started and Tutorial">
-<link rel="next" href="comm_ref.html" title="Command Line Reference">
+<link rel="next" href="xml.html" title="XML Handling">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tut.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="comm_ref.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="tut.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="xml.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -23,7 +23,7 @@
       The following elements can occur in a script:
     </p>
 <a name="autoindex.script_ref.comments_and_blank_lines"></a><h5>
-<a name="id978207"></a>
+<a name="id978209"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.comments_and_blank_lines">Comments and
       blank lines</a>
     </h5>
@@ -32,7 +32,7 @@
       with a '#'.
     </p>
 <a name="autoindex.script_ref.simple_inclusions"></a><h5>
-<a name="id978224"></a>
+<a name="id978226"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.simple_inclusions">Simple Inclusions</a>
     </h5>
 <pre class="programlisting"><span class="identifier">term</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression1</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression2</span> <span class="special">[</span><span class="identifier">category</span><span class="special">]]]</span>
@@ -99,7 +99,7 @@
 </dl>
 </div>
 <a name="autoindex.script_ref.source_file_scanning"></a><h5>
-<a name="id978433"></a>
+<a name="id978434"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.source_file_scanning">Source File Scanning</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">source</span><span class="special">-</span><span class="identifier">file</span><span class="special">-</span><span class="identifier">name</span>
@@ -123,12 +123,12 @@
         occurance of the terms found in the source files. Instead it searches for
         class definitions or function or typedef declarations. This reduces the number
         of spurious matches placed in the index, but may also miss some legitimate
-        terms: refer to the <span class="emphasis"><em>set-regex</em></span> command for information
+        terms: refer to the <span class="emphasis"><em>define-scanner</em></span> command for information
         on how to change this.
       </p></td></tr>
 </table></div>
 <a name="autoindex.script_ref.directory_and_source_file_scanning"></a><h5>
-<a name="id978511"></a>
+<a name="id978512"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.directory_and_source_file_scanning">Directory
       and Source File Scanning</a>
     </h5>
@@ -157,7 +157,7 @@
 </dl>
 </div>
 <a name="autoindex.script_ref.excluding_terms"></a><h5>
-<a name="id978636"></a>
+<a name="id978637"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.excluding_terms">Excluding Terms</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">exclude</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">list</span>
@@ -170,7 +170,7 @@
       of things to index.
     </p>
 <a name="autoindex.script_ref.rewriting_section_names"></a><h5>
-<a name="id978691"></a>
+<a name="id978692"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.rewriting_section_names">Rewriting Section
       Names</a>
     </h5>
@@ -207,149 +207,120 @@
           </p></dd>
 </dl>
 </div>
-<a name="autoindex.script_ref.changing_the_regular_expressions_used_when_scanning"></a><h5>
-<a name="id978829"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.changing_the_regular_expressions_used_when_scanning">Changing
-      the regular expressions used when scanning</a>
+<p>
+      For example:
+    </p>
+<pre class="programlisting">!rewrite-name "(?:A|An|The)\s+(.*)" "\1"
+</pre>
+<p>
+      Will remove any leading "A", "An" or "The" from
+      all index entries - thus preventing lots of entries under "The" etc!
+    </p>
+<a name="autoindex.script_ref.defining_or_changing_the_file_scanners"></a><h5>
+<a name="id978845"></a>
+      <a class="link" href="script_ref.html#autoindex.script_ref.defining_or_changing_the_file_scanners">Defining
+      or Changing the File Scanners</a>
     </h5>
-<pre class="programlisting"><span class="special">!</span><span class="identifier">set</span><span class="special">-</span><span class="identifier">regex</span> <span class="identifier">type</span> <span class="identifier">prefix</span> <span class="identifier">suffix</span>
+<pre class="programlisting"><span class="special">!</span><span class="identifier">define</span><span class="special">-</span><span class="identifier">scanner</span> <span class="identifier">type</span> <span class="identifier">file</span><span class="special">-</span><span class="identifier">search</span><span class="special">-</span><span class="identifier">expression</span> <span class="identifier">xml</span><span class="special">-</span><span class="identifier">regex</span><span class="special">-</span><span class="identifier">formatter</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">formatter</span> <span class="identifier">id</span><span class="special">-</span><span class="identifier">filter</span> <span class="identifier">filename</span><span class="special">-</span><span class="identifier">filter</span>
 </pre>
 <p>
-      When a class, function, typedef or macro name is found as a result of scanning
-      a source file the scanner constructs a regular expression from that name that
-      is used to actually perform the search of the text for occurances of the name.
-      This regular expression is constructed by joining together 3 parts - a prefix,
-      the name of the class, function, typedef or macro, and a suffix. By default
-      the regular expressions constructed in this way are designed to narrow the
-      number of occurences of the term found - so for example given a class "myclass"
-      only a synopsis of that class that looks like:
-    </p>
-<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">myclass</span>
-<span class="special">{</span>
-   <span class="comment">// details...
-</span><span class="special">};</span>
-</pre>
-<p>
-      will be found by the scanner and indexed. The default regular expression prefix
-      and suffix terms are:
-    </p>
-<div class="informaltable"><table class="table">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead><tr>
-<th>
-              <p>
-                Type
-              </p>
-            </th>
-<th>
-              <p>
-                Prefix
-              </p>
-            </th>
-<th>
-              <p>
-                Suffix
-              </p>
-            </th>
-</tr></thead>
-<tbody>
-<tr>
-<td>
-              <p>
-                class
-              </p>
-            </td>
-<td>
-              <p>
-                "class[^;{]+\&lt;"
-              </p>
-            </td>
-<td>
-              <p>
-                "\&gt;[^;{]+\{"
-              </p>
-            </td>
-</tr>
-<tr>
-<td>
-              <p>
-                function
-              </p>
-            </td>
-<td>
-              <p>
-                "\&lt;\w+\&gt;\s+\&lt;"
-              </p>
-            </td>
-<td>
-              <p>
-                "\&gt;\s*\([^;{]*\)\s*[;{]"
-              </p>
-            </td>
-</tr>
-<tr>
-<td>
-              <p>
-                typedef
-              </p>
-            </td>
-<td>
-              <p>
-                "typedef[^;]+\&lt;"
-              </p>
-            </td>
-<td>
-              <p>
-                "\&gt;\s*;"
-              </p>
-            </td>
-</tr>
-<tr>
-<td>
-              <p>
-                macro
-              </p>
-            </td>
-<td>
-              <p>
-                "\&lt;"
-              </p>
-            </td>
-<td>
-              <p>
-                "\&gt;"
-              </p>
-            </td>
-</tr>
-</tbody>
-</table></div>
-<p>
-      The arguments to the set-regex rule as follows:
+      When a source file is scanned using the <code class="literal">!scan</code> or <code class="literal">!scan-path</code>
+      rules, then the file is searched using a series of regular expressions to look
+      for classes, functions, macros or typedefs that should be indexed. A set of
+      default regular expressions are provided for this (see below), but sometimes
+      you may want to replace the defaults, or add new scanners. The arguments to
+      this rule are:
     </p>
 <div class="variablelist">
 <p class="title"><b></b></p>
 <dl>
 <dt><span class="term">type</span></dt>
 <dd><p>
-            One of "class", "function", "typedef" or
-            "macro".
+            The <span class="emphasis"><em>type</em></span> to which items found using this rule will
+            assigned, index terms created from the source file and then found in
+            the XML, will have the type attribute set to this value, and may then
+            appear in a specialized index with the same type attribute
           </p></dd>
-<dt><span class="term">prefix</span></dt>
+<dt><span class="term">file-search-expression</span></dt>
 <dd><p>
-            The prefix regular expression, or "" to reset to the default.
+            A regular expression that is used to scan the source file for index terms,
+            the result of a match against this expression will be transformed by
+            the next two arguments.
           </p></dd>
-<dt><span class="term">suffix</span></dt>
+<dt><span class="term">xml-regex-formatter</span></dt>
 <dd><p>
-            The suffix regular expression, or "" to reset to the default.
+            A regular expression format string that extracts the salient information
+            from whatever matched the <span class="emphasis"><em>file-search-expression</em></span>
+            in the source file, and creates <span class="emphasis"><em>a new regular expression</em></span>
+            that will be used to search the document being indexed for occurances
+            of this index term.
+          </p></dd>
+<dt><span class="term">term-formatter</span></dt>
+<dd><p>
+            A regular expression format string that extracts the salient information
+            from whatever matched the <span class="emphasis"><em>file-search-expression</em></span>
+            in the source file, and creates the index term that will appear in the
+            index.
+          </p></dd>
+<dt><span class="term">id-filter</span></dt>
+<dd><p>
+            Optional. A regular expression that resticts the section-id's that are
+            searched in the document being indexed: only sections whose ID attribute
+            matches this expression exactly will be considered for indexing terms
+            found by this scanner.
+          </p></dd>
+<dt><span class="term">filename-filter</span></dt>
+<dd><p>
+            Optional. A regular expression that restricts which files are scanned
+            by this scanner: only files whose file name matches this expression exactly
+            will be scanned for index terms to use. Note that the filename matched
+            against this may well be an absolute path, and contain either forward
+            or backward slash path separators.
           </p></dd>
 </dl>
 </div>
+<p>
+      If, when the first file is scanned, there are no scanners whose <span class="emphasis"><em>type</em></span>
+      is "class_name", "typedef_name", "macro_name"
+      or "function_name", then the defaults are installed. These are equivalent
+      to:
+    </p>
+<pre class="programlisting"><span class="special">!</span><span class="identifier">define</span><span class="special">-</span><span class="identifier">scanner</span> <span class="identifier">class_name</span> <span class="string">"^[[:space:]]*(template[[:space:]]*&lt;[^;:{]+&gt;[[:space:]]*)?(class|struct)[[:space:]]*(\&lt;\w+\&gt;([[:blank:]]*\([^)]*\))?[[:space:]]*)*(\&lt;\w*\&gt;)[[:space:]]*(&lt;[^;:{]+&gt;)?[[:space:]]*(\{|:[^;\{()]*\{)"</span> <span class="string">"(?:class|struct)[^;{]+\\&lt;\5\\&gt;[^;{]+\\{"</span> <span class="special">\</span><span class="number">5</span>
+<span class="special">!</span><span class="identifier">define</span><span class="special">-</span><span class="identifier">scanner</span> <span class="identifier">typedef_name</span> <span class="string">"typedef[^;{}#]+?(\w+)\s*;"</span>  <span class="string">"typedef[^;]+\\&lt;\1\\&gt;\\s*;"</span> <span class="string">"\1"</span>
+<span class="special">!</span><span class="identifier">define</span><span class="special">-</span><span class="identifier">scanner</span> <span class="string">"macro_name"</span> <span class="string">"^\s*#\s*define\s+(\w+)"</span> <span class="string">"\\&lt;\1\\&gt;"</span> <span class="string">"\1"</span>
+<span class="special">!</span><span class="identifier">define</span><span class="special">-</span><span class="identifier">scanner</span> <span class="string">"function_name"</span> <span class="string">"\w+\s+(\w+)\s*\([^\)]*\)\s*[;{]"</span> <span class="string">"\\&lt;\\w+\\&gt;\\s+\\&lt;\1\\&gt;\\s*\\([^;{]*\\)\\s*[;{]"</span> <span class="string">"\1"</span>
+</pre>
+<p>
+      Note that these defaults are not installed if you have provided your own versions
+      with these <span class="emphasis"><em>type</em></span> names. In this case if you want the default
+      scanners to be in effect as well as your own, you should include the above
+      in your script file. It is also perfectly allowable to have multiple scanners
+      with the same <span class="emphasis"><em>type</em></span>, but with the other fields differing.
+    </p>
+<p>
+      Finally you should note that the default scanners are quite strict in what
+      they will find, for example the class scanner will only create index entries
+      for classes that have class definitions of the form:
+    </p>
+<pre class="programlisting"><span class="keyword">class</span> <span class="identifier">my_class</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">base_classes</span>
+<span class="special">{</span>
+   <span class="comment">// etc
+</span></pre>
+<p>
+      In the documentation, so that simple mentions of the class name will <span class="emphasis"><em>not</em></span>
+      get indexed, only the class synopsis if there is one. If this isn't how you
+      want things, then include the <span class="emphasis"><em>class_name</em></span> scanner definition
+      above in your script file, and change the <span class="emphasis"><em>xml-regex-formatter</em></span>
+      field to something more permissive, for example:
+    </p>
+<pre class="programlisting"><span class="special">!</span><span class="identifier">define</span><span class="special">-</span><span class="identifier">scanner</span> <span class="identifier">class_name</span> <span class="string">"^[[:space:]]*(template[[:space:]]*&lt;[^;:{]+&gt;[[:space:]]*)?(class|struct)[[:space:]]*(\&lt;\w+\&gt;([[:blank:]]*\([^)]*\))?[[:space:]]*)*(\&lt;\w*\&gt;)[[:space:]]*(&lt;[^;:{]+&gt;)?[[:space:]]*(\{|:[^;\{()]*\{)"</span> <span class="string">"\\&lt;\5\\&gt;"</span> <span class="special">\</span><span class="number">5</span>
+</pre>
+<p>
+      Will look for <span class="emphasis"><em>any</em></span> occurance of whatever class names the
+      scanner may find in the documentation.
+    </p>
 <a name="autoindex.script_ref.debugging"></a><h5>
-<a name="id979108"></a>
+<a name="id979348"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.debugging">Debugging</a>
     </h5>
 <p>
@@ -360,8 +331,9 @@
 </pre>
 <p>
       Now, whenever <span class="emphasis"><em>regular-expression</em></span> matches either the found
-      index term, or the section title it appears in, then some diagnostic information
-      will be printed that will look something like:
+      index term, or the section title it appears in, or the <span class="emphasis"><em>type</em></span>
+      field of a scanner, then some diagnostic information will be printed that will
+      look something like:
     </p>
 <pre class="programlisting">Debug term found, in block with ID: spirit.qi.reference.parser_concepts.parser
 Current section title is: Notation
@@ -382,7 +354,7 @@ The index type for this entry is: qi_index
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tut.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="comm_ref.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="tut.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="xml.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

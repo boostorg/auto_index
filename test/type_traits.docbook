@@ -6618,6 +6618,12 @@ to ensure complete testing.
   <index type="macro_name">
   <title>Macro Index</title>
   </index>
-  <index/>
+     <index type="test_index_1">
+        <title>Index Test 1</title>
+     </index>
+     <index type="test_index_2">
+        <title>Index Test 2</title>
+     </index>
+     <index/>
   </para>
 </chapter>

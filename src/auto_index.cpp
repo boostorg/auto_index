@@ -12,7 +12,7 @@
 #include "auto_index.hpp"
 
 std::string infile, outfile, prefix, last_primary, last_secondary;
-std::multiset<index_info> index_terms;
+std::set<index_info> index_terms;
 std::set<std::pair<std::string, std::string> > found_terms;
 bool no_duplicates = false;
 bool verbose = false;
@@ -219,6 +219,11 @@ bool should_flatten_node(const char* name)
 
    return terminals.find(name) != terminals.end();
 }
+std::string unescape_xml(const std::string& s)
+{
+   boost::regex e("&(?:(quot)|(amp)|(apos)|(lt)|(gt));");
+   return regex_replace(s, e, "(?1\")(?2&)(?3\')(?4<)(?5>)", boost::regex_constants::format_all);
+}
 //
 // This does most of the work: process the node pointed to, and any children
 // that it may have:
@@ -283,7 +288,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    const std::string* ptext;
    if(flatten)
    {
-      flattenned_text = get_consolidated_content(node);
+      flattenned_text = unescape_xml(get_consolidated_content(node));
       ptext = &flattenned_text;
    }
    else
@@ -304,7 +309,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
       const std::string& rtitle = get_current_block_title(&title);
       const std::string simple_title = rewrite_title(rtitle, *pid);
       // Scan for each index term:
-      for(std::multiset<index_info>::const_iterator i = index_terms.begin();
+      for(std::set<index_info>::const_iterator i = index_terms.begin();
             i != index_terms.end(); ++i)
       {
          if(regex_search(*ptext, i->search_text))
@@ -577,8 +582,6 @@ int main(int argc, char* argv[])
    std::string header = get_header(is);
    boost::tiny_xml::element_ptr xml = boost::tiny_xml::parse(is, "");
    is.close();
-
-   //index_terms["students_t_distribution"] = "\\<students_t_distribution\\>";
 
    std::cout << "Indexing " << index_terms.size() << " terms..." << std::endl;
 

@@ -20,7 +20,7 @@
 <a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial">Getting Started and Tutorial</a>
 </h2></div></div></div>
 <a name="autoindex.tut.step_1__build_the_tool"></a><h5>
-<a name="id969258"></a>
+<a name="id969292"></a>
       <a class="link" href="tut.html#autoindex.tut.step_1__build_the_tool">Step 1: Build the tool</a>
     </h5>
 <p>
@@ -62,7 +62,7 @@
       is accepted into Boost.
     </p>
 <a name="autoindex.tut.step_2__configure_boost_build"></a><h5>
-<a name="id969423"></a>
+<a name="id969457"></a>
       <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build">Step 2: Configure
       Boost.Build</a>
     </h5>
@@ -145,7 +145,7 @@
             Specifies a directory to apply as a prefix to all relative file paths
             in the script file.
           </p></dd>
-<dt><span class="term">auto-index-type=element-name</span></dt>
+<dt><span class="term">&lt;auto-index-type&gt;element-name</span></dt>
 <dd><p>
             Specifies the name of the XML element to enclose internally generated
             indexes in: defaults to "section", but could equally be "appendix"
@@ -155,7 +155,7 @@
 </dl>
 </div>
 <a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
-<a name="id969586"></a>
+<a name="id969620"></a>
       <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
       3: Add indexes to your documentation</a>
     </h5>
@@ -249,7 +249,7 @@ boostbook standalone
         &lt;xsl:param&gt;index.on.type=1
 </pre>
 <a name="autoindex.tut.step_4__create_the_script_file"></a><h5>
-<a name="id977640"></a>
+<a name="id977645"></a>
       <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file">Step 4: Create
       the script file</a>
     </h5>
@@ -265,7 +265,7 @@ boostbook standalone
       Or we can recursively scan through directories looking for all the files to
       scan whose name matches a particular regular expression:
     </p>
-<pre class="programlisting">!scan-path "..<span class="emphasis"><em>..</em></span>../../boost/math" ".*.hpp" true </pre>
+<pre class="programlisting">!scan-path "../../../../boost/math" ".*.hpp" true </pre>
 <p>
       Note how each argument is whitespace separated and can be optionally enclosed
       in "double quotes". The final <span class="emphasis"><em>true</em></span> argument
@@ -322,7 +322,7 @@ boostbook standalone
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>
 <a name="autoindex.tut.step_5__add_manual_index_entries___optional"></a><h5>
-<a name="id977898"></a>
+<a name="id977899"></a>
       <a class="link" href="tut.html#autoindex.tut.step_5__add_manual_index_entries___optional">Step
       5: Add Manual Index Entries - Optional</a>
     </h5>
@@ -337,10 +337,9 @@ boostbook standalone
       which can be applied to these elements are used when auto-index generates the
       index itself, with the exception of the "type" attribute.
     </p>
-<a name="autoindex.tut.step_6__build_the_your_docs"></a><h5>
-<a name="id978018"></a>
-      <a class="link" href="tut.html#autoindex.tut.step_6__build_the_your_docs">Step 6: Build the
-      Your Docs</a>
+<a name="autoindex.tut.step_6__build_the_docs"></a><h5>
+<a name="id978019"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_6__build_the_docs">Step 6: Build the Docs</a>
     </h5>
 <p>
       Make sure that auto-index.jam is in your BOOST_BUILD_PATH, by either setting
@@ -365,7 +364,7 @@ boostbook standalone
       If you don't see that, or if it's indexing 0 terms then something is wrong!
     </p>
 <a name="autoindex.tut.step_7__iterate"></a><h5>
-<a name="id978128"></a>
+<a name="id978130"></a>
       <a class="link" href="tut.html#autoindex.tut.step_7__iterate">Step 7: Iterate</a>
     </h5>
 <p>

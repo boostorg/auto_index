@@ -43,7 +43,7 @@ void install_default_scanners()
          // terminate in { or :
          "(\\{|:[^;\\{()]*\\{)",
 
-         "class[^;{]+\\\\<\\5\\\\>[^;{]+\\\\{",  // Format string to create indexing regex.
+         "(?:class|struct)[^;{]+\\\\<\\5\\\\>[^;{]+\\\\{",  // Format string to create indexing regex.
          "\\5",   // Format string to create index term.
          "",  // Filter regex for section id's.
          ""   // Filter regex for filenames.
@@ -121,12 +121,29 @@ void scan_file(const char* file)
 
    for(file_scanner_set_type::iterator pscan = file_scanner_set.begin(); pscan != file_scanner_set.end(); ++pscan)
    {
+      bool need_debug = false;
+      if(!debug.empty() && regex_match(pscan->type, ::debug))
+      {
+         need_debug = true;
+         std::cout << "Processing scanner " << pscan->type << " on file " << file << std::endl;
+         std::cout << "Scanner regex:" << pscan->scanner << std::endl;
+         std::cout << "Scanner formatter (search regex):" << pscan->format_string << std::endl;
+         std::cout << "Scanner formatter (index term):" << pscan->term_formatter << std::endl;
+         std::cout << "Scanner file name filter:" << pscan->file_name_filter << std::endl;
+         std::cout << "Scanner section id filter:" << pscan->section_filter << std::endl;
+      }
       if(!pscan->file_name_filter.empty())
       {
          if(!regex_match(file, pscan->file_name_filter))
+         {
+            if(need_debug)
+            {
+               std::cout << "File failed to match file name filter, this file will be skipped..." << std::endl;
+            }
             continue;  // skip this file
+         }
       }
-      if(verbose)
+      if(verbose && !need_debug)
          std::cout << "Scanning for type \"" << (*pscan).type << "\" ... " << std::endl;
       boost::sregex_iterator i(text.begin(), text.end(), (*pscan).scanner), j;
       while(i != j)
@@ -139,11 +156,29 @@ void scan_file(const char* file)
             info.category = pscan->type;
             if(!pscan->section_filter.empty())
                info.search_id = pscan->section_filter;
-            if(index_terms.count(info) == 0)
+            std::pair<std::set<index_info>::iterator, bool> pos = index_terms.insert(info);
+            if(pos.second)
             {
-               if(verbose)
+               if(verbose || need_debug)
                   std::cout << "Indexing " << info.term << " as type " << info.category << std::endl;
-               index_terms.insert(info);
+               if(need_debug)
+                  std::cout << "Search regex will be: \"" << info.search_text << "\"" <<
+                  " ID constraint is: \"" << info.search_id << "\"" 
+                  << "Found text was: " << i->str() << std::endl;
+               if(pos.first->search_text != info.search_text)
+               {
+                  //
+                  // Merge the search terms:
+                  //
+                  const_cast<boost::regex&>(pos.first->search_text) = "(?:" + pos.first->search_text.str() + ")|(?:" + info.search_text.str() + ")";
+               }
+               if(pos.first->search_id != info.search_id)
+               {
+                  //
+                  // Merge the ID constraints:
+                  //
+                  const_cast<boost::regex&>(pos.first->search_id) = "(?:" + pos.first->search_id.str() + ")|(?:" + info.search_id.str() + ")";
+               }
             }
          }
          catch(const boost::regex_error& e)
@@ -249,14 +284,16 @@ void process_script(const char* script)
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"  // type, index 1
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"  // scanner regex, index 2
       "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"  // format string, index 3
-      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+"  // format string for name, index 4
+      "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")"  // format string for name, index 4
       "(?:"
-         "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+" // id-filter, index 5
+         "\\s+([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")" // id-filter, index 5
          "(?:"
-            "([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")\\s+" // filename-filter, index 6
+            "\\s+([^\"[:space:]]+|\"(?:[^\"\\\\]|\\\\.)+\")" // filename-filter, index 6
          ")?"
       ")?"
+      "\\s*"
       );
+   static const boost::regex error_parser("!.*");
 
    if(verbose)
       std::cout << "Processing script " << script << std::endl;
@@ -297,6 +334,10 @@ void process_script(const char* script)
       else if(regex_match(line, what, debug_parser))
       {
          debug = unquote(what[1].str());
+      }
+      else if(regex_match(line, what, define_scanner_parser))
+      {
+         add_file_scanner(unquote(what.str(1)), unquote(what.str(2)), unquote(what.str(3)), unquote(what.str(4)), unquote(what.str(5)), unquote(what.str(6)));
       }
       else if(regex_match(line, what, scan_dir_parser))
       {
@@ -349,6 +390,10 @@ void process_script(const char* script)
             ++i;
          }
       }
+      else if(regex_match(line, error_parser))
+      {
+         std::cerr << "Error: Unable to process line: " << line << std::endl;
+      }
       else if(regex_match(line, what, entry_parser))
       {
          try{
@@ -370,7 +415,24 @@ void process_script(const char* script)
                info.search_id = s;
             if(what[4].matched)
                info.category = unquote(what.str(4));
-            index_terms.insert(info);
+            std::pair<std::set<index_info>::iterator, bool> pos = index_terms.insert(info);
+            if(pos.second)
+            {
+               if(pos.first->search_text != info.search_text)
+               {
+                  //
+                  // Merge the search terms:
+                  //
+                  const_cast<boost::regex&>(pos.first->search_text) = "(?:" + pos.first->search_text.str() + ")|(?:" + info.search_text.str() + ")";
+               }
+               if(pos.first->search_id != info.search_id)
+               {
+                  //
+                  // Merge the ID constraints:
+                  //
+                  const_cast<boost::regex&>(pos.first->search_id) = "(?:" + pos.first->search_id.str() + ")|(?:" + info.search_id.str() + ")";
+               }
+            }
          }
          catch(const boost::regex_error&)
          {
@@ -384,6 +446,10 @@ void process_script(const char* script)
                << line << "\"" << std::endl;
             throw;
          }
+      }
+      else
+      {
+         std::cerr << "Error: Unable to process line: " << line << std::endl;
       }
    }
 }

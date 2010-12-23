@@ -129,7 +129,7 @@ inline void add_file_scanner(const std::string& type, const std::string& scanner
    file_scanner_set.insert(s);
 }
 
-extern std::multiset<index_info> index_terms;
+extern std::set<index_info> index_terms;
 extern std::set<std::pair<std::string, std::string> > found_terms;
 extern bool no_duplicates;
 extern bool verbose;

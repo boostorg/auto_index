@@ -179,7 +179,7 @@ entry that uses the section title is not created.  Defaults to "on"]]
 [[<auto-index-verbose>off/on][Defaults to "off".  When turned on AutoIndex
 prints progress information - generally useful only for debugging purposes.]]
 [[<auto-index-prefix>filename][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
-[[auto-index-type=element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
+[[<auto-index-type>element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
 	defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.]]
 ]
 
@@ -277,7 +277,7 @@ should be indexed in the documentation.  So for example to scan
 Or we can recursively scan through directories looking for all
 the files to scan whose name matches a particular regular expression:
 
-[pre !scan-path "../../../../boost/math" ".*\.hpp" true ]
+[pre !scan-path "..\/..\/..\/..\/boost\/math" ".*\.hpp" true ]
    
 Note how each argument is whitespace separated and can be optionally
 enclosed in "double quotes".  The final ['true] argument indicates
@@ -335,7 +335,7 @@ and auto-index will emit a warning if these are used.  Likewise none of the
 attributes which can be applied to these elements are used when
 auto-index generates the index itself, with the exception of the "type" attribute.
    
-[h4 Step 6: Build the Your Docs]
+[h4 Step 6: Build the Docs]
 
 Make sure that auto-index.jam is in your BOOST_BUILD_PATH, by either
 setting the environment variable BOOST_BUILD_PATH to point to the directory
@@ -442,7 +442,7 @@ in a specialised index whose "type" attribute has the same category name.
 When actually indexing a document, the scanner will not index just any old occurance of the
 terms found in the source files.  Instead it searches for class definitions or function or
 typedef declarations.  This reduces the number of spurious matches placed in the index, but 
-may also miss some legitimate terms: refer to the /set-regex/ command for information on how to
+may also miss some legitimate terms: refer to the /define-scanner/ command for information on how to
 change this.
 ]
 
@@ -493,40 +493,69 @@ of the regular expression match combined with the regex format string
 [[format-text][The Perl-style format string used to reformat the title.]]
 ]
 
-[h4 Changing the regular expressions used when scanning]
+For example:
 
-   !set-regex type prefix suffix
-   
-When a class, function, typedef or macro name is found as a result of scanning a source file
-the scanner constructs a regular expression from that name that is used to actually perform 
-the search of the text for occurances of the name.  This regular expression is constructed by
-joining together 3 parts - a prefix, the name of the class, function, typedef or macro, and a 
-suffix.  By default the regular expressions constructed in this way are designed to narrow
-the number of occurences of the term found - so for example given a class "myclass" only a
-synopsis of that class that looks like:
-
-   class myclass
-   {
-      // details...
-   };
-   
-will be found by the scanner and indexed.  The default regular expression prefix and suffix terms are:
-
-[table
-[[Type][Prefix][Suffix]]
-[[class]["class\[\^;{\]+\\<"]["\\>\[\^;{\]+\\{"]]
-[[function]["\\<\\w+\\>\\s+\\<"]["\\>\\s\*\\(\[^;{\]\*\\)\\s\*\[;{\]"]]
-[[typedef]["typedef\[^;\]+\\<"]["\\>\\s\*;"]]
-[[macro]["\\<"]["\\>"]]
+[pre
+!rewrite-name "(?:A|An|The)\s+(.*)" "\1"
 ]
 
-The arguments to the set-regex rule as follows:
+Will remove any leading "A", "An" or "The" from all index entries - thus preventing lots of
+entries under "The" etc!
+
+[h4 Defining or Changing the File Scanners]
+
+   !define-scanner type file-search-expression xml-regex-formatter term-formatter id-filter filename-filter
+
+When a source file is scanned using the =!scan= or =!scan-path= rules, then the file is searched using
+a series of regular expressions to look for classes, functions, macros or typedefs that should be indexed.
+A set of default regular expressions are provided for this (see below), but sometimes you may want to replace 
+the defaults, or add new scanners.  The arguments to this rule are:
 
 [variablelist
-[[type][One of "class", "function", "typedef" or "macro".]]
-[[prefix][The prefix regular expression, or "" to reset to the default.]]
-[[suffix][The suffix regular expression, or "" to reset to the default.]]
+[[type][The ['type] to which items found using this rule will assigned, index terms created from the 
+source file and then found in the XML, will have the type attribute set to this value, and may then appear in a 
+specialized index with the same type attribute]]
+[[file-search-expression][A regular expression that is used to scan the source file for index terms, the result of
+a match against this expression will be transformed by the next two arguments.]]
+[[xml-regex-formatter][A regular expression format string that extracts the salient information from whatever
+matched the ['file-search-expression] in the source file, and creates ['a new regular expression] that will
+be used to search the document being indexed for occurances of this index term.]]
+[[term-formatter][A regular expression format string that extracts the salient information from whatever
+matched the ['file-search-expression] in the source file, and creates the index term that will appear in
+the index.]]
+[[id-filter][Optional.  A regular expression that resticts the section-id's that are searched in the document being indexed: 
+only sections whose ID attribute matches this expression exactly will be considered for indexing terms found by this scanner.]]
+[[filename-filter][Optional.  A regular expression that restricts which files are scanned by this scanner: only files whose file name
+matches this expression exactly will be scanned for index terms to use.  Note that the filename matched against this may
+well be an absolute path, and contain either forward or backward slash path separators.]]
 ]
+
+If, when the first file is scanned, there are no scanners whose ['type] is "class_name", "typedef_name", "macro_name" or 
+"function_name", then the defaults are installed.  These are equivalent to:
+
+   !define-scanner class_name "^[[:space:]]*(template[[:space:]]*<[^;:{]+>[[:space:]]*)?(class|struct)[[:space:]]*(\<\w+\>([[:blank:]]*\([^)]*\))?[[:space:]]*)*(\<\w*\>)[[:space:]]*(<[^;:{]+>)?[[:space:]]*(\{|:[^;\{()]*\{)" "(?:class|struct)[^;{]+\\<\5\\>[^;{]+\\{" \5
+   !define-scanner typedef_name "typedef[^;{}#]+?(\w+)\s*;"  "typedef[^;]+\\<\1\\>\\s*;" "\1"
+   !define-scanner "macro_name" "^\s*#\s*define\s+(\w+)" "\\<\1\\>" "\1"
+   !define-scanner "function_name" "\w+\s+(\w+)\s*\([^\)]*\)\s*[;{]" "\\<\\w+\\>\\s+\\<\1\\>\\s*\\([^;{]*\\)\\s*[;{]" "\1"
+
+Note that these defaults are not installed if you have provided your own versions with these ['type] names. In this case if
+you want the default scanners to be in effect as well as your own, you should include the above in your script file.  
+It is also perfectly allowable to have multiple scanners with the same ['type], but with the other fields differing.
+
+Finally you should note that the default scanners are quite strict in what they will find, for example the class
+scanner will only create index entries for classes that have class definitions of the form:
+
+   class my_class : public base_classes
+   {
+      // etc
+
+In the documentation, so that simple mentions of the class name will ['not] get indexed, only the class synopsis if there is one.
+If this isn't how you want things, then include the ['class_name] scanner definition above in your script file, and change
+the ['xml-regex-formatter] field to something more permissive, for example: 
+
+   !define-scanner class_name "^[[:space:]]*(template[[:space:]]*<[^;:{]+>[[:space:]]*)?(class|struct)[[:space:]]*(\<\w+\>([[:blank:]]*\([^)]*\))?[[:space:]]*)*(\<\w*\>)[[:space:]]*(<[^;:{]+>)?[[:space:]]*(\{|:[^;\{()]*\{)" "\\<\5\\>" \5
+
+Will look for ['any] occurance of whatever class names the scanner may find in the documentation.
 
 [h4 Debugging]
 
@@ -536,7 +565,8 @@ If you see a term in the index, and you don't understand why it's there, add a [
 !debug regular-expression
 ]
 
-Now, whenever ['regular-expression] matches either the found index term, or the section title it appears in, then
+Now, whenever ['regular-expression] matches either the found index term, or the section title it appears in,
+or the ['type] field of a scanner, then
 some diagnostic information will be printed that will look something like:
 
 [pre
@@ -548,6 +578,21 @@ The search regex is: \[P\|p\]arser
 The section constraint is: .*qi.reference.parser_concepts.*
 The index type for this entry is: qi_index
 ]
+
+[endsect]
+
+[section:xml XML Handling]
+
+Auto-index is rather simplistic in it's handling of XML:
+
+* When indexing a document, all block content at the paragraph level gets collapsed into a single
+string for matching against the regular expressions representing each index term.  In other words,
+for the most part, you can assume that you're indexing plain text when writing regular expressions.
+* Named XML entities for &, ", ', < or > are converted to their corresponding characters before indexing 
+a section of text.  However, decimal or hex escape sequences are not currently converted.
+* Index terms are inserted into the XML sequence just as they are, and no attempt is made to
+escape them to valid XML.  Normally these are C++ identifiers anyway so that's not an issue, but
+you should take care not to define scanners that create index terms containing &, ", ', < or >.
 
 [endsect]
 
