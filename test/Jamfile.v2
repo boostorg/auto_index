@@ -8,8 +8,6 @@ import testing ;
 import toolset ;
 import type ;
 
-local boost = [ modules.peek : BOOST ] ;
-
 path-constant local-boost-root : [ modules.peek : BOOST ] ;
 
 alias line_compare_tool : $(local-boost-root)/tools/quickbook/test//line-compare-tool ;
@@ -60,6 +58,7 @@ rule auto-index-test ( target-name : input-file : output-file ? : options * )
 auto-index-test test1 : type_traits.docbook : : script=index.idx ;
 auto-index-test test2 : type_traits.docbook : : --internal-index script=index.idx ;
 auto-index-test test3 : type_traits.docbook : : --internal-index index-type=appendix script=index.idx ;
+
 
 
 

@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -26,7 +27,7 @@
 <p>
       Traditionally, in order to index a Docbook document you would have to manually
       add a large amount of <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code> markup: in fact one <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code>
-      for each occurance of each term to be indexed.
+      for each occurrence of each term to be indexed.
     </p>
 <p>
       Instead AutoIndex will scan one or more C/C++ header files and extract all
@@ -35,7 +36,7 @@
       then insert the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code>'s into the XML document for you.
     </p>
 <p>
-      AutoIndex creates index entries as follows - for each occurance of each search
+      AutoIndex creates index entries as follows - for each occurrence of each search
       term, it creates two index entries - one has the search term as the primary
       index key and the title of the section it appears in as a subterm, the other
       has the section title as the main index entry and the search term as the subentry.
@@ -73,7 +74,7 @@
       AutoIndex also supports multiple indexes (as does Docbook), and since it knows
       which search terms are <span class="emphasis"><em>function</em></span>, <span class="emphasis"><em>class</em></span>,
       <span class="emphasis"><em>macro</em></span> or <span class="emphasis"><em>typedef</em></span> names, it can add
-      the necessary attritubes to the XML so that you can have separate indexes for
+      the necessary attribubes to the XML so that you can have separate indexes for
       each of these different types. These specialised indexes only contain entries
       for the <span class="emphasis"><em>function</em></span>, <span class="emphasis"><em>class</em></span>, <span class="emphasis"><em>macro</em></span>
       or <span class="emphasis"><em>typedef</em></span> names, <span class="emphasis"><em>section names</em></span> are
@@ -86,7 +87,7 @@
       use section titles in place of page numbers... but as AutoIndex uses section
       titles as index entries this leads to a lot of repetition, so as an alternative
       AutoIndex can be instructed to construct the index itself. This is faster than
-      using the XSL stylesheets, and now each index entry is a hyperlink to the approprate
+      using the XSL stylesheets, and now each index entry is a hyperlink to the appropriate
       section:
     </p>
 <p>
@@ -102,8 +103,8 @@
 <p>
       Finally, you can choose what kind of XML container wraps an internally generated
       index - this defaults to <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;...&lt;/</span><span class="identifier">section</span><span class="special">&gt;</span></code>
-      but you can use either command line options or bjam Jamfile features, to select
-      an alternative wrapper - for example "appendix" or "chapter"
+      but you can use either command line options or Boost.Build Jamfile features,
+      to select an alternative wrapper - for example "appendix" or "chapter"
       would be good choices, whatever fits best into the flow of the document. You
       can even set the container wrapper to type "index" provided you turn
       off index generation by the XSL stylesheets, for example by setting the following

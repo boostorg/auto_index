@@ -184,6 +184,21 @@ prints progress information - generally useful only for debugging purposes.]]
 ]
 
 
+It is possible to make the use of auto-index optional in Boost.Build, to allow
+users who do not have auto-index installed to build your documentation. One
+method of setting up optional auto-index support is to place all auto-index
+configuration in a the body of a bjam if statement:
+
+  if --enable-index in  [ modules.peek : ARGV ]
+  {
+     using auto-index ;
+     project : requirements
+          <auto-index>on
+          <auto-index-script>index.idx
+          #... other auto-index options here...
+          ;
+  }
+ 
 [h4 Step 3: Add indexes to your documentation]
 
 To add a single index to a BoostBook\/Docbook document, then add

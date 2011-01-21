@@ -164,7 +164,7 @@ struct string_cmp
 bool can_contain_indexterm(const char* name)
 {
    static const boost::array<const char*, 257> names = 
-   {
+   { {
       "abbrev", "accel", "ackno", "acronym", "action", "answer", "appendix", "appendixinfo", "application", 
       "article", "articleinfo", "artpagenums", "attribution", "authorinitials", "bibliocoverage", "bibliodiv", 
       "biblioentry", "bibliography", "bibliographyinfo", "biblioid", "bibliomisc", "bibliomixed", "bibliomset", 
@@ -194,7 +194,7 @@ bool can_contain_indexterm(const char* name)
       "table", "task", "taskprerequisites", "taskrelated", "tasksummary", "td", "term", "termdef", "th", "tip", /*"title",*/ 
       "titleabbrev", "tocback", "tocentry", "tocfront", "token", "type", "ulink", "uri", "userinput", "variablelist", 
       "varname", "volumenum", "warning", "wordasword", "year"
-   };
+   } };
    static std::set<const char*, string_cmp> permitted;
 
    if(permitted.empty())
@@ -218,7 +218,7 @@ bool should_flatten_node(const char* name)
    // In other words basically anything at the level of a paragraph/table/listing etc.
    //
    static const boost::array<const char*, 57> names = 
-   {
+   { {
       "title", "subtitle", "titleabbrev", 
       "toc", "lot", "glossary", "bibliography", 
       /*"calloutlist", "glosslist", "bibliolist", "itemizedlist", "orderedlist", 
@@ -234,7 +234,7 @@ bool should_flatten_node(const char* name)
       "bridgehead", "remark", "highlights", "abstract", "authorblurb", "epigraph"
       /*"biblioentry", "bibliomixed", "callout", "glossentry", "listitem", "seg", "seglistitem", "member",
       "term", */
-   };
+   } };
    static std::set<const char*, string_cmp> terminals;
 
    if(terminals.empty())

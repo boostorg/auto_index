@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -23,7 +24,7 @@
       The following elements can occur in a script:
     </p>
 <a name="autoindex.script_ref.comments_and_blank_lines"></a><h5>
-<a name="id978209"></a>
+<a name="id981834"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.comments_and_blank_lines">Comments and
       blank lines</a>
     </h5>
@@ -32,7 +33,7 @@
       with a '#'.
     </p>
 <a name="autoindex.script_ref.simple_inclusions"></a><h5>
-<a name="id978226"></a>
+<a name="id981851"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.simple_inclusions">Simple Inclusions</a>
     </h5>
 <pre class="programlisting"><span class="identifier">term</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression1</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression2</span> <span class="special">[</span><span class="identifier">category</span><span class="special">]]]</span>
@@ -50,12 +51,12 @@
 <dt><span class="term">regular-expression1</span></dt>
 <dd>
 <p>
-            An optional regular expression: each occurance of the regular expression
+            An optional regular expression: each occurrence of the regular expression
             in the text of the document will result in one index term being emitted.
           </p>
 <p>
             If the regular expression is omitted or is "", then the <span class="emphasis"><em>term</em></span>
-            itself will be used as the search text - and only occurance of whole
+            itself will be used as the search text - and only occurrence of whole
             words matching <span class="emphasis"><em>term</em></span> will be indexed.
           </p>
 </dd>
@@ -64,7 +65,7 @@
 <p>
             A constraint that specifies which sections are indexed for <span class="emphasis"><em>term</em></span>:
             only if the ID of the section matches <span class="emphasis"><em>regular-expression2</em></span>
-            exactly will that section be indexed for occurances of <span class="emphasis"><em>term</em></span>.
+            exactly will that section be indexed for occurrences of <span class="emphasis"><em>term</em></span>.
           </p>
 <p>
             For example:
@@ -74,7 +75,7 @@
             <span class="string">"mylib.examples.*"</span></code>
           </p>
 <p>
-            Will index occurances of "myclass" as a whole word only in
+            Will index occurrences of "myclass" as a whole word only in
             sections whose ID begins "mylib.examples", while:
           </p>
 <p>
@@ -82,8 +83,8 @@
             <span class="string">"(?!mylib.introduction.*).*"</span></code>
           </p>
 <p>
-            will index occurances of "myclass" in any section, except those
-            whose ID's begin "mylib.introduction".
+            will index occurrences of "myclass" in any section, except
+            those whose ID's begin "mylib.introduction".
           </p>
 <p>
             If this field is omitted or is "", then all sections are indexed
@@ -92,14 +93,14 @@
 </dd>
 <dt><span class="term">category</span></dt>
 <dd><p>
-            Optionally an index category to place occurances of <span class="emphasis"><em>term</em></span>
+            Optionally an index category to place occurrences of <span class="emphasis"><em>term</em></span>
             in. If you have multiple indexes then this is the name assigned to the
             indexes "type" attribute.
           </p></dd>
 </dl>
 </div>
 <a name="autoindex.script_ref.source_file_scanning"></a><h5>
-<a name="id978434"></a>
+<a name="id982060"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.source_file_scanning">Source File Scanning</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">source</span><span class="special">-</span><span class="identifier">file</span><span class="special">-</span><span class="identifier">name</span>
@@ -120,7 +121,7 @@
 </tr>
 <tr><td align="left" valign="top"><p>
         When actually indexing a document, the scanner will not index just any old
-        occurance of the terms found in the source files. Instead it searches for
+        occurrence of the terms found in the source files. Instead it searches for
         class definitions or function or typedef declarations. This reduces the number
         of spurious matches placed in the index, but may also miss some legitimate
         terms: refer to the <span class="emphasis"><em>define-scanner</em></span> command for information
@@ -128,7 +129,7 @@
       </p></td></tr>
 </table></div>
 <a name="autoindex.script_ref.directory_and_source_file_scanning"></a><h5>
-<a name="id978512"></a>
+<a name="id982138"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.directory_and_source_file_scanning">Directory
       and Source File Scanning</a>
     </h5>
@@ -150,14 +151,14 @@
           </p></dd>
 <dt><span class="term">recurse</span></dt>
 <dd><p>
-            An optional boolian value - either "true" or "false"
+            An optional boolean value - either "true" or "false"
             - that indicates whether to recurse into subdirectories. This defaults
             to "false"
           </p></dd>
 </dl>
 </div>
 <a name="autoindex.script_ref.excluding_terms"></a><h5>
-<a name="id978637"></a>
+<a name="id982263"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.excluding_terms">Excluding Terms</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">exclude</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">list</span>
@@ -170,7 +171,7 @@
       of things to index.
     </p>
 <a name="autoindex.script_ref.rewriting_section_names"></a><h5>
-<a name="id978692"></a>
+<a name="id982318"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.rewriting_section_names">Rewriting Section
       Names</a>
     </h5>
@@ -217,7 +218,7 @@
       all index entries - thus preventing lots of entries under "The" etc!
     </p>
 <a name="autoindex.script_ref.defining_or_changing_the_file_scanners"></a><h5>
-<a name="id978845"></a>
+<a name="id982470"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.defining_or_changing_the_file_scanners">Defining
       or Changing the File Scanners</a>
     </h5>
@@ -252,7 +253,7 @@
             A regular expression format string that extracts the salient information
             from whatever matched the <span class="emphasis"><em>file-search-expression</em></span>
             in the source file, and creates <span class="emphasis"><em>a new regular expression</em></span>
-            that will be used to search the document being indexed for occurances
+            that will be used to search the document being indexed for occurrences
             of this index term.
           </p></dd>
 <dt><span class="term">term-formatter</span></dt>
@@ -264,7 +265,7 @@
           </p></dd>
 <dt><span class="term">id-filter</span></dt>
 <dd><p>
-            Optional. A regular expression that resticts the section-id's that are
+            Optional. A regular expression that restricts the section-id's that are
             searched in the document being indexed: only sections whose ID attribute
             matches this expression exactly will be considered for indexing terms
             found by this scanner.
@@ -316,11 +317,11 @@
 <pre class="programlisting"><span class="special">!</span><span class="identifier">define</span><span class="special">-</span><span class="identifier">scanner</span> <span class="identifier">class_name</span> <span class="string">"^[[:space:]]*(template[[:space:]]*&lt;[^;:{]+&gt;[[:space:]]*)?(class|struct)[[:space:]]*(\&lt;\w+\&gt;([[:blank:]]*\([^)]*\))?[[:space:]]*)*(\&lt;\w*\&gt;)[[:space:]]*(&lt;[^;:{]+&gt;)?[[:space:]]*(\{|:[^;\{()]*\{)"</span> <span class="string">"\\&lt;\5\\&gt;"</span> <span class="special">\</span><span class="number">5</span>
 </pre>
 <p>
-      Will look for <span class="emphasis"><em>any</em></span> occurance of whatever class names the
+      Will look for <span class="emphasis"><em>any</em></span> occurrence of whatever class names the
       scanner may find in the documentation.
     </p>
 <a name="autoindex.script_ref.debugging"></a><h5>
-<a name="id979348"></a>
+<a name="id983118"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.debugging">Debugging</a>
     </h5>
 <p>

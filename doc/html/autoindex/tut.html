@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
@@ -20,7 +21,7 @@
 <a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial">Getting Started and Tutorial</a>
 </h2></div></div></div>
 <a name="autoindex.tut.step_1__build_the_tool"></a><h5>
-<a name="id969292"></a>
+<a name="id972655"></a>
       <a class="link" href="tut.html#autoindex.tut.step_1__build_the_tool">Step 1: Build the tool</a>
     </h5>
 <p>
@@ -62,7 +63,7 @@
       is accepted into Boost.
     </p>
 <a name="autoindex.tut.step_2__configure_boost_build"></a><h5>
-<a name="id969457"></a>
+<a name="id972819"></a>
       <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build">Step 2: Configure
       Boost.Build</a>
     </h5>
@@ -154,8 +155,24 @@
           </p></dd>
 </dl>
 </div>
+<p>
+      It is possible to make the use of auto-index optional in Boost.Build, to allow
+      users who do not have auto-index installed to build your documentation. One
+      method of setting up optional auto-index support is to place all auto-index
+      configuration in a the body of a bjam if statement:
+    </p>
+<pre class="programlisting"><span class="keyword">if</span> <span class="special">--</span><span class="identifier">enable</span><span class="special">-</span><span class="identifier">index</span> <span class="identifier">in</span>  <span class="special">[</span> <span class="identifier">modules</span><span class="special">.</span><span class="identifier">peek</span> <span class="special">:</span> <span class="identifier">ARGV</span> <span class="special">]</span>
+<span class="special">{</span>
+   <span class="keyword">using</span> <span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span> <span class="special">;</span>
+   <span class="identifier">project</span> <span class="special">:</span> <span class="identifier">requirements</span>
+        <span class="special">&lt;</span><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">&gt;</span><span class="identifier">on</span>
+        <span class="special">&lt;</span><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">-</span><span class="identifier">script</span><span class="special">&gt;</span><span class="identifier">index</span><span class="special">.</span><span class="identifier">idx</span>
+        <span class="error">#</span><span class="special">...</span> <span class="identifier">other</span> <span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span> <span class="identifier">options</span> <span class="identifier">here</span><span class="special">...</span>
+        <span class="special">;</span>
+<span class="special">}</span>
+</pre>
 <a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
-<a name="id969620"></a>
+<a name="id980968"></a>
       <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
       3: Add indexes to your documentation</a>
     </h5>
@@ -207,7 +224,7 @@
 <pre class="programlisting"><span class="char">''</span><span class="char">'&lt;index/&gt;'</span><span class="char">''</span>
 </pre>
 <p>
-      If you are using auto-index's internal index generation (usually recomended
+      If you are using auto-index's internal index generation (usually recommended
       for HTML output) then you can also decide what kind of XML wrapper the generated
       index is placed in. By default this is a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;...&lt;/</span><span class="identifier">section</span><span class="special">&gt;</span></code>
       XML block (this replaces the original <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;...&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span></code>
@@ -249,7 +266,7 @@ boostbook standalone
         &lt;xsl:param&gt;index.on.type=1
 </pre>
 <a name="autoindex.tut.step_4__create_the_script_file"></a><h5>
-<a name="id977645"></a>
+<a name="id981270"></a>
       <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file">Step 4: Create
       the script file</a>
     </h5>
@@ -288,7 +305,7 @@ boostbook standalone
 <pre class="programlisting"><span class="identifier">foobar</span>
 </pre>
 <p>
-      will index occurances of "foobar" and:
+      will index occurrences of "foobar" and:
     </p>
 <pre class="programlisting"><span class="identifier">foobar</span> <span class="special">\&lt;\</span><span class="identifier">w</span><span class="special">*(</span><span class="identifier">foo</span><span class="special">|</span><span class="identifier">bar</span><span class="special">)\</span><span class="identifier">w</span><span class="special">*\&gt;</span>
 </pre>
@@ -300,16 +317,16 @@ boostbook standalone
 <pre class="programlisting"><span class="identifier">reflex</span>
 </pre>
 <p>
-      Will only index occurances of "reflex" as a whole word, but:
+      Will only index occurrences of "reflex" as a whole word, but:
     </p>
 <pre class="programlisting"><span class="identifier">reflex</span> <span class="special">\&lt;</span><span class="identifier">reflex</span><span class="special">\</span><span class="identifier">w</span><span class="special">*\&gt;</span>
 </pre>
 <p>
-      will index occurances of "reflex", reflexing" and "reflexed"
+      will index occurrences of "reflex", reflexing" and "reflexed"
       all under the same entry <span class="emphasis"><em>reflex</em></span>.
     </p>
 <p>
-      This inclusion rule can also restict the term to certain sections, and add
+      This inclusion rule can also restrict the term to certain sections, and add
       an index category that the term should belong to (so it only appears in certain
       indexes).
     </p>
@@ -322,7 +339,7 @@ boostbook standalone
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>
 <a name="autoindex.tut.step_5__add_manual_index_entries___optional"></a><h5>
-<a name="id977899"></a>
+<a name="id981525"></a>
       <a class="link" href="tut.html#autoindex.tut.step_5__add_manual_index_entries___optional">Step
       5: Add Manual Index Entries - Optional</a>
     </h5>
@@ -338,7 +355,7 @@ boostbook standalone
       index itself, with the exception of the "type" attribute.
     </p>
 <a name="autoindex.tut.step_6__build_the_docs"></a><h5>
-<a name="id978019"></a>
+<a name="id981645"></a>
       <a class="link" href="tut.html#autoindex.tut.step_6__build_the_docs">Step 6: Build the Docs</a>
     </h5>
 <p>
@@ -364,7 +381,7 @@ boostbook standalone
       If you don't see that, or if it's indexing 0 terms then something is wrong!
     </p>
 <a name="autoindex.tut.step_7__iterate"></a><h5>
-<a name="id978130"></a>
+<a name="id981755"></a>
       <a class="link" href="tut.html#autoindex.tut.step_7__iterate">Step 7: Iterate</a>
     </h5>
 <p>
