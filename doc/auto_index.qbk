@@ -17,7 +17,7 @@ Quickbook\/Boostbook\/Docbook document that describes C\/C++ code.
 
 Traditionally, in order to index a Docbook document you would
 have to manually add a large amount of `<indexterm>` markup: 
-in fact one `<indexterm>` for each occurance of each term to be
+in fact one `<indexterm>` for each occurrence of each term to be
 indexed.  
 
 Instead AutoIndex will scan one or more C\/C++ header files
@@ -25,7 +25,7 @@ and extract all the ['function], ['class], ['macro] and ['typedef]
 names that are defined by those headers, and then insert the 
 `<indexterm>`'s into the XML document for you.
 
-AutoIndex creates index entries as follows - for each occurance of 
+AutoIndex creates index entries as follows - for each occurrence of 
 each search term, it creates two index entries - one has the search term
 as the primary index key and the title of the section it appears in as
 a subterm, the other has the section title as the main index entry and the
@@ -55,7 +55,7 @@ expectations.
 
 AutoIndex also supports multiple indexes (as does Docbook), and since it knows
 which search terms are ['function], ['class], ['macro] or ['typedef] names, it
-can add the necessary attritubes to the XML so that you can have separate
+can add the necessary attribubes to the XML so that you can have separate
 indexes for each of these different types.  These specialised indexes only contain
 entries for the ['function], ['class], ['macro] or ['typedef] names, ['section
 names] are never used as primary index terms here, unlike the main "include everything"
@@ -67,7 +67,7 @@ section titles in place of page numbers... but as AutoIndex uses section titles
 as index entries this leads to a lot of repetition, so as an alternative AutoIndex
 can be instructed to construct the index itself.  This is faster than using
 the XSL stylesheets, and now each index entry is a hyperlink to the 
-approprate section:
+appropriate section:
 
 [$../students_t_eg_3.png]
 
@@ -78,7 +78,7 @@ at the start of each Index:
 
 Finally, you can choose what kind of XML container wraps an internally generated index - 
 this defaults to `<section>...</section>` but you can use either command line options 
-or bjam Jamfile features, to select an alternative wrapper - for example "appendix"
+or Boost.Build Jamfile features, to select an alternative wrapper - for example "appendix"
 or "chapter" would be good choices, whatever fits best into the flow of the
 document.  You can even set the container wrapper to type "index" provided you turn
 off index generation by the XSL stylesheets, for example by setting the following
@@ -226,7 +226,7 @@ In quickbook, you add the same markup but enclose it in an escape:
 
    '''<index/>'''
    
-If you are using auto-index's internal index generation (usually recomended for HTML output)
+If you are using auto-index's internal index generation (usually recommended for HTML output)
 then you can also decide what kind of XML wrapper the generated index is placed in.
 By default this is a `<section>...</section>` XML block (this replaces the original
 `<index>...</index>` block).  However, depending upon the structure of the document
@@ -295,7 +295,7 @@ We can also add terms manually:
 
    foobar
    
-will index occurances of "foobar" and:
+will index occurrences of "foobar" and:
 
    foobar \<\w*(foo|bar)\w*\>
    
@@ -305,14 +305,14 @@ words under one entry, for example:
 
    reflex
    
-Will only index occurances of "reflex" as a whole word, but:
+Will only index occurrences of "reflex" as a whole word, but:
 
    reflex \<reflex\w*\>
    
-will index occurances of "reflex", reflexing" and 
+will index occurrences of "reflex", reflexing" and 
 "reflexed" all under the same entry ['reflex].
 
-This inclusion rule can also restict the term to
+This inclusion rule can also restrict the term to
 certain sections, and add an index category that
 the term should belong to (so it only appears in certain
 indexes).
@@ -393,34 +393,34 @@ with the section title(s) containing the term as secondary entries, and
 also will be used as a secondary entry beneath each of the section
 titles that the term occurs in.]]
 
-[[regular-expression1][An optional regular expression: each occurance
+[[regular-expression1][An optional regular expression: each occurrence
 of the regular expression in the text of the document will result
 in one index term being emitted.
 
 If the regular expression is omitted or is "", then the ['term] itself
-will be used as the search text - and only occurance of whole words matching
+will be used as the search text - and only occurrence of whole words matching
 ['term] will be indexed.]]
 
 [[regular-expression2][A constraint that specifies which sections are
 indexed for ['term]: only if the ID of the section matches
-['regular-expression2] exactly will that section be indexed for occurances
+['regular-expression2] exactly will that section be indexed for occurrences
 of ['term].
 
 For example:
 
    `myclass "" "mylib.examples.*"`
    
-Will index occurances of "myclass" as a whole word only in sections
+Will index occurrences of "myclass" as a whole word only in sections
 whose ID begins "mylib.examples", while:
 
    `myclass "" "(?!mylib.introduction.*).*"`
    
-will index occurances of "myclass" in any section, except those whose
+will index occurrences of "myclass" in any section, except those whose
 ID's begin "mylib.introduction".
 
 If this field is omitted or is "", then all sections are indexed for this term.]]
 
-[[category][Optionally an index category to place occurances of
+[[category][Optionally an index category to place occurrences of
 ['term] in.  If you have multiple indexes then this is the name
 assigned to the indexes "type" attribute.
 ]]
@@ -439,7 +439,7 @@ on how they were seen in the source file.  These may then be included
 in a specialised index whose "type" attribute has the same category name.
 
 [important
-When actually indexing a document, the scanner will not index just any old occurance of the
+When actually indexing a document, the scanner will not index just any old occurrence of the
 terms found in the source files.  Instead it searches for class definitions or function or
 typedef declarations.  This reduces the number of spurious matches placed in the index, but 
 may also miss some legitimate terms: refer to the /define-scanner/ command for information on how to
@@ -458,7 +458,7 @@ and should use all forward slashes in it's file name.]]
 [[file-name-regex][A regular expression: any file in the directory whose name
 matches the regular expression will be scanned for terms to index.]]
 
-[[recurse][An optional boolian value - either "true" or "false" - that
+[[recurse][An optional boolean value - either "true" or "false" - that
 indicates whether to recurse into subdirectories.  This defaults to "false"]]
 ]
 
@@ -519,11 +519,11 @@ specialized index with the same type attribute]]
 a match against this expression will be transformed by the next two arguments.]]
 [[xml-regex-formatter][A regular expression format string that extracts the salient information from whatever
 matched the ['file-search-expression] in the source file, and creates ['a new regular expression] that will
-be used to search the document being indexed for occurances of this index term.]]
+be used to search the document being indexed for occurrences of this index term.]]
 [[term-formatter][A regular expression format string that extracts the salient information from whatever
 matched the ['file-search-expression] in the source file, and creates the index term that will appear in
 the index.]]
-[[id-filter][Optional.  A regular expression that resticts the section-id's that are searched in the document being indexed: 
+[[id-filter][Optional.  A regular expression that restricts the section-id's that are searched in the document being indexed: 
 only sections whose ID attribute matches this expression exactly will be considered for indexing terms found by this scanner.]]
 [[filename-filter][Optional.  A regular expression that restricts which files are scanned by this scanner: only files whose file name
 matches this expression exactly will be scanned for index terms to use.  Note that the filename matched against this may
@@ -555,7 +555,7 @@ the ['xml-regex-formatter] field to something more permissive, for example:
 
    !define-scanner class_name "^[[:space:]]*(template[[:space:]]*<[^;:{]+>[[:space:]]*)?(class|struct)[[:space:]]*(\<\w+\>([[:blank:]]*\([^)]*\))?[[:space:]]*)*(\<\w*\>)[[:space:]]*(<[^;:{]+>)?[[:space:]]*(\{|:[^;\{()]*\{)" "\\<\5\\>" \5
 
-Will look for ['any] occurance of whatever class names the scanner may find in the documentation.
+Will look for ['any] occurrence of whatever class names the scanner may find in the documentation.
 
 [h4 Debugging]
 

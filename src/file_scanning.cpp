@@ -170,14 +170,16 @@ void scan_file(const char* file)
                   //
                   // Merge the search terms:
                   //
-                  const_cast<boost::regex&>(pos.first->search_text) = "(?:" + pos.first->search_text.str() + ")|(?:" + info.search_text.str() + ")";
+                  const_cast<boost::regex&>(pos.first->search_text) = 
+                     "(?:" + pos.first->search_text.str() + ")|(?:" + info.search_text.str() + ")";
                }
                if(pos.first->search_id != info.search_id)
                {
                   //
                   // Merge the ID constraints:
                   //
-                  const_cast<boost::regex&>(pos.first->search_id) = "(?:" + pos.first->search_id.str() + ")|(?:" + info.search_id.str() + ")";
+                  const_cast<boost::regex&>(pos.first->search_id) = 
+                     "(?:" + pos.first->search_id.str() + ")|(?:" + info.search_id.str() + ")";
                }
             }
          }
@@ -337,7 +339,8 @@ void process_script(const char* script)
       }
       else if(regex_match(line, what, define_scanner_parser))
       {
-         add_file_scanner(unquote(what.str(1)), unquote(what.str(2)), unquote(what.str(3)), unquote(what.str(4)), unquote(what.str(5)), unquote(what.str(6)));
+         add_file_scanner(unquote(what.str(1)), unquote(what.str(2)), unquote(what.str(3)), 
+            unquote(what.str(4)), unquote(what.str(5)), unquote(what.str(6)));
       }
       else if(regex_match(line, what, scan_dir_parser))
       {
@@ -423,14 +426,16 @@ void process_script(const char* script)
                   //
                   // Merge the search terms:
                   //
-                  const_cast<boost::regex&>(pos.first->search_text) = "(?:" + pos.first->search_text.str() + ")|(?:" + info.search_text.str() + ")";
+                  const_cast<boost::regex&>(pos.first->search_text) = 
+                     "(?:" + pos.first->search_text.str() + ")|(?:" + info.search_text.str() + ")";
                }
                if(pos.first->search_id != info.search_id)
                {
                   //
                   // Merge the ID constraints:
                   //
-                  const_cast<boost::regex&>(pos.first->search_id) = "(?:" + pos.first->search_id.str() + ")|(?:" + info.search_id.str() + ")";
+                  const_cast<boost::regex&>(pos.first->search_id) = 
+                     "(?:" + pos.first->search_id.str() + ")|(?:" + info.search_id.str() + ")";
                }
             }
          }

@@ -165,7 +165,35 @@ bool can_contain_indexterm(const char* name)
 {
    static const boost::array<const char*, 257> names = 
    {
-      "abbrev", "accel", "ackno", "acronym", "action", "answer", "appendix", "appendixinfo", "application", "article", "articleinfo", "artpagenums", "attribution", "authorinitials", "bibliocoverage", "bibliodiv", "biblioentry", "bibliography", "bibliographyinfo", "biblioid", "bibliomisc", "bibliomixed", "bibliomset", "bibliorelation", "biblioset", "bibliosource", "blockinfo", "blockquote", "bookinfo", "bridgehead", "callout", "caution", "chapter", "chapterinfo", "citation", "citebiblioid", "citetitle", "city", "classname", "classsynopsisinfo", "code", "collabname", "command", "computeroutput", "confdates", "confnum", "confsponsor", "conftitle", "constant", "constraintdef", "contractnum", "contractsponsor", "contrib", "corpauthor", "corpcredit", "corpname", "country", "database", "date", "dedication", "edition", "email", "emphasis", "entry", "envar", "errorcode", "errorname", "errortext", "errortype", "example", "exceptionname", "fax", "figure", "filename", "firstname", "firstterm", "foreignphrase", "formalpara", "funcparams", "funcsynopsisinfo", "function", "glossary", "glossaryinfo", "glossdef", "glossdiv", "glossentry", "glosssee", "glossseealso", "glossterm", "guibutton", "guiicon", "guilabel", "guimenu", "guimenuitem", "guisubmenu", "hardware", "highlights", "holder", "honorific", "important", "index", "indexinfo", "informalexample", "informalfigure", "initializer", "interface", "interfacename", "invpartnumber", "isbn", "issn", "issuenum", "itemizedlist", "itermset", "jobtitle", "keycap", "keycode", "keysym", "label", "legalnotice", "lineage", "lineannotation", /*"link", */"listitem", "literal", "literallayout", "lotentry", "manvolnum", "markup", "medialabel", "member", "methodname", "modespec", "modifier", "mousebutton", "msgaud", "msgexplan", "msglevel", "msgorig", "msgtext", "note", "objectinfo", "olink", "option", "optional", "orderedlist", "orgdiv", "orgname", "otheraddr", "othername", "package", "pagenums", "para", "parameter", "partinfo", "partintro", "phone", "phrase", "pob", "postcode", "preface", "prefaceinfo", "procedure", "productname", "productnumber", "programlisting", "prompt", "property", "pubdate", "publishername", "pubsnumber", "qandadiv", "qandaset", "question", "quote", "refentry", "refentryinfo", "refentrytitle", "referenceinfo", "refmeta", "refmiscinfo", "refpurpose", "refsect1", "refsect1info", "refsect2", "refsect2info", "refsect3", "refsect3info", "refsection", "refsectioninfo", "refsynopsisdiv", "refsynopsisdivinfo", "releaseinfo", "remark", "returnvalue", "revdescription", "revnumber", "revremark", "screen", "screeninfo", "sect1", "sect1info", "sect2", "sect2info", "sect3", "sect3info", "sect4", "sect4info", "sect5", "sect5info", "section", "sectioninfo", "seg", "segtitle", "seriesvolnums", "setindex", "setindexinfo", "setinfo", "sgmltag", "shortaffil", "sidebar", "sidebarinfo", "simpara", "simplesect", "state", "step", "street", "structfield", "structname", "subtitle", "surname", "symbol", "synopsis", "systemitem", "table", "task", "taskprerequisites", "taskrelated", "tasksummary", "td", "term", "termdef", "th", "tip", /*"title",*/ "titleabbrev", "tocback", "tocentry", "tocfront", "token", "type", "ulink", "uri", "userinput", "variablelist", "varname", "volumenum", "warning", "wordasword", "year"
+      "abbrev", "accel", "ackno", "acronym", "action", "answer", "appendix", "appendixinfo", "application", 
+      "article", "articleinfo", "artpagenums", "attribution", "authorinitials", "bibliocoverage", "bibliodiv", 
+      "biblioentry", "bibliography", "bibliographyinfo", "biblioid", "bibliomisc", "bibliomixed", "bibliomset", 
+      "bibliorelation", "biblioset", "bibliosource", "blockinfo", "blockquote", "bookinfo", "bridgehead", "callout", 
+      "caution", "chapter", "chapterinfo", "citation", "citebiblioid", "citetitle", "city", "classname", "classsynopsisinfo", 
+      "code", "collabname", "command", "computeroutput", "confdates", "confnum", "confsponsor", "conftitle", "constant", 
+      "constraintdef", "contractnum", "contractsponsor", "contrib", "corpauthor", "corpcredit", "corpname", "country", 
+      "database", "date", "dedication", "edition", "email", "emphasis", "entry", "envar", "errorcode", "errorname", "errortext", 
+      "errortype", "example", "exceptionname", "fax", "figure", "filename", "firstname", "firstterm", "foreignphrase", 
+      "formalpara", "funcparams", "funcsynopsisinfo", "function", "glossary", "glossaryinfo", "glossdef", "glossdiv", 
+      "glossentry", "glosssee", "glossseealso", "glossterm", "guibutton", "guiicon", "guilabel", "guimenu", "guimenuitem", 
+      "guisubmenu", "hardware", "highlights", "holder", "honorific", "important", "index", "indexinfo", "informalexample", 
+      "informalfigure", "initializer", "interface", "interfacename", "invpartnumber", "isbn", "issn", "issuenum", "itemizedlist", 
+      "itermset", "jobtitle", "keycap", "keycode", "keysym", "label", "legalnotice", "lineage", "lineannotation", 
+      /*"link", */"listitem", "literal", "literallayout", "lotentry", "manvolnum", "markup", "medialabel", "member", 
+      "methodname", "modespec", "modifier", "mousebutton", "msgaud", "msgexplan", "msglevel", "msgorig", "msgtext", "note", 
+      "objectinfo", "olink", "option", "optional", "orderedlist", "orgdiv", "orgname", "otheraddr", "othername", "package", 
+      "pagenums", "para", "parameter", "partinfo", "partintro", "phone", "phrase", "pob", "postcode", "preface", "prefaceinfo", 
+      "procedure", "productname", "productnumber", "programlisting", "prompt", "property", "pubdate", "publishername", 
+      "pubsnumber", "qandadiv", "qandaset", "question", "quote", "refentry", "refentryinfo", "refentrytitle", "referenceinfo", 
+      "refmeta", "refmiscinfo", "refpurpose", "refsect1", "refsect1info", "refsect2", "refsect2info", "refsect3", "refsect3info", 
+      "refsection", "refsectioninfo", "refsynopsisdiv", "refsynopsisdivinfo", "releaseinfo", "remark", "returnvalue", 
+      "revdescription", "revnumber", "revremark", "screen", "screeninfo", "sect1", "sect1info", "sect2", "sect2info", "sect3", 
+      "sect3info", "sect4", "sect4info", "sect5", "sect5info", "section", "sectioninfo", "seg", "segtitle", "seriesvolnums", 
+      "setindex", "setindexinfo", "setinfo", "sgmltag", "shortaffil", "sidebar", "sidebarinfo", "simpara", "simplesect", 
+      "state", "step", "street", "structfield", "structname", "subtitle", "surname", "symbol", "synopsis", "systemitem", 
+      "table", "task", "taskprerequisites", "taskrelated", "tasksummary", "td", "term", "termdef", "th", "tip", /*"title",*/ 
+      "titleabbrev", "tocback", "tocentry", "tocfront", "token", "type", "ulink", "uri", "userinput", "variablelist", 
+      "varname", "volumenum", "warning", "wordasword", "year"
    };
    static std::set<const char*, string_cmp> permitted;
 
@@ -556,7 +584,7 @@ int main(int argc, char* argv[])
       }
       else
       {
-         std::cerr << "Unrecognosed option " << argv[i] << std::endl;
+         std::cerr << "Unrecognised option " << argv[i] << std::endl;
          return 1;
       }
    }
