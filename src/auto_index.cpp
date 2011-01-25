@@ -552,6 +552,8 @@ int main(int argc, char* argv[])
       }
       else if(std::strncmp(argv[i], "scan=", 5) == 0)
       {
+         if(!exists(boost::filesystem::path(argv[i] + 5)))
+            throw std::runtime_error("Error the file requested for scanning does not exist: " + std::string(argv[i] + 5));
          scan_file(argv[i] + 5);
       }
       else if(std::strncmp(argv[i], "script=", 7) == 0)

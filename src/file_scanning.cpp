@@ -331,6 +331,8 @@ void process_script(const char* script)
                f = base.string();
             }
          }
+         if(!exists(boost::filesystem::path(f)))
+            throw std::runtime_error("Error the file requested for scanning does not exist: " + f);
          scan_file(f.c_str());
       }
       else if(regex_match(line, what, debug_parser))
@@ -365,6 +367,8 @@ void process_script(const char* script)
          }
          if(verbose)
             std::cout << "Scanning directory " << d << std::endl;
+         if(!exists(boost::filesystem::path(d)))
+            throw std::runtime_error("Error the path requested for scanning does not exist: " + d);
          scan_dir(d, m, r);
       }
       else if(regex_match(line, what, rewrite_parser))
