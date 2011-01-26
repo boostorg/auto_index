@@ -180,7 +180,23 @@ entry that uses the section title is not created.  Defaults to "on"]]
 prints progress information - generally useful only for debugging purposes.]]
 [[<auto-index-prefix>filename][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
 [[<auto-index-type>element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
-	defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.]]
+	defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.
+   The actual list of available options depends upon the document type, the following table gives the available options:]]
+]
+
+[table
+[[Document Type][Available Index Types]]
+[[book][appendix index article chapter reference part]]
+[[article][section appendix index sect1]]
+[[library][See Chapter]]
+[[chapter][section index sect1]]
+[[part][appendix index article chapter reference]]
+[[appendix][section index sect1]]
+[[preface][section index sect1]]
+[[qandadiv][N/A: an index would have to be placed within a subsection of the document.]]
+[[qandaset][N/A: an index would have to be placed within a subsection of the document.]]
+[[reference][N/A: an index would have to be placed within a subsection of the document.]]
+[[set][N/A: an index would have to be placed within a subsection of the document.]]
 ]
 
 

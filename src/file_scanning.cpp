@@ -117,6 +117,8 @@ void scan_file(const char* file)
       std::cout << "Scanning file... " << file << std::endl;
    std::string text;
    std::ifstream is(file);
+   if(!is.peek() || !is.good())
+      throw std::runtime_error(std::string("Unable to read from file: ") + file);
    load_file(text, is);
 
    for(file_scanner_set_type::iterator pscan = file_scanner_set.begin(); pscan != file_scanner_set.end(); ++pscan)

@@ -57,7 +57,8 @@ rule auto-index-test ( target-name : input-file : output-file ? : options * )
 
 auto-index-test test1 : type_traits.docbook : : script=index.idx ;
 auto-index-test test2 : type_traits.docbook : : --internal-index script=index.idx ;
-auto-index-test test3 : type_traits.docbook : : --internal-index index-type=appendix script=index.idx ;
+auto-index-test test3 : type_traits.docbook : : --internal-index index-type=index script=index.idx ;
+
 
 
 

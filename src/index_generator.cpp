@@ -19,6 +19,111 @@ std::string get_next_index_id()
    return s.str();
 }
 //
+// Validate that the container for the Index is in a valid place:
+//
+void check_index_type_and_placement(const std::string& parent, const std::string& container)
+{
+   if(container == "section")
+   {
+      if((parent != "appendix")
+         && (parent != "article")
+         && (parent != "chapter")
+         && (parent != "partintro")
+         && (parent != "preface")
+         && (parent != "section"))
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "appendix")
+   {
+      if((parent != "article")
+         && (parent != "book")
+         && (parent != "part"))
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "index")
+   {
+      if((parent != "appendix")
+         && (parent != "article")
+         && (parent != "book")
+         && (parent != "chapter")
+         && (parent != "part")
+         && (parent != "preface")
+         && (parent != "sect1")
+         && (parent != "sect2")
+         && (parent != "sect3")
+         && (parent != "sect4")
+         && (parent != "sect5")
+         && (parent != "section")
+         )
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if((container == "article") || (container == "chapter") || (container == "reference"))
+   {
+      if((parent != "book")
+         && (parent != "part"))
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "part")
+   {
+      if(parent != "book")
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "refsect1")
+   {
+      if(parent != "refentry")
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "refsect2")
+   {
+      if(parent != "refsect1")
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "refsect3")
+   {
+      if(parent != "refsect2")
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "refsection")
+   {
+      if((parent != "refsection") && (parent != "refentry"))
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "sect1")
+   {
+      if((parent != "appendix")
+         && (parent != "article")
+         && (parent != "chapter")
+         && (parent != "partintro")
+         && (parent != "preface")
+         )
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "sect2")
+   {
+      if(parent != "sect1")
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "sect3")
+   {
+      if(parent != "sect2")
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "sect4")
+   {
+      if(parent != "sect3")
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else if(container == "sect5")
+   {
+      if(parent != "sect4")
+         throw std::runtime_error("Error: element " + container + " can not appear inside the container " + parent + ": try using a different value for property \"auto-index-type\".");
+   }
+   else
+   {
+      throw std::runtime_error("Error: element " + container + " is unknown, and can not be used as a container for an index: try using a different value for property \"auto-index-type\".");
+   }
+}
+//
 // Generate indexes using our own internal method:
 //
 void generate_indexes()
@@ -170,6 +275,10 @@ void generate_indexes()
          }
       }
       node->name = internal_index_type;
+      boost::tiny_xml::element_ptr p(node->parent);
+      while(p->name.empty())
+         p = boost::tiny_xml::element_ptr(p->parent);
+      check_index_type_and_placement(p->name, node->name);
       node->attributes.clear();
       if(!has_title)
       {
