@@ -387,6 +387,12 @@ such as:
 [pre Indexing 990 terms... ]
    
 If you don't see that, or if it's indexing 0 terms then something is wrong!
+
+Likewise when index generation is complete, auto-index will emit another message:
+
+[pre 38 Index entries were created.]
+
+Again if you see that 0 entries were created then something is wrong!
    
 [h4 Step 7: Iterate]
 
@@ -621,9 +627,9 @@ string for matching against the regular expressions representing each index term
 for the most part, you can assume that you're indexing plain text when writing regular expressions.
 * Named XML entities for &, ", ', < or > are converted to their corresponding characters before indexing 
 a section of text.  However, decimal or hex escape sequences are not currently converted.
-* Index terms are inserted into the XML sequence just as they are, and no attempt is made to
-escape them to valid XML.  Normally these are C++ identifiers anyway so that's not an issue, but
-you should take care not to define scanners that create index terms containing &, ", ', < or >.
+* Index terms are assumed to be plain text (whether they originate from the script file
+or from scanning source files) and the characters &, ", < and > will be escaped to
+&amp; &quot; &lt; and &gt; respectively.
 
 [endsect]
 

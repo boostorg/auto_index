@@ -107,6 +107,34 @@ void load_file(std::string& s, std::istream& is)
    }
 }
 //
+// Helper to convert string from external source into valid XML:
+//
+std::string escape_to_xml(const std::string& in)
+{
+   std::string result;
+   for(std::string::size_type i = 0; i < in.size(); ++i)
+   {
+      switch(in[i])
+      {
+      case '&':
+         result.append("&amp;");
+         break;
+      case '<':
+         result.append("&lt;");
+         break;
+      case '>':
+         result.append("&gt;");
+         break;
+      case '"':
+         result.append("&quot;");
+         break;
+      default:
+         result.append(1, in[i]);
+      }
+   }
+   return result;
+}
+//
 // Scan a source file for things to index:
 //
 void scan_file(const char* file)
@@ -153,7 +181,7 @@ void scan_file(const char* file)
          try
          {
             index_info info;
-            info.term = i->format(pscan->term_formatter);
+            info.term = escape_to_xml(i->format(pscan->term_formatter));
             info.search_text = i->format(pscan->format_string);
             info.category = pscan->type;
             if(!pscan->section_filter.empty())
@@ -387,7 +415,7 @@ void process_script(const char* script)
          while(i != j)
          {
             index_info info;
-            info.term = unquote(*i);
+            info.term = escape_to_xml(unquote(*i));
             // Erase all entries that have a category in our scanner set,
             // plus any entry with no category at all:
             index_terms.erase(info);
@@ -412,7 +440,7 @@ void process_script(const char* script)
             // in order for the term to be indexed (optional)
             // what[4] is the index category to place the term in (optional).
             index_info info;
-            info.term = unquote(what.str(1));
+            info.term = escape_to_xml(unquote(what.str(1)));
             std::string s = unquote(what.str(2));
             if(s.size())
                info.search_text = boost::regex(s, boost::regex::icase|boost::regex::perl);

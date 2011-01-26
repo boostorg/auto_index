@@ -623,6 +623,7 @@ int main(int argc, char* argv[])
    std::ofstream os(outfile.c_str());
    os << header << std::endl;
    boost::tiny_xml::write(*xml, os);
+   std::cout << index_entries.size() << " Index entries were created." << std::endl;
 
    }
    catch(boost::exception& e)
