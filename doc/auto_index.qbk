@@ -1,6 +1,6 @@
 [article AutoIndex
-    [quickbook 1.4]
-    [copyright 2008 John Maddock]
+    [quickbook 1.5]
+    [copyright 2008, 2011 John Maddock]
     [license
         Distributed under the Boost Software License, Version 1.0.
         (See accompanying file LICENSE_1_0.txt or copy at
@@ -20,10 +20,22 @@ have to manually add a large amount of `<indexterm>` markup:
 in fact one `<indexterm>` for each occurrence of each term to be
 indexed.  
 
-Instead AutoIndex will scan one or more C\/C++ header files
+Instead AutoIndex will automatically scan one or more C\/C++ header files
 and extract all the ['function], ['class], ['macro] and ['typedef] 
 names that are defined by those headers, and then insert the 
-`<indexterm>`'s into the XML document for you.
+`<indexterm>`s into the XML document for you.
+
+AutoIndex can also scan ['text files], usually Quickbook files, but
+in this case you need to manually provide a simple list of index terms
+(in a script file, optionally using regular expressions).
+This may allow the user to find references to more descriptive items
+that may not occur in the C++ classes and functions header files.
+
+Providing a manual list of terms in the text to index is a tedious task 
+(especially handling plurals and variants),
+and requires enough knowledge of the library to guess what users may be seeking to know,
+but at least the real 'grunt work' of
+finding the term and listing the page number is automated.
 
 AutoIndex creates index entries as follows - for each occurrence of 
 each search term, it creates two index entries - one has the search term
@@ -90,13 +102,14 @@ build requirements in the Jamfile:
 <format>html:<xsl:param>generate.index=0   # Don't let the XSL stylesheets generate indexes.
 ]
 
-[endsect]
+[endsect] [/section:overview Overview]
+
 
 [section:tut Getting Started and Tutorial]
 
-[h4 Step 1: Build the tool]
+[h4 Step 1: Build the AutoIndex tool]
 
-[/ [note This step is strictly optional, but can speed up build times.]]
+[/ [note This step is strictly optional, but very desirable to speed up build times.]]
 
 cd into `tools/auto_index/build` and invoke bjam as:
 
@@ -106,22 +119,24 @@ Optionally pass the name of the compiler toolset you want to use to bjam as well
 
    bjam release gcc
    
-Now open up your user-config.jam file and at the end add the line:
+Now open up your `user-config.jam` file and at the end of the file add the line:
 
 [pre 
-using auto-index : ['full-path-of-executable] ; 
+using auto-index : ['full-path-of-executable-auto-index.exe] ; 
 ]
 
 [note 
-This declaration must go towards the end of user-config.jam, or in any case after the Boostbook initialisation.
+This declaration must go towards the end of `user-config.jam`, or in any case after the Boostbook initialisation.
 
-Also note that Windows users must use forward slashes in the paths in user-config.jam]
+Also note that Windows users must use forward slashes in the paths in `user-config.jam`]
 
 Finally note that `tools/auto_index/auto-index.jam` gets copied into the same directory as the rest of the Boost.Build tools
 (under `tools/build/v2/tools` in your main Boost tree): this is a temporary fix that will go away 
 if the tool is accepted into Boost.
 
-[h4 Step 2: Configure Boost.Build]
+[caution If you move to a new machine you will need to do this!  An error message will warn about missing `auto-index.jam`. ]
+
+[h4 Step 2: Configure Boost.Build to use AutoIndex]
 
 Assuming you have a Jamfile for building your documentation that looks
 something like:
@@ -129,7 +144,7 @@ something like:
 [pre 
 boostbook standalone
     :
-        type_traits
+        mylibrary
     :
         # build requirements go here:
     ;
@@ -140,25 +155,45 @@ Then add the line:
 [pre using auto-index ; ]
    
 to the start of the Jamfile, and then add whatever auto-index options
-you want to the build requirements section, for example:
+you want to the ['build requirements section], for example:
 
 [pre
    boostbook standalone
     :
-        type_traits
+        mylibrary
     :
-        # build requirements go here:
+        # Build requirements go here:
         
-        # this one turns on indexing:
+        # <auto-index>on (or off) one turns on (or off) indexing:
         <auto-index>on
-        # choose indexing method for pdf's:
+        
+        # Turns on (or off) auto-index-verbose for diagnostic info.
+        # This is highly recommended until you have got all the many details correct!
+        # (uses \/bin auto-index-verbose folders).
+        <auto-index-verbose>on 
+        
+        # Choose the indexing method (separately for html and PDF) - see manual.
+        # Choose indexing method for PDFs:
         <format>pdf:<auto-index-internal>off
-        # choose indexing method for html:
+        
+        # Choose indexing method for html:
         <format>html:<auto-index-internal>on
-        # set the name of the script file to use:
+        
+        # Set the name of the script file to use (index.idx is popular):
         <auto-index-script>index.idx
+        # But see <auto-index-prefix> to use for the scan path to scan for script files.
+        
+        # <auto-index-prefix>..\/..\/.. will get you back up to /mylibrary,
+        # so !scan-path "boost\/mylibrary/" is where headers *.hpp will be.
+        # and \/libs\/mylibrary for other files.
+        # Without this you would need !scan-path "..\/..\/..\/boost\/mylibrary"
+        <auto-index-prefix>..\/..\/..
+
+        # Tell Quickbook that is should enable indexing.
+        <quickbook-define>enable_index ;
+      
     ;
-]
+] [/pre]
 
 The available options are:
 
@@ -177,8 +212,11 @@ index entries for each term found - one uses the term itself as the primary
 index key, the other uses the enclosing section name.  When off the index
 entry that uses the section title is not created.  Defaults to "on"]]
 [[<auto-index-verbose>off/on][Defaults to "off".  When turned on AutoIndex
-prints progress information - generally useful only for debugging purposes.]]
-[[<auto-index-prefix>filename][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
+prints progress information - useful for debugging purposes during setup.]]
+[[<auto-index-prefix>filename][Specifies a directory to apply as a prefix to all relative file paths in the script file.
+For Boost standard layout, <auto-index-prefix>..\/..\/.. will get you back up to /mylibrary,
+so !scan-path "boost/mylibrary/" is where headers *.hpp will be and \/libs\/mylibrary for other files.
+Without this you would need !scan-path "..\/..\/..\/boost\/mylibrary"]]
 [[<auto-index-type>element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
 	defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.
    The actual list of available options depends upon the document type, the following table gives the available options:]]
@@ -199,30 +237,76 @@ prints progress information - generally useful only for debugging purposes.]]
 [[set][N/A: an index would have to be placed within a subsection of the document.]]
 ]
 
+It is considerate to make the [*use of auto-index optional] in Boost.Build,
+to allow users who do not have auto-index installed to still be able to build your documentation.
 
-It is possible to make the use of auto-index optional in Boost.Build, to allow
-users who do not have auto-index installed to build your documentation. One
-method of setting up optional auto-index support is to place all auto-index
-configuration in a the body of a bjam if statement:
+One method of setting up optional auto-index support is to place all auto-index
+configuration in a the body of a ['bjam if statement].
 
-  if --enable-index in  [ modules.peek : ARGV ]
+This also very convenient while you are refining your documentation,
+to allow you to decide to build indexes, or not:
+building indexes can take long time, if you are just correcting typos,
+you won't want wait while you keep rebuilding the index!
+
+One method of setting up optional auto-index support is to place all 
+auto-index configuration in a the body of a bjam if statement:
+
+[pre
+  if --enable-index in  \[ modules.peek : ARGV \]
   {
+     ECHO "Building the  docs with automatic index generation enabled." ;
+
      using auto-index ;
      project : requirements
           <auto-index>on
           <auto-index-script>index.idx
-          #... other auto-index options here...
+          
+           ... other auto-index options here...
           ;
   }
- 
+  else
+	{
+	   ECHO "Building the my_library docs with automatic index generation disabled. To get an auto-index, try building with --enable-index." ;
+	}
+] [/pre]
+
+To use this, you need to cd to your docs folder, for example:
+
+ cd \boost-sandbox\guild\mylibrary\libs\mylibrary\doc
+  
+and then run `bjam` to build the docs without index, for example: 
+  
+  bjam -a html > mylibrary_html.log
+  
+or with index(es)  
+  
+  bjam -a html --enable-index > mylibrary_html_index.log
+  
+[tip Always send the output to a log file.
+It will contain of lot of stuff, but is invaluable to check if all has gone right,
+and else diagnose what has gone wrong.
+]  [/tip]
+
+[tip A return code of 0 is not a reliable indication
+that you have got what you really want - 
+inspecting the log file is the only certain way.
+] [/tip]
+
+[tip If you upgrade compiler version, for example MSVC from 9 to 10,
+then you will need to rebuild Autoindex
+to avoid what Microsoft call a 'side-by-side' error.
+And make sure that the autoindex.exe version you are using is the new one.
+] [/tip]
+
+
 [h4 Step 3: Add indexes to your documentation]
 
-To add a single index to a BoostBook\/Docbook document, then add
-`<index/>` at the location where you want the index to appear.  The
-index will be rendered as a separate section when the documentation
+To add a single "include everything"  index to a Quickbook\/BoostBook\/Docbook document,
+then add `<index/>` at the location where you want the index to appear.
+The index will be rendered as a separate section when the documentation
 is built.
 
-To add multiple indexes, then give each one a title and set it's
+To add multiple indexes, then give each one a title and set its
 `type` attribute to specify which terms will be included, for example
 to place the ['function], ['class], ['macro] or ['typedef] names
 indexed by ['auto_index] in separate indexes along with a main
@@ -253,53 +337,80 @@ to honor the "type" attribute on each index as by default [/[*they do not do thi
 You can turn the feature on by adding `<xsl:param>index.on.type=1` to your projects
 requirements in the Jamfile.]
   
-In quickbook, you add the same markup but enclose it in an escape:
+In Quickbook, you add the same markup but enclose it between two triple-tick \'\'\' escapes,
+thus
 
-   '''<index/>'''
+[pre    \'\'\'<index\/>\'\'\' ]
    
-If you are using auto-index's internal index generation (usually recommended for HTML output)
+If you are writing a Quickbook document with Doxygen reference documentation,
+the position of a `[xinclude autodoc.xml]` line in the Quickbook file
+determines the location of the Doxygen references section.
+You will almost certainly want this as well.
+
+[pre
+  \[xinclude autodoc.xml\] # Using ['Doxygen reference documentation].
+]
+
+You can control the ['displayed name] of the Doxygen reference section thus
+by adding to the end of the Doxygen autodoc section in your jamfile.
+
+[pre
+  <xsl:param>"boost.doxygen.reftitle=Boost.mylibrary C++ Reference"
+]
+   
+If you are using auto-index's internal index generation on
+
+[pre
+<auto-index-internal>on
+]
+(usually recommended for HTML output, and not the default)
 then you can also decide what kind of XML wrapper the generated index is placed in.
 By default this is a `<section>...</section>` XML block (this replaces the original
 `<index>...</index>` block).  However, depending upon the structure of the document
 and whether or not you want the index on a separate page - or else on the front page after
 the TOC - you may want to place the index inside a different type of XML block.  For example
-if your document uses `<chapter>` top level content rather than `<section>`'s then
+if your document uses `<chapter>` top level content rather than `<section>`s then
 it may be preferable to place the index in a `<chapter>` or `<appendix>` block.
 You can also place the index inside an `<index>` block if you prefer, in which case the index
-does not appear in on a page of it's own, but after the TOC in the HTML output.
+does not appear in on a page of its own, but after the TOC in the HTML output.
 
 You control the type of XML block used by setting the =<auto-index-type>element-name= 
 attribute in the Jamfile, or via the `index-type=element-name` command line option to
-auto-index itself.  For example, to place the index in an appendix your Jamfile might 
+auto-index itself.  For example, to place the index in an appendix, your Jamfile might 
 look like:
 
 [pre
 using quickbook ;
 using auto-index ;
 
-xml type_traits : type_traits.qbk ;
+xml mylibrary : mylibary.qbk ;
 boostbook standalone
     :
-        type_traits
+        mylibrary
     :
-        # indexing is on:
-        <auto-index>on                          
-        # PDF's rely on the XSL stylesheets to generate the index:
-        <format>pdf:<auto-index-internal>off    
+        # auto-indexing is on:
+        <auto-index>on  
+        
+        # PDFs rely on the XSL stylesheets to generate the index:
+        <format>pdf:<auto-index-internal>off  
+        
         # HTML output uses auto-index to generate the index:
         <format>html:<auto-index-internal>on
+        
         # Name of script file to use:
         <auto-index-script>index.idx
+        
         # Set the XML wrapper for HML Indexes to "appendix":
         <format>html:<auto-index-type>appendix
+        
         # Turn on multiple index support:
         <xsl:param>index.on.type=1
 ]
    
-[h4 Step 4: Create the script file]
+[h4 Step 4: Create the script file -  to control what to index]
 
-AutoIndex works by reading a script file that tells it what to index,
-at it's simplest it will scan one or more headers for terms that
+AutoIndex works by reading a script file that tells it what to index.
+At its simplest, it will scan one or more headers for terms that
 should be indexed in the documentation.  So for example to scan
 "myheader.hpp" the script file would just contain:
 
@@ -308,12 +419,23 @@ should be indexed in the documentation.  So for example to scan
 Or we can recursively scan through directories looking for all
 the files to scan whose name matches a particular regular expression:
 
-[pre !scan-path "..\/..\/..\/..\/boost\/math" ".*\.hpp" true ]
+[pre !scan-path "boost\/mylibrary" ".*\.hpp" true ]
    
-Note how each argument is whitespace separated and can be optionally
-enclosed in "double quotes".  The final ['true] argument indicates
-that subdirectories in `../../../../boost/math` should be searched
-in addition to that directory.
+Each argument is whitespace separated and can be optionally
+enclosed in "double quotes" (recommended).
+
+The final ['true] argument indicates
+that subdirectories in `/boost/math/mylibrary` should be searched
+recursively in addition to that directory.
+
+[caution The second ['file-name-regex] argument is a regular expression!]
+
+[caution The scan-path is modified by any setting of <auto-index-prefix>.
+The examples here assume that this is `<auto-index-prefix>../../..`
+so that `boost/mylibrary` will be your header files,
+`libs/mylibrary/docs` will be your docs, like .qbk
+`libs/mylibrary/examples` will be your examples, usually .cpp.
+]
 
 Often the ['scan] or ['scan-path] rules will bring in too many terms
 to search for, so we need to be able to exclude terms as well:
@@ -340,8 +462,9 @@ Will only index occurrences of "reflex" as a whole word, but:
 
    reflex \<reflex\w*\>
    
-will index occurrences of "reflex", reflexing" and 
+will index occurrences of "reflex", "reflexing" and 
 "reflexed" all under the same entry ['reflex].
+You will very often need to use this to deal with plurals and other variants.
 
 This inclusion rule can also restrict the term to
 certain sections, and add an index category that
@@ -355,33 +478,58 @@ when AutoIndex uses them as an index entry:
 
    !rewrite-name "(?i)(?:A|The)\s+(.*)" "\1"
    
-[h4 Step 5: Add Manual Index Entries - Optional]
+Adding manual terms is most useful if you are using Quickbook to prepare
+your documentation.
 
-If you add manual `<indexentry>` markup to your docbook XML then these will be 
+If many terms that you believe users would seek in the index
+are used in the textual sections 
+(and that these terms may not used in the C++ code itself, or that you
+want to direct the user to the text rather than functions or classes),
+then you need to add terms.
+
+This may lead to too much indexing
+(especially if you have provided a Doxygen autodoc C++ reference section
+that provides a good way of getting the C++ functions etc).
+So it may be more useful to [*only] index the text part?
+
+[pre !scan-path "boost\/mylibrary" ".*\.qbk" true ]
+
+You could also scan the examples (.cpp) files.
+This will scan and may index any explanatory C++ comments too.
+If an example's output is appended as a comment
+then this text will also be scanned.
+   
+[h4 Step 5: Add Manual Index Entries to Docbook XML - Optional]
+
+If you add manual `<indexentry>` markup to your Docbook XML then these will be 
 passed through unchanged.  Please note however, that if you are using 
 auto-index's internal index generation then it only recognises
 `<primary>` and `<secondary>` elements within the `<indexterm>`.
 `<tertiary>`, `<see>` and `<seealso>` elements are not currently recognised
-and auto-index will emit a warning if these are used.  Likewise none of the 
-attributes which can be applied to these elements are used when
+and auto-index will emit a warning if these are used.
+
+Likewise none of the  attributes which can be applied to these elements are used when
 auto-index generates the index itself, with the exception of the "type" attribute.
-   
+
+ 
 [h4 Step 6: Build the Docs]
 
 Make sure that auto-index.jam is in your BOOST_BUILD_PATH, by either
 setting the environment variable BOOST_BUILD_PATH to point to the directory
-containing it, or by copying the file into 
-`boost-root/tools/build/v2/tools`.  Then you build the docs with either:
+containing it, or by copying the `auto-index.jam` file into 
+`boost-root/tools/build/v2/tools`.
 
-   bjam release
+Then you build the docs with either:
+
+   bjam release > mylibrary_html.log
 
 To build the html docs or:
 
-   bjam pdf release
+   bjam pdf release > mylibrary_pdf.log
 
 To build the pdf.
 
-During the build process you should see AutoIndex emit a message
+During the build process you should see AutoIndex emit a message in the log file
 such as:
 
 [pre Indexing 990 terms... ]
@@ -393,8 +541,13 @@ Likewise when index generation is complete, auto-index will emit another message
 [pre 38 Index entries were created.]
 
 Again if you see that 0 entries were created then something is wrong!
-   
-[h4 Step 7: Iterate]
+
+Examine the log file, and if the cause is not obvious, 
+make sure that you have [^<auto-index-verbose>on] and that
+[^!debug regular-expression directive] is at the head of the script file. 
+
+  
+[h4 Step 7: Iterate - to refine your index]
 
 Creating a good index is an iterative process, often the first step is
 just to add a header scanning rule to the script file and then generate
@@ -407,10 +560,13 @@ the documentation and see:
 Further rules can then be added to the script to handle these cases
 and the next iteration examined, and so on.
 
-[tip If you don't understand why a particular term is present in the index, try adding a ['!debug regular-expression] 
-directive to the [link autoindex.script_ref script file].]
+[tip If you don't understand why a particular term is (or is not) present in the index,
+try adding a ['!debug regular-expression] 
+directive to the [link autoindex.script_ref script file].
+] [/tip]
 
-[endsect]
+[endsect] [/section:tut Getting Started and Tutorial]
+
 
 [section:script_ref Script File Reference]
 
@@ -418,7 +574,8 @@ The following elements can occur in a script:
 
 [h4 Comments and blank lines]
 
-Blank lines consisting of only whitespace are ignored, so are lines that start with a '#'.
+Blank lines consisting of only whitespace are ignored, so are lines that [*start with] a '#'.
+(But, of course, you can't append \# comments onto the end of a line!).
 
 [h4 Simple Inclusions]
 
@@ -469,7 +626,7 @@ assigned to the indexes "type" attribute.
    !scan source-file-name
    
 Scans the C\/C++ source file ['source-file-name] for definitions of
-['function]'s, ['class]'s, ['macro]'s or ['typedef]'s and makes each of
+['function]s, ['class]s, ['macro]s or ['typedef]s and makes each of
 these a term to be indexed.  Terms found are assigned to the index category
 "function_name", "class_name", "macro_name" or "typedef_name" depending
 on how they were seen in the source file.  These may then be included
@@ -479,8 +636,8 @@ in a specialised index whose "type" attribute has the same category name.
 When actually indexing a document, the scanner will not index just any old occurrence of the
 terms found in the source files.  Instead it searches for class definitions or function or
 typedef declarations.  This reduces the number of spurious matches placed in the index, but 
-may also miss some legitimate terms: refer to the /define-scanner/ command for information on how to
-change this.
+may also miss some legitimate terms:
+refer to the /define-scanner/ command for information on how to change this.
 ]
 
 [h4 Directory and Source File Scanning]
@@ -490,7 +647,7 @@ change this.
 [variablelist
 [[directory-name][The directory to scan: this should be a path relative
 to the script file (or to the path specified with the prefix=path option on the command line) 
-and should use all forward slashes in it's file name.]]
+and should use all forward slashes in its file name.]]
 
 [[file-name-regex][A regular expression: any file in the directory whose name
 matches the regular expression will be scanned for terms to index.]]
@@ -579,22 +736,25 @@ Note that these defaults are not installed if you have provided your own version
 you want the default scanners to be in effect as well as your own, you should include the above in your script file.  
 It is also perfectly allowable to have multiple scanners with the same ['type], but with the other fields differing.
 
-Finally you should note that the default scanners are quite strict in what they will find, for example the class
+Finally you should note that the default scanners are quite strict
+in what they will find, for example the class
 scanner will only create index entries for classes that have class definitions of the form:
 
    class my_class : public base_classes
    {
       // etc
 
-In the documentation, so that simple mentions of the class name will ['not] get indexed, only the class synopsis if there is one.
-If this isn't how you want things, then include the ['class_name] scanner definition above in your script file, and change
+In the documentation, so that simple mentions of the class name will ['not] get indexed,
+only the class synopsis if there is one.
+If this isn't how you want things, then include the ['class_name] scanner definition
+above in your script file, and change
 the ['xml-regex-formatter] field to something more permissive, for example: 
 
    !define-scanner class_name "^[[:space:]]*(template[[:space:]]*<[^;:{]+>[[:space:]]*)?(class|struct)[[:space:]]*(\<\w+\>([[:blank:]]*\([^)]*\))?[[:space:]]*)*(\<\w*\>)[[:space:]]*(<[^;:{]+>)?[[:space:]]*(\{|:[^;\{()]*\{)" "\\<\5\\>" \5
 
 Will look for ['any] occurrence of whatever class names the scanner may find in the documentation.
 
-[h4 Debugging]
+[h4 Debugging scanning]
 
 If you see a term in the index, and you don't understand why it's there, add a ['debug] directive:
 
@@ -616,11 +776,16 @@ The section constraint is: .*qi.reference.parser_concepts.*
 The index type for this entry is: qi_index
 ]
 
-[endsect]
+This can produce a lot of output in your log file,
+but until you are satisfied with your file selection and scanning process,
+it is worth switching it on.
+
+[endsect] [/section:script_ref Script File Reference]
+
 
 [section:xml XML Handling]
 
-Auto-index is rather simplistic in it's handling of XML:
+Auto-index is rather simplistic in its handling of XML:
 
 * When indexing a document, all block content at the paragraph level gets collapsed into a single
 string for matching against the regular expressions representing each index term.  In other words,
@@ -631,7 +796,8 @@ a section of text.  However, decimal or hex escape sequences are not currently c
 or from scanning source files) and the characters &, ", < and > will be escaped to
 &amp; &quot; &lt; and &gt; respectively.
 
-[endsect]
+[endsect] [/section:xml XML Handling]
+
 
 [section:comm_ref Command Line Reference]
 
@@ -646,7 +812,7 @@ for terms to index.]]
 [[--no-duplicates][If a term occurs more than once in the same section, then
 include only one index entry.]]
 [[--internal-index][Specifies that auto_index should generate the actual
-indexes rather than inserting `<indexterm>`'s and leaving index generation
+indexes rather than inserting `<indexterm>`s and leaving index generation
 to the XSL stylesheets.]]
 [[--no-section-names][Prevents auto_index from using section names as index entries.]]
 [[prefix=pathname][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
@@ -654,5 +820,8 @@ to the XSL stylesheets.]]
 	defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.]]
 ]
 
-[endsect]
+[endsect]  [/section:comm_ref Command Line Reference]
+
+
+
 
