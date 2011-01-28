@@ -23,16 +23,16 @@
       The following elements can occur in a script:
     </p>
 <a name="autoindex.script_ref.comments_and_blank_lines"></a><h5>
-<a name="id1016394"></a>
+<a name="id869246"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.comments_and_blank_lines">Comments and
       blank lines</a>
     </h5>
 <p>
-      Blank lines consisting of only whitespace are ignored, so are lines that start
-      with a '#'.
+      Blank lines consisting of only whitespace are ignored, so are lines that <span class="bold"><strong>start with</strong></span> a '#'. (But, of course, you can't append
+      # comments onto the end of a line!).
     </p>
 <a name="autoindex.script_ref.simple_inclusions"></a><h5>
-<a name="id1016410"></a>
+<a name="id869267"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.simple_inclusions">Simple Inclusions</a>
     </h5>
 <pre class="programlisting"><span class="identifier">term</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression1</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression2</span> <span class="special">[</span><span class="identifier">category</span><span class="special">]]]</span>
@@ -99,15 +99,15 @@
 </dl>
 </div>
 <a name="autoindex.script_ref.source_file_scanning"></a><h5>
-<a name="id1016619"></a>
+<a name="id870626"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.source_file_scanning">Source File Scanning</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">source</span><span class="special">-</span><span class="identifier">file</span><span class="special">-</span><span class="identifier">name</span>
 </pre>
 <p>
       Scans the C/C++ source file <span class="emphasis"><em>source-file-name</em></span> for definitions
-      of <span class="emphasis"><em>function</em></span>'s, <span class="emphasis"><em>class</em></span>'s, <span class="emphasis"><em>macro</em></span>'s
-      or <span class="emphasis"><em>typedef</em></span>'s and makes each of these a term to be indexed.
+      of <span class="emphasis"><em>function</em></span>s, <span class="emphasis"><em>class</em></span>s, <span class="emphasis"><em>macro</em></span>s
+      or <span class="emphasis"><em>typedef</em></span>s and makes each of these a term to be indexed.
       Terms found are assigned to the index category "function_name", "class_name",
       "macro_name" or "typedef_name" depending on how they were
       seen in the source file. These may then be included in a specialised index
@@ -128,7 +128,7 @@
       </p></td></tr>
 </table></div>
 <a name="autoindex.script_ref.directory_and_source_file_scanning"></a><h5>
-<a name="id1016697"></a>
+<a name="id870704"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.directory_and_source_file_scanning">Directory
       and Source File Scanning</a>
     </h5>
@@ -141,7 +141,7 @@
 <dd><p>
             The directory to scan: this should be a path relative to the script file
             (or to the path specified with the prefix=path option on the command
-            line) and should use all forward slashes in it's file name.
+            line) and should use all forward slashes in its file name.
           </p></dd>
 <dt><span class="term">file-name-regex</span></dt>
 <dd><p>
@@ -157,7 +157,7 @@
 </dl>
 </div>
 <a name="autoindex.script_ref.excluding_terms"></a><h5>
-<a name="id1016822"></a>
+<a name="id870828"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.excluding_terms">Excluding Terms</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">exclude</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">list</span>
@@ -170,7 +170,7 @@
       of things to index.
     </p>
 <a name="autoindex.script_ref.rewriting_section_names"></a><h5>
-<a name="id1016877"></a>
+<a name="id870884"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.rewriting_section_names">Rewriting Section
       Names</a>
     </h5>
@@ -217,7 +217,7 @@
       all index entries - thus preventing lots of entries under "The" etc!
     </p>
 <a name="autoindex.script_ref.defining_or_changing_the_file_scanners"></a><h5>
-<a name="id1017030"></a>
+<a name="id871036"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.defining_or_changing_the_file_scanners">Defining
       or Changing the File Scanners</a>
     </h5>
@@ -319,9 +319,9 @@
       Will look for <span class="emphasis"><em>any</em></span> occurrence of whatever class names the
       scanner may find in the documentation.
     </p>
-<a name="autoindex.script_ref.debugging"></a><h5>
-<a name="id1017532"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.debugging">Debugging</a>
+<a name="autoindex.script_ref.debugging_scanning"></a><h5>
+<a name="id871539"></a>
+      <a class="link" href="script_ref.html#autoindex.script_ref.debugging_scanning">Debugging scanning</a>
     </h5>
 <p>
       If you see a term in the index, and you don't understand why it's there, add
@@ -343,10 +343,14 @@ The search regex is: [P|p]arser
 The section constraint is: .<span class="bold"><strong>qi.reference.parser_concepts.</strong></span>
 The index type for this entry is: qi_index
 </pre>
+<p>
+      This can produce a lot of output in your log file, but until you are satisfied
+      with your file selection and scanning process, it is worth switching it on.
+    </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2008 John Maddock<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2008 , 2011 John Maddock<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

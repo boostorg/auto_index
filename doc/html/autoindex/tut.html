@@ -19,9 +19,10 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial">Getting Started and Tutorial</a>
 </h2></div></div></div>
-<a name="autoindex.tut.step_1__build_the_tool"></a><h5>
-<a name="id1010871"></a>
-      <a class="link" href="tut.html#autoindex.tut.step_1__build_the_tool">Step 1: Build the tool</a>
+<a name="autoindex.tut.step_1__build_the_autoindex_tool"></a><h5>
+<a name="id867220"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_1__build_the_autoindex_tool">Step 1: Build
+      the AutoIndex tool</a>
     </h5>
 <p>
       cd into <code class="computeroutput"><span class="identifier">tools</span><span class="special">/</span><span class="identifier">auto_index</span><span class="special">/</span><span class="identifier">build</span></code> and invoke bjam as:
@@ -35,9 +36,10 @@
 <pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">release</span> <span class="identifier">gcc</span>
 </pre>
 <p>
-      Now open up your user-config.jam file and at the end add the line:
+      Now open up your <code class="computeroutput"><span class="identifier">user</span><span class="special">-</span><span class="identifier">config</span><span class="special">.</span><span class="identifier">jam</span></code>
+      file and at the end of the file add the line:
     </p>
-<pre class="programlisting">using auto-index : <span class="emphasis"><em>full-path-of-executable</em></span> ; 
+<pre class="programlisting">using auto-index : <span class="emphasis"><em>full-path-of-executable-auto-index.exe</em></span> ; 
 </pre>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -46,11 +48,11 @@
 </tr>
 <tr><td align="left" valign="top">
 <p>
-        This declaration must go towards the end of user-config.jam, or in any case
-        after the Boostbook initialisation.
+        This declaration must go towards the end of <code class="computeroutput"><span class="identifier">user</span><span class="special">-</span><span class="identifier">config</span><span class="special">.</span><span class="identifier">jam</span></code>, or
+        in any case after the Boostbook initialisation.
       </p>
 <p>
-        Also note that Windows users must use forward slashes in the paths in user-config.jam
+        Also note that Windows users must use forward slashes in the paths in <code class="computeroutput"><span class="identifier">user</span><span class="special">-</span><span class="identifier">config</span><span class="special">.</span><span class="identifier">jam</span></code>
       </p>
 </td></tr>
 </table></div>
@@ -61,10 +63,20 @@
       your main Boost tree): this is a temporary fix that will go away if the tool
       is accepted into Boost.
     </p>
-<a name="autoindex.tut.step_2__configure_boost_build"></a><h5>
-<a name="id1011036"></a>
-      <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build">Step 2: Configure
-      Boost.Build</a>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        If you move to a new machine you will need to do this! An error message will
+        warn about missing <code class="computeroutput"><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">.</span><span class="identifier">jam</span></code>.
+      </p></td></tr>
+</table></div>
+<a name="autoindex.tut.step_2__configure_boost_build_to_use_autoindex"></a><h5>
+<a name="id867482"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build_to_use_autoindex">Step
+      2: Configure Boost.Build to use AutoIndex</a>
     </h5>
 <p>
       Assuming you have a Jamfile for building your documentation that looks something
@@ -72,7 +84,7 @@
     </p>
 <pre class="programlisting">boostbook standalone
     :
-        type_traits
+        mylibrary
     :
         # build requirements go here:
     ;
@@ -83,22 +95,42 @@
 <pre class="programlisting">using auto-index ; </pre>
 <p>
       to the start of the Jamfile, and then add whatever auto-index options you want
-      to the build requirements section, for example:
+      to the <span class="emphasis"><em>build requirements section</em></span>, for example:
     </p>
 <pre class="programlisting">boostbook standalone
     :
-        type_traits
+        mylibrary
     :
-        # build requirements go here:
+        # Build requirements go here:
         
-        # this one turns on indexing:
+        # &lt;auto-index&gt;on (or off) one turns on (or off) indexing:
         &lt;auto-index&gt;on
-        # choose indexing method for pdf's:
+        
+        # Turns on (or off) auto-index-verbose for diagnostic info.
+        # This is highly recommended until you have got all the many details correct!
+        # (uses /bin auto-index-verbose folders).
+        &lt;auto-index-verbose&gt;on 
+        
+        # Choose the indexing method (separately for html and PDF) - see manual.
+        # Choose indexing method for PDFs:
         &lt;format&gt;pdf:&lt;auto-index-internal&gt;off
-        # choose indexing method for html:
+        
+        # Choose indexing method for html:
         &lt;format&gt;html:&lt;auto-index-internal&gt;on
-        # set the name of the script file to use:
+        
+        # Set the name of the script file to use (index.idx is popular):
         &lt;auto-index-script&gt;index.idx
+        # But see &lt;auto-index-prefix&gt; to use for the scan path to scan for script files.
+        
+        # &lt;auto-index-prefix&gt;../../.. will get you back up to /mylibrary,
+        # so !scan-path "boost/mylibrary/" is where headers *.hpp will be.
+        # and /libs/mylibrary for other files.
+        # Without this you would need !scan-path "../../../boost/mylibrary"
+        &lt;auto-index-prefix&gt;../../..
+
+        # Tell Quickbook that is should enable indexing.
+        &lt;quickbook-define&gt;enable_index ;
+      
     ;
 </pre>
 <p>
@@ -138,12 +170,15 @@
 <dt><span class="term">&lt;auto-index-verbose&gt;off/on</span></dt>
 <dd><p>
             Defaults to "off". When turned on AutoIndex prints progress
-            information - generally useful only for debugging purposes.
+            information - useful for debugging purposes during setup.
           </p></dd>
 <dt><span class="term">&lt;auto-index-prefix&gt;filename</span></dt>
 <dd><p>
             Specifies a directory to apply as a prefix to all relative file paths
-            in the script file.
+            in the script file. For Boost standard layout, &lt;auto-index-prefix&gt;../../..
+            will get you back up to /mylibrary, so !scan-path "boost<span class="emphasis"><em>mylibrary</em></span>"
+            is where headers *.hpp will be and /libs/mylibrary for other files. Without
+            this you would need !scan-path "../../../boost/mylibrary"
           </p></dd>
 <dt><span class="term">&lt;auto-index-type&gt;element-name</span></dt>
 <dd><p>
@@ -312,33 +347,103 @@
 </tbody>
 </table></div>
 <p>
-      It is possible to make the use of auto-index optional in Boost.Build, to allow
-      users who do not have auto-index installed to build your documentation. One
-      method of setting up optional auto-index support is to place all auto-index
+      It is considerate to make the <span class="bold"><strong>use of auto-index optional</strong></span>
+      in Boost.Build, to allow users who do not have auto-index installed to still
+      be able to build your documentation.
+    </p>
+<p>
+      One method of setting up optional auto-index support is to place all auto-index
+      configuration in a the body of a <span class="emphasis"><em>bjam if statement</em></span>.
+    </p>
+<p>
+      This also very convenient while you are refining your documentation, to allow
+      you to decide to build indexes, or not: building indexes can take long time,
+      if you are just correcting typos, you won't want wait while you keep rebuilding
+      the index!
+    </p>
+<p>
+      One method of setting up optional auto-index support is to place all auto-index
       configuration in a the body of a bjam if statement:
     </p>
-<pre class="programlisting"><span class="keyword">if</span> <span class="special">--</span><span class="identifier">enable</span><span class="special">-</span><span class="identifier">index</span> <span class="identifier">in</span>  <span class="special">[</span> <span class="identifier">modules</span><span class="special">.</span><span class="identifier">peek</span> <span class="special">:</span> <span class="identifier">ARGV</span> <span class="special">]</span>
-<span class="special">{</span>
-   <span class="keyword">using</span> <span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span> <span class="special">;</span>
-   <span class="identifier">project</span> <span class="special">:</span> <span class="identifier">requirements</span>
-        <span class="special">&lt;</span><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">&gt;</span><span class="identifier">on</span>
-        <span class="special">&lt;</span><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">-</span><span class="identifier">script</span><span class="special">&gt;</span><span class="identifier">index</span><span class="special">.</span><span class="identifier">idx</span>
-        <span class="error">#</span><span class="special">...</span> <span class="identifier">other</span> <span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span> <span class="identifier">options</span> <span class="identifier">here</span><span class="special">...</span>
-        <span class="special">;</span>
-<span class="special">}</span>
+<pre class="programlisting">if --enable-index in  [ modules.peek : ARGV ]
+  {
+     ECHO "Building the  docs with automatic index generation enabled." ;
+
+     using auto-index ;
+     project : requirements
+          &lt;auto-index&gt;on
+          &lt;auto-index-script&gt;index.idx
+          
+           ... other auto-index options here...
+          ;
+  }
+  else
+	{
+	   ECHO "Building the my_library docs with automatic index generation disabled. To get an auto-index, try building with --enable-index." ;
+	}
 </pre>
+<p>
+      To use this, you need to cd to your docs folder, for example:
+    </p>
+<pre class="programlisting"><span class="identifier">cd</span> <span class="special">\</span><span class="identifier">boost</span><span class="special">-</span><span class="identifier">sandbox</span><span class="special">\</span><span class="identifier">guild</span><span class="special">\</span><span class="identifier">mylibrary</span><span class="special">\</span><span class="identifier">libs</span><span class="special">\</span><span class="identifier">mylibrary</span><span class="special">\</span><span class="identifier">doc</span>
+</pre>
+<p>
+      and then run <code class="computeroutput"><span class="identifier">bjam</span></code> to build
+      the docs without index, for example:
+    </p>
+<pre class="programlisting"><span class="identifier">bjam</span> <span class="special">-</span><span class="identifier">a</span> <span class="identifier">html</span> <span class="special">&gt;</span> <span class="identifier">mylibrary_html</span><span class="special">.</span><span class="identifier">log</span>
+</pre>
+<p>
+      or with index(es)
+    </p>
+<pre class="programlisting"><span class="identifier">bjam</span> <span class="special">-</span><span class="identifier">a</span> <span class="identifier">html</span> <span class="special">--</span><span class="identifier">enable</span><span class="special">-</span><span class="identifier">index</span> <span class="special">&gt;</span> <span class="identifier">mylibrary_html_index</span><span class="special">.</span><span class="identifier">log</span>
+</pre>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Always send the output to a log file. It will contain of lot of stuff, but
+        is invaluable to check if all has gone right, and else diagnose what has
+        gone wrong.
+      </p></td></tr>
+</table></div>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        A return code of 0 is not a reliable indication that you have got what you
+        really want - inspecting the log file is the only certain way.
+      </p></td></tr>
+</table></div>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        If you upgrade compiler version, for example MSVC from 9 to 10, then you
+        will need to rebuild Autoindex to avoid what Microsoft call a 'side-by-side'
+        error. And make sure that the autoindex.exe version you are using is the
+        new one.
+      </p></td></tr>
+</table></div>
 <a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
-<a name="id1011645"></a>
+<a name="id868109"></a>
       <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
       3: Add indexes to your documentation</a>
     </h5>
 <p>
-      To add a single index to a BoostBook/Docbook document, then add <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">/&gt;</span></code> at the location where you want the index
+      To add a single "include everything" index to a Quickbook/BoostBook/Docbook
+      document, then add <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">/&gt;</span></code> at the location where you want the index
       to appear. The index will be rendered as a separate section when the documentation
       is built.
     </p>
 <p>
-      To add multiple indexes, then give each one a title and set it's <code class="computeroutput"><span class="identifier">type</span></code> attribute to specify which terms will
+      To add multiple indexes, then give each one a title and set its <code class="computeroutput"><span class="identifier">type</span></code> attribute to specify which terms will
       be included, for example to place the <span class="emphasis"><em>function</em></span>, <span class="emphasis"><em>class</em></span>,
       <span class="emphasis"><em>macro</em></span> or <span class="emphasis"><em>typedef</em></span> names indexed by
       <span class="emphasis"><em>auto_index</em></span> in separate indexes along with a main "include
@@ -375,60 +480,82 @@
       </p></td></tr>
 </table></div>
 <p>
-      In quickbook, you add the same markup but enclose it in an escape:
+      In Quickbook, you add the same markup but enclose it between two triple-tick
+      ''' escapes, thus
     </p>
-<pre class="programlisting"><span class="char">''</span><span class="char">'&lt;index/&gt;'</span><span class="char">''</span>
+<pre class="programlisting">'''&lt;index/&gt;''' </pre>
+<p>
+      If you are writing a Quickbook document with Doxygen reference documentation,
+      the position of a <code class="computeroutput"><span class="special">[</span><span class="identifier">xinclude</span>
+      <span class="identifier">autodoc</span><span class="special">.</span><span class="identifier">xml</span><span class="special">]</span></code> line
+      in the Quickbook file determines the location of the Doxygen references section.
+      You will almost certainly want this as well.
+    </p>
+<pre class="programlisting">[xinclude autodoc.xml] # Using <span class="emphasis"><em>Doxygen reference documentation</em></span>.
 </pre>
 <p>
-      If you are using auto-index's internal index generation (usually recommended
-      for HTML output) then you can also decide what kind of XML wrapper the generated
-      index is placed in. By default this is a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;...&lt;/</span><span class="identifier">section</span><span class="special">&gt;</span></code>
-      XML block (this replaces the original <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;...&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span></code>
-      block). However, depending upon the structure of the document and whether or
-      not you want the index on a separate page - or else on the front page after
-      the TOC - you may want to place the index inside a different type of XML block.
-      For example if your document uses <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">chapter</span><span class="special">&gt;</span></code>
-      top level content rather than <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;</span></code>'s
-      then it may be preferable to place the index in a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">chapter</span><span class="special">&gt;</span></code>
-      or <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">appendix</span><span class="special">&gt;</span></code> block. You can also place the index inside
-      an <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;</span></code> block if you prefer, in which case the
-      index does not appear in on a page of it's own, but after the TOC in the HTML
-      output.
+      You can control the <span class="emphasis"><em>displayed name</em></span> of the Doxygen reference
+      section thus by adding to the end of the Doxygen autodoc section in your jamfile.
+    </p>
+<pre class="programlisting">&lt;xsl:param&gt;"boost.doxygen.reftitle=Boost.mylibrary C++ Reference"
+</pre>
+<p>
+      If you are using auto-index's internal index generation on
+    </p>
+<pre class="programlisting">&lt;auto-index-internal&gt;on
+</pre>
+<p>
+      (usually recommended for HTML output, and not the default) then you can also
+      decide what kind of XML wrapper the generated index is placed in. By default
+      this is a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;...&lt;/</span><span class="identifier">section</span><span class="special">&gt;</span></code> XML block (this replaces the original
+      <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;...&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span></code> block). However, depending upon the structure
+      of the document and whether or not you want the index on a separate page -
+      or else on the front page after the TOC - you may want to place the index inside
+      a different type of XML block. For example if your document uses <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">chapter</span><span class="special">&gt;</span></code> top level content rather than <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;</span></code>s then it may be preferable to place the
+      index in a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">chapter</span><span class="special">&gt;</span></code> or <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">appendix</span><span class="special">&gt;</span></code>
+      block. You can also place the index inside an <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;</span></code>
+      block if you prefer, in which case the index does not appear in on a page of
+      its own, but after the TOC in the HTML output.
     </p>
 <p>
       You control the type of XML block used by setting the <code class="literal">&lt;auto-index-type&gt;element-name</code>
       attribute in the Jamfile, or via the <code class="computeroutput"><span class="identifier">index</span><span class="special">-</span><span class="identifier">type</span><span class="special">=</span><span class="identifier">element</span><span class="special">-</span><span class="identifier">name</span></code> command line option to auto-index itself.
-      For example, to place the index in an appendix your Jamfile might look like:
+      For example, to place the index in an appendix, your Jamfile might look like:
     </p>
 <pre class="programlisting">using quickbook ;
 using auto-index ;
 
-xml type_traits : type_traits.qbk ;
+xml mylibrary : mylibary.qbk ;
 boostbook standalone
     :
-        type_traits
+        mylibrary
     :
-        # indexing is on:
-        &lt;auto-index&gt;on                          
-        # PDF's rely on the XSL stylesheets to generate the index:
-        &lt;format&gt;pdf:&lt;auto-index-internal&gt;off    
+        # auto-indexing is on:
+        &lt;auto-index&gt;on  
+        
+        # PDFs rely on the XSL stylesheets to generate the index:
+        &lt;format&gt;pdf:&lt;auto-index-internal&gt;off  
+        
         # HTML output uses auto-index to generate the index:
         &lt;format&gt;html:&lt;auto-index-internal&gt;on
+        
         # Name of script file to use:
         &lt;auto-index-script&gt;index.idx
+        
         # Set the XML wrapper for HML Indexes to "appendix":
         &lt;format&gt;html:&lt;auto-index-type&gt;appendix
+        
         # Turn on multiple index support:
         &lt;xsl:param&gt;index.on.type=1
 </pre>
-<a name="autoindex.tut.step_4__create_the_script_file"></a><h5>
-<a name="id1011948"></a>
-      <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file">Step 4: Create
-      the script file</a>
+<a name="autoindex.tut.step_4__create_the_script_file____to_control_what_to_index"></a><h5>
+<a name="id868460"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file____to_control_what_to_index">Step
+      4: Create the script file - to control what to index</a>
     </h5>
 <p>
-      AutoIndex works by reading a script file that tells it what to index, at it's
-      simplest it will scan one or more headers for terms that should be indexed
+      AutoIndex works by reading a script file that tells it what to index. At its
+      simplest, it will scan one or more headers for terms that should be indexed
       in the documentation. So for example to scan "myheader.hpp" the script
       file would just contain:
     </p>
@@ -438,13 +565,38 @@ boostbook standalone
       Or we can recursively scan through directories looking for all the files to
       scan whose name matches a particular regular expression:
     </p>
-<pre class="programlisting">!scan-path "../../../../boost/math" ".*.hpp" true </pre>
+<pre class="programlisting">!scan-path "boost/mylibrary" ".*.hpp" true </pre>
 <p>
-      Note how each argument is whitespace separated and can be optionally enclosed
-      in "double quotes". The final <span class="emphasis"><em>true</em></span> argument
-      indicates that subdirectories in <code class="computeroutput"><span class="special">../../../../</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span></code>
-      should be searched in addition to that directory.
+      Each argument is whitespace separated and can be optionally enclosed in "double
+      quotes" (recommended).
     </p>
+<p>
+      The final <span class="emphasis"><em>true</em></span> argument indicates that subdirectories
+      in <code class="computeroutput"><span class="special">/</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">mylibrary</span></code> should be searched recursively
+      in addition to that directory.
+    </p>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        The second <span class="emphasis"><em>file-name-regex</em></span> argument is a regular expression!
+      </p></td></tr>
+</table></div>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        The scan-path is modified by any setting of &lt;auto-index-prefix&gt;. The
+        examples here assume that this is <code class="computeroutput"><span class="special">&lt;</span><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">-</span><span class="identifier">prefix</span><span class="special">&gt;../../..</span></code> so that <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mylibrary</span></code>
+        will be your header files, <code class="computeroutput"><span class="identifier">libs</span><span class="special">/</span><span class="identifier">mylibrary</span><span class="special">/</span><span class="identifier">docs</span></code> will
+        be your docs, like .qbk <code class="computeroutput"><span class="identifier">libs</span><span class="special">/</span><span class="identifier">mylibrary</span><span class="special">/</span><span class="identifier">examples</span></code>
+        will be your examples, usually .cpp.
+      </p></td></tr>
+</table></div>
 <p>
       Often the <span class="emphasis"><em>scan</em></span> or <span class="emphasis"><em>scan-path</em></span> rules
       will bring in too many terms to search for, so we need to be able to exclude
@@ -478,8 +630,9 @@ boostbook standalone
 <pre class="programlisting"><span class="identifier">reflex</span> <span class="special">\&lt;</span><span class="identifier">reflex</span><span class="special">\</span><span class="identifier">w</span><span class="special">*\&gt;</span>
 </pre>
 <p>
-      will index occurrences of "reflex", reflexing" and "reflexed"
-      all under the same entry <span class="emphasis"><em>reflex</em></span>.
+      will index occurrences of "reflex", "reflexing" and "reflexed"
+      all under the same entry <span class="emphasis"><em>reflex</em></span>. You will very often need
+      to use this to deal with plurals and other variants.
     </p>
 <p>
       This inclusion rule can also restrict the term to certain sections, and add
@@ -494,43 +647,73 @@ boostbook standalone
     </p>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>
-<a name="autoindex.tut.step_5__add_manual_index_entries___optional"></a><h5>
-<a name="id1012202"></a>
-      <a class="link" href="tut.html#autoindex.tut.step_5__add_manual_index_entries___optional">Step
-      5: Add Manual Index Entries - Optional</a>
+<p>
+      Adding manual terms is most useful if you are using Quickbook to prepare your
+      documentation.
+    </p>
+<p>
+      If many terms that you believe users would seek in the index are used in the
+      textual sections (and that these terms may not used in the C++ code itself,
+      or that you want to direct the user to the text rather than functions or classes),
+      then you need to add terms.
+    </p>
+<p>
+      This may lead to too much indexing (especially if you have provided a Doxygen
+      autodoc C++ reference section that provides a good way of getting the C++ functions
+      etc). So it may be more useful to <span class="bold"><strong>only</strong></span> index
+      the text part?
+    </p>
+<pre class="programlisting">!scan-path "boost/mylibrary" ".*.qbk" true </pre>
+<p>
+      You could also scan the examples (.cpp) files. This will scan and may index
+      any explanatory C++ comments too. If an example's output is appended as a comment
+      then this text will also be scanned.
+    </p>
+<a name="autoindex.tut.step_5__add_manual_index_entries_to_docbook_xml___optional"></a><h5>
+<a name="id868851"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_5__add_manual_index_entries_to_docbook_xml___optional">Step
+      5: Add Manual Index Entries to Docbook XML - Optional</a>
     </h5>
 <p>
-      If you add manual <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexentry</span><span class="special">&gt;</span></code> markup to your docbook XML then these will
+      If you add manual <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexentry</span><span class="special">&gt;</span></code> markup to your Docbook XML then these will
       be passed through unchanged. Please note however, that if you are using auto-index's
       internal index generation then it only recognises <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">primary</span><span class="special">&gt;</span></code>
       and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">secondary</span><span class="special">&gt;</span></code> elements within the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code>.
       <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">tertiary</span><span class="special">&gt;</span></code>, <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">see</span><span class="special">&gt;</span></code> and
       <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">seealso</span><span class="special">&gt;</span></code> elements are not currently recognised and
-      auto-index will emit a warning if these are used. Likewise none of the attributes
-      which can be applied to these elements are used when auto-index generates the
-      index itself, with the exception of the "type" attribute.
+      auto-index will emit a warning if these are used.
+    </p>
+<p>
+      Likewise none of the attributes which can be applied to these elements are
+      used when auto-index generates the index itself, with the exception of the
+      "type" attribute.
     </p>
 <a name="autoindex.tut.step_6__build_the_docs"></a><h5>
-<a name="id1016192"></a>
+<a name="id868972"></a>
       <a class="link" href="tut.html#autoindex.tut.step_6__build_the_docs">Step 6: Build the Docs</a>
     </h5>
 <p>
       Make sure that auto-index.jam is in your BOOST_BUILD_PATH, by either setting
       the environment variable BOOST_BUILD_PATH to point to the directory containing
-      it, or by copying the file into <code class="computeroutput"><span class="identifier">boost</span><span class="special">-</span><span class="identifier">root</span><span class="special">/</span><span class="identifier">tools</span><span class="special">/</span><span class="identifier">build</span><span class="special">/</span><span class="identifier">v2</span><span class="special">/</span><span class="identifier">tools</span></code>. Then you build the docs with either:
+      it, or by copying the <code class="computeroutput"><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">.</span><span class="identifier">jam</span></code>
+      file into <code class="computeroutput"><span class="identifier">boost</span><span class="special">-</span><span class="identifier">root</span><span class="special">/</span><span class="identifier">tools</span><span class="special">/</span><span class="identifier">build</span><span class="special">/</span><span class="identifier">v2</span><span class="special">/</span><span class="identifier">tools</span></code>.
     </p>
-<pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">release</span>
+<p>
+      Then you build the docs with either:
+    </p>
+<pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">release</span> <span class="special">&gt;</span> <span class="identifier">mylibrary_html</span><span class="special">.</span><span class="identifier">log</span>
 </pre>
 <p>
       To build the html docs or:
     </p>
-<pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">pdf</span> <span class="identifier">release</span>
+<pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">pdf</span> <span class="identifier">release</span> <span class="special">&gt;</span> <span class="identifier">mylibrary_pdf</span><span class="special">.</span><span class="identifier">log</span>
 </pre>
 <p>
       To build the pdf.
     </p>
 <p>
-      During the build process you should see AutoIndex emit a message such as:
+      During the build process you should see AutoIndex emit a message in the log
+      file such as:
     </p>
 <pre class="programlisting">Indexing 990 terms... </pre>
 <p>
@@ -543,9 +726,15 @@ boostbook standalone
 <p>
       Again if you see that 0 entries were created then something is wrong!
     </p>
-<a name="autoindex.tut.step_7__iterate"></a><h5>
-<a name="id1016314"></a>
-      <a class="link" href="tut.html#autoindex.tut.step_7__iterate">Step 7: Iterate</a>
+<p>
+      Examine the log file, and if the cause is not obvious, make sure that you have
+      <code class="literal">&lt;auto-index-verbose&gt;on</code> and that <code class="literal">!debug regular-expression
+      directive</code> is at the head of the script file.
+    </p>
+<a name="autoindex.tut.step_7__iterate___to_refine_your_index"></a><h5>
+<a name="id869166"></a>
+      <a class="link" href="tut.html#autoindex.tut.step_7__iterate___to_refine_your_index">Step 7:
+      Iterate - to refine your index</a>
     </h5>
 <p>
       Creating a good index is an iterative process, often the first step is just
@@ -573,15 +762,15 @@ boostbook standalone
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-        If you don't understand why a particular term is present in the index, try
-        adding a <span class="emphasis"><em>!debug regular-expression</em></span> directive to the
-        <a class="link" href="script_ref.html" title="Script File Reference">script file</a>.
+        If you don't understand why a particular term is (or is not) present in the
+        index, try adding a <span class="emphasis"><em>!debug regular-expression</em></span> directive
+        to the <a class="link" href="script_ref.html" title="Script File Reference">script file</a>.
       </p></td></tr>
 </table></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2008 John Maddock<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2008 , 2011 John Maddock<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

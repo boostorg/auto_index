@@ -29,10 +29,24 @@
       for each occurrence of each term to be indexed.
     </p>
 <p>
-      Instead AutoIndex will scan one or more C/C++ header files and extract all
-      the <span class="emphasis"><em>function</em></span>, <span class="emphasis"><em>class</em></span>, <span class="emphasis"><em>macro</em></span>
-      and <span class="emphasis"><em>typedef</em></span> names that are defined by those headers, and
-      then insert the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code>'s into the XML document for you.
+      Instead AutoIndex will automatically scan one or more C/C++ header files and
+      extract all the <span class="emphasis"><em>function</em></span>, <span class="emphasis"><em>class</em></span>,
+      <span class="emphasis"><em>macro</em></span> and <span class="emphasis"><em>typedef</em></span> names that are
+      defined by those headers, and then insert the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code>s
+      into the XML document for you.
+    </p>
+<p>
+      AutoIndex can also scan <span class="emphasis"><em>text files</em></span>, usually Quickbook
+      files, but in this case you need to manually provide a simple list of index
+      terms (in a script file, optionally using regular expressions). This may allow
+      the user to find references to more descriptive items that may not occur in
+      the C++ classes and functions header files.
+    </p>
+<p>
+      Providing a manual list of terms in the text to index is a tedious task (especially
+      handling plurals and variants), and requires enough knowledge of the library
+      to guess what users may be seeking to know, but at least the real 'grunt work'
+      of finding the term and listing the page number is automated.
     </p>
 <p>
       AutoIndex creates index entries as follows - for each occurrence of each search
@@ -116,7 +130,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2008 John Maddock<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2008 , 2011 John Maddock<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
