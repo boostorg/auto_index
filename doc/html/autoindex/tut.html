@@ -20,7 +20,7 @@
 <a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial">Getting Started and Tutorial</a>
 </h2></div></div></div>
 <a name="autoindex.tut.step_1__build_the_autoindex_tool"></a><h5>
-<a name="id871627"></a>
+<a name="id860648"></a>
       <a class="link" href="tut.html#autoindex.tut.step_1__build_the_autoindex_tool">Step 1: Build
       the AutoIndex tool</a>
     </h5>
@@ -74,7 +74,7 @@
       </p></td></tr>
 </table></div>
 <a name="autoindex.tut.step_2__configure_boost_build_to_use_autoindex"></a><h5>
-<a name="id871889"></a>
+<a name="id860909"></a>
       <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build_to_use_autoindex">Step
       2: Configure Boost.Build to use AutoIndex</a>
     </h5>
@@ -438,7 +438,7 @@
       </p></td></tr>
 </table></div>
 <a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
-<a name="id872532"></a>
+<a name="id861552"></a>
       <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
       3: Add indexes to your documentation</a>
     </h5>
@@ -556,21 +556,36 @@ boostbook standalone
         &lt;xsl:param&gt;index.on.type=1
 </pre>
 <a name="autoindex.tut.step_4__create_the_script_file____to_control_what_to_terms_to_index"></a><h5>
-<a name="id872883"></a>
+<a name="id861903"></a>
       <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file____to_control_what_to_terms_to_index">Step
       4: Create the script file - to control what to terms to index</a>
     </h5>
 <p>
-      AutoIndex works by reading a script file that tells it what to index. At its
-      simplest, it will scan one or more headers for terms that should be indexed
-      in the documentation. So for example to scan "myheader.hpp" the script
-      file would just contain:
+      AutoIndex works by reading a script file that tells it what terms to index.
+    </p>
+<p>
+      If your document contains largely text, and only a small amount of simple C++,
+      and/or if you are using Doxygen to provide a C++ Reference section (that lists
+      the C++ elements), and/or if you are relying the indexinf provided from a Standalone
+      Doxygen Index, you may decide that a index is not needed and that you may only
+      want the text part indexed.
+    </p>
+<p>
+      But if you want C++ classes functions, typedefs and/or macros AutoIndexed,
+      optionally, the script file also tells which other C++ files to scan.
+    </p>
+<p>
+      At its simplest, it will scan one or more headers for terms that should be
+      indexed in the documentation. So for example to scan "myheader.hpp"
+      the script file would just contain:
     </p>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">myheader</span><span class="special">.</span><span class="identifier">hpp</span>
+<span class="special">!</span><span class="identifier">scan</span> <span class="identifier">mydetailsheader</span><span class="special">.</span><span class="identifier">hpp</span>
 </pre>
 <p>
-      Or, more likely in practice, we can recursively scan through directories looking
-      for all the files to scan whose name matches a particular regular expression:
+      Or, more likely in practice, so we can recursively scan through directories
+      looking for all the files to scan whose <span class="bold"><strong>name matches
+      a particular regular expression</strong></span>:
     </p>
 <pre class="programlisting">!scan-path "boost/mylibrary" ".*.hpp" true </pre>
 <p>
@@ -670,7 +685,7 @@ boostbook standalone
       output is appended as a comment, then this text will also be scanned.
     </p>
 <a name="autoindex.tut.step_5__add_manual_index_entries_to_docbook_xml___optional"></a><h5>
-<a name="id873289"></a>
+<a name="id862346"></a>
       <a class="link" href="tut.html#autoindex.tut.step_5__add_manual_index_entries_to_docbook_xml___optional">Step
       5: Add Manual Index Entries to Docbook XML - Optional</a>
     </h5>
@@ -689,7 +704,7 @@ boostbook standalone
       "type" attribute.
     </p>
 <a name="autoindex.tut.step_6__build_the_docs"></a><h5>
-<a name="id873411"></a>
+<a name="id862467"></a>
       <a class="link" href="tut.html#autoindex.tut.step_6__build_the_docs">Step 6: Build the Docs</a>
     </h5>
 <p>
@@ -732,7 +747,7 @@ boostbook standalone
       directive</code> is at the head of the script file.
     </p>
 <a name="autoindex.tut.step_7__iterate___to_refine_your_index"></a><h5>
-<a name="id873605"></a>
+<a name="id862661"></a>
       <a class="link" href="tut.html#autoindex.tut.step_7__iterate___to_refine_your_index">Step 7:
       Iterate - to refine your index</a>
     </h5>
@@ -757,7 +772,7 @@ boostbook standalone
       next iteration examined, and so on.
     </p>
 <a name="autoindex.tut.restricting_which_sections_are_indexed_for_a_particular_term"></a><h5>
-<a name="id873653"></a>
+<a name="id863849"></a>
       <a class="link" href="tut.html#autoindex.tut.restricting_which_sections_are_indexed_for_a_particular_term">Restricting
       which Sections are indexed for a particular term</a>
     </h5>
@@ -772,9 +787,8 @@ boostbook standalone
       For example, if you want to index occurrences of Lord Kelvin's name, but only
       in the introduction section, you might then add:
     </p>
-<p>
-      Kelvin "" ".<span class="bold"><strong>introduction.</strong></span>"
-    </p>
+<pre class="programlisting"><span class="identifier">Kelvin</span> <span class="string">""</span> <span class="string">".*introduction.*"</span>
+</pre>
 <p>
       to the script file, assuming that the section ID of the intro is "some_library_or_chapter_name.introduction".
     </p>

@@ -23,17 +23,18 @@
       The following elements can occur in a script:
     </p>
 <a name="autoindex.script_ref.comments_and_blank_lines"></a><h5>
-<a name="id874964"></a>
+<a name="id864035"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.comments_and_blank_lines">Comments and
       blank lines</a>
     </h5>
 <p>
-      Blank lines consisting of only whitespace are ignored, so are lines that <span class="bold"><strong>start with</strong></span> a '#'. (But, of course, you can't append
-      # comments onto the end of a line!).
+      Blank lines consisting of only whitespace are ignored, so are lines that <span class="bold"><strong>start with a #</strong></span>. (But, of course, you can't append #
+      comments onto the end of a line!).
     </p>
-<a name="autoindex.script_ref.simple_inclusions"></a><h5>
-<a name="id874986"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.simple_inclusions">Simple Inclusions</a>
+<a name="autoindex.script_ref.inclusion_of_index_terms"></a><h5>
+<a name="id864056"></a>
+      <a class="link" href="script_ref.html#autoindex.script_ref.inclusion_of_index_terms">Inclusion of
+      Index terms</a>
     </h5>
 <pre class="programlisting"><span class="identifier">term</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression1</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression2</span> <span class="special">[</span><span class="identifier">category</span><span class="special">]]]</span>
 </pre>
@@ -42,64 +43,147 @@
 <dl>
 <dt><span class="term">term</span></dt>
 <dd><p>
-            The term to index: this will form a primary entry in the Index with the
-            section title(s) containing the term as secondary entries, and also will
-            be used as a secondary entry beneath each of the section titles that
-            the term occurs in.
+            <span class="emphasis"><em>Term to index.</em></span><br> The index term will form a
+            primary entry in the Index with the section title(s) containing the term
+            as secondary entries, and also will be used as a secondary entry beneath
+            each of the section titles that the index term occurs in.
           </p></dd>
 <dt><span class="term">regular-expression1</span></dt>
 <dd>
 <p>
-            An optional regular expression: each occurrence of the regular expression
-            in the text of the document will result in one index term being emitted.
+            <span class="emphasis"><em>Index term Searcher.</em></span><br> An optional regular expression:
+            each occurrence of the regular expression in the text of the document
+            will result in one index index term being emitted.
           </p>
 <p>
-            If the regular expression is omitted or is "", then the <span class="emphasis"><em>term</em></span>
-            itself will be used as the search text - and only occurrence of whole
-            words matching <span class="emphasis"><em>term</em></span> will be indexed.
-          </p>
-</dd>
-<dt><span class="term">regular-expression2</span></dt>
-<dd>
-<p>
-            A constraint that specifies which sections are indexed for <span class="emphasis"><em>term</em></span>:
-            only if the ID of the section matches <span class="emphasis"><em>regular-expression2</em></span>
-            exactly will that section be indexed for occurrences of <span class="emphasis"><em>term</em></span>.
+            If the regular expression is omitted (default) or is "", then
+            the <span class="emphasis"><em>index term</em></span> itself will be used as the search
+            text - and only occurrence of whole words matching <span class="emphasis"><em>index term</em></span>
+            will be indexed.
           </p>
 <p>
             For example:
           </p>
 <p>
-            <code class="computeroutput"><span class="identifier">myclass</span> <span class="string">""</span>
-            <span class="string">"mylib.examples.*"</span></code>
+            
+</p>
+<pre class="programlisting"><span class="identifier">foobar</span></pre>
+<p>
           </p>
 <p>
-            Will index occurrences of "myclass" as a whole word only in
-            sections whose ID begins "mylib.examples", while:
+            will index occurrences of "foobar" in any section, but
           </p>
 <p>
-            <code class="computeroutput"><span class="identifier">myclass</span> <span class="string">""</span>
-            <span class="string">"(?!mylib.introduction.*).*"</span></code>
+            
+</p>
+<pre class="programlisting"><span class="identifier">foobar</span> <span class="special">\&lt;\</span><span class="identifier">w</span><span class="special">*(</span><span class="identifier">foo</span><span class="special">|</span><span class="identifier">bar</span><span class="special">)\</span><span class="identifier">w</span><span class="special">*\&gt;</span></pre>
+<p>
+          </p>
+<p>
+            will index any whole word containing either "foo" or "bar"
+            within it. This is useful when you want to index a lot of similar or
+            related words under one entry.
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">reflex</span></pre>
+<p>
+          </p>
+<p>
+            will only index occurrences of "reflex" as a whole word, but:
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">reflex</span> <span class="special">\&lt;</span><span class="identifier">reflex</span><span class="special">\</span><span class="identifier">w</span><span class="special">*\&gt;</span></pre>
+<p>
+          </p>
+<p>
+            will index occurrences of "reflex", "reflexes", "reflexing"
+            and "reflexed" ... all under the same entry reflex.
+          </p>
+<p>
+            You will very often need to use this to deal with plurals and other variants.
+          </p>
+</dd>
+<dt><span class="term">regular-expression2</span></dt>
+<dd>
+<p>
+            <span class="emphasis"><em>Section(s) Selector.</em></span><br> A constraint that specifies
+            which sections are indexed for <span class="emphasis"><em>term</em></span>: only if the
+            ID of the section matches <span class="emphasis"><em>regular-expression2</em></span> exactly
+            will that section be indexed for occurrences of <span class="emphasis"><em>index term</em></span>.
+          </p>
+<p>
+            For example, to limit indexing to just <span class="bold"><strong>one specific
+            section</strong></span> (but not sub-sections below):
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">""</span> <span class="string">"mylib.examples"</span></pre>
+<p>
+          </p>
+<p>
+            For example, to limit indexing to specific sections, <span class="bold"><strong>and
+            sub-sections below</strong></span>:
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">""</span> <span class="string">"mylib.examples.*"</span></pre>
+<p>
+          </p>
+<p>
+            will index occurrences of "myclass" as a whole word, but only
+            in sections whose section ID <span class="bold"><strong>begins</strong></span>
+            "mylib.examples",
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">"\&lt;myclass\w*\&gt;"</span> <span class="string">"mylib.examples.*"</span></pre>
+<p>
+          </p>
+<p>
+            and will also index plurals myclass, myclasses, myclasss ...
+          </p>
+<p>
+            while:
+          </p>
+<p>
+            
+</p>
+<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">""</span> <span class="string">"(?!mylib.introduction.*).*"</span></pre>
+<p>
           </p>
 <p>
             will index occurrences of "myclass" in any section, except
-            those whose ID's begin "mylib.introduction".
+            those whose section IDs begin "mylib.introduction".
           </p>
 <p>
-            If this field is omitted or is "", then all sections are indexed
-            for this term.
+            
+</p>
+<pre class="programlisting"><span class="identifier">reflex</span> <span class="string">"\&lt;reflex\w*\&gt;"</span> <span class="string">"mylib.introduction.*"</span></pre>
+<p>
+          </p>
+<p>
+            If this third section selection field is omitted (the default) or is
+            "", then <span class="bold"><strong>all sections</strong></span> are
+            indexed for this term.
           </p>
 </dd>
 <dt><span class="term">category</span></dt>
 <dd><p>
-            Optionally an index category to place occurrences of <span class="emphasis"><em>term</em></span>
-            in. If you have multiple indexes then this is the name assigned to the
-            indexes "type" attribute.
+            <span class="emphasis"><em>Index Category.</em></span><br> Optionally an to place occurrences
+            of <span class="emphasis"><em>index term</em></span> in. If you have multiple indexes then
+            this is the name assigned to the indexes "type" attribute.
           </p></dd>
 </dl>
 </div>
 <a name="autoindex.script_ref.source_file_scanning"></a><h5>
-<a name="id875195"></a>
+<a name="id864493"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.source_file_scanning">Source File Scanning</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">source</span><span class="special">-</span><span class="identifier">file</span><span class="special">-</span><span class="identifier">name</span>
@@ -128,7 +212,7 @@
       </p></td></tr>
 </table></div>
 <a name="autoindex.script_ref.directory_and_source_file_scanning"></a><h5>
-<a name="id875273"></a>
+<a name="id864571"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.directory_and_source_file_scanning">Directory
       and Source File Scanning</a>
     </h5>
@@ -157,7 +241,7 @@
 </dl>
 </div>
 <a name="autoindex.script_ref.excluding_terms"></a><h5>
-<a name="id875398"></a>
+<a name="id864696"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.excluding_terms">Excluding Terms</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">exclude</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">list</span>
@@ -170,7 +254,7 @@
       of things to index.
     </p>
 <a name="autoindex.script_ref.rewriting_section_names"></a><h5>
-<a name="id875453"></a>
+<a name="id864751"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.rewriting_section_names">Rewriting Section
       Names</a>
     </h5>
@@ -217,7 +301,7 @@
       all index entries - thus preventing lots of entries under "The" etc!
     </p>
 <a name="autoindex.script_ref.defining_or_changing_the_file_scanners"></a><h5>
-<a name="id875605"></a>
+<a name="id864904"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.defining_or_changing_the_file_scanners">Defining
       or Changing the File Scanners</a>
     </h5>
@@ -320,7 +404,7 @@
       scanner may find in the documentation.
     </p>
 <a name="autoindex.script_ref.debugging_scanning"></a><h5>
-<a name="id876108"></a>
+<a name="id865406"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.debugging_scanning">Debugging scanning</a>
     </h5>
 <p>

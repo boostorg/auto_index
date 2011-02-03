@@ -15,6 +15,8 @@
 [def __boostbook_docs [@http://www.boost.org/doc/libs/1_41_0/doc/html/boostbook.html BoostBook documentation]]
 [def __quickbook_syntax [@http://www.boost.org/doc/libs/1_41_0/doc/html/quickbook/ref.html Quickbook Syntax Compendium]]
 [def __docbook [@http://www.docbook.org/ DocBook]]
+[def __DOM [@http://en.wikipedia.org/wiki/Document_Object_Model Document Object Model]]
+
 [def __doxygen [@http://www.doxygen.org/ Doxygen]]
 [def __autoindex [@boost:\tools\auto_index\doc\html\index.html AutoIndex]]
 [def __pdf [@http://www.adobe.com/products/acrobat/adobepdf.html PDF]]
@@ -437,16 +439,28 @@ boostbook standalone
    
 [h4 Step 4: Create the script file -  to control what to terms to index]
 
-AutoIndex works by reading a script file that tells it what to index.
+AutoIndex works by reading a script file that tells it what terms to index.
+
+If your document contains largely text, and only a small amount of simple C++,
+and/or if you are using Doxygen to provide a C++ Reference section 
+(that lists the C++ elements),
+and/or if you are relying the indexinf provided from a Standalone Doxygen Index,
+you may decide that a index is not needed 
+and that you may only want the text part indexed.
+
+But if you want C++ classes functions, typedefs and/or macros AutoIndexed,
+optionally, the script file also tells which other C++ files to scan.
+
 At its simplest, it will scan one or more headers for terms that
 should be indexed in the documentation.  So for example to scan
 "myheader.hpp" the script file would just contain:
 
    !scan myheader.hpp
+   !scan mydetailsheader.hpp
    
-Or, more likely in practice, 
+Or, more likely in practice, so
 we can recursively scan through directories looking for all
-the files to scan whose name matches a particular regular expression:
+the files to scan whose [*name matches a particular regular expression]:
 
 [pre !scan-path "boost\/mylibrary" ".*\.hpp" true ]
    
@@ -594,7 +608,7 @@ you can easily place a constraint on which sections are examined for a particula
 For example, if you want to index occurrences of Lord Kelvin's name,
 but only in the introduction section, you might then add:
 
-Kelvin "" ".*introduction.*"
+  Kelvin "" ".*introduction.*"
 
 to the script file,
 assuming that the section ID of the intro is "some_library_or_chapter_name.introduction".
@@ -607,7 +621,6 @@ directive to the [link autoindex.script_ref script file].
 [endsect] [/section:tut Getting Started and Tutorial]
 
 [section:workflow  AutoIndex Workflow]
-
 
 # Load the script file (usually index.idx) 
   and process it one line at a time,
@@ -623,23 +636,23 @@ directive to the [link autoindex.script_ref script file].
   (If this comes from Quickbook\/Doxygen\/Boostbook\/Docbook then this is
   the complete documentation after conversion to Docbook format).
 
-# Builds an internal DOM of the Docbook XML.
+# AutoIndex builds an internal __DOM of the Docbook XML.
   This internal representation then gets scanned for occurrences of the ['terms to index].
-  This scanning works at the paragraph level
+  This scanning works at the XML paragraph level
   (or equivalent sibling such as a table or code block)
   - so all the XML encoding within a paragraph gets flattened to plain text.[br]
   This flattening means the regular expressions used to search for ['terms to index]
   can find anything that is completely contained within a paragraph 
   (or code block etc).
 
-# For each term found then an ['indexterm] docbook element is inserted
-  into the DOM (if internal index generation is off),
+# For each term found then an ['indexterm] Docbook element is inserted
+  into the __DOM (if internal index generation is off),
 
-# Also the tools internal index gets updated.
+# Also the tool's internal index gets updated.  TODO Which tool?  <<<<<<<<<<<<<<<<<<<
 
 # Once the whole XML document has been indexed, 
-  then, if auto-index has been instructed to generate the index itself,
-  it creates the necessary XML and inserts this into the DOM.
+  then, if autoindex has been instructed to generate the index itself,
+  it creates the necessary XML and inserts this into the __DOM.
 
 # Finally the whole DOM is written out as a new Docbook XML file,
   and normal processing of this continues via the XSL stylesheets and program XSLTproc.exe 
@@ -654,52 +667,98 @@ The following elements can occur in a script:
 
 [h4 Comments and blank lines]
 
-Blank lines consisting of only whitespace are ignored, so are lines that [*start with] a '#'.
+Blank lines consisting of only whitespace are ignored, so are lines that [*start with a #].
 (But, of course, you can't append \# comments onto the end of a line!).
 
-[h4 Simple Inclusions]
+[h4 Inclusion of Index terms]
 
    term [regular-expression1 [regular-expression2 [category]]]
    
 [variablelist
-[[term][The term to index: this will form a primary entry in the Index
+[[term][['Term to index.][br]
+The index term will form a primary entry in the Index
 with the section title(s) containing the term as secondary entries, and
 also will be used as a secondary entry beneath each of the section
-titles that the term occurs in.]]
+titles that the index term occurs in.]
+] [/term]
 
-[[regular-expression1][An optional regular expression: each occurrence
+[[regular-expression1][['Index term Searcher.][br]
+An optional regular expression: each occurrence
 of the regular expression in the text of the document will result
-in one index term being emitted.
+in one index index term being emitted.
 
-If the regular expression is omitted or is "", then the ['term] itself
+If the regular expression is omitted (default) or is "", then the ['index term] itself
 will be used as the search text - and only occurrence of whole words matching
-['term] will be indexed.]]
-
-[[regular-expression2][A constraint that specifies which sections are
-indexed for ['term]: only if the ID of the section matches
-['regular-expression2] exactly will that section be indexed for occurrences
-of ['term].
+['index term] will be indexed.
 
 For example:
 
-   `myclass "" "mylib.examples.*"`
+``foobar``
+
+will index occurrences of "foobar" in any section, but
+
+``foobar \<\w*(foo|bar)\w*\>``
+
+will index any whole word containing either "foo" or "bar" within it.
+This is useful when you want to index a lot of similar or related words under one entry.
+
+``reflex``
+
+will only index occurrences of "reflex" as a whole word, but: 
+
+``reflex \<reflex\w*\>``
+
+will index occurrences of "reflex", "reflexes", "reflexing" and "reflexed" ...
+all under the same entry reflex.
+
+You will very often need to use this to deal with plurals and other variants.]
+] [/regular-expression1]
+
+[[regular-expression2]
+[['Section(s) Selector.][br]
+A constraint that specifies which sections are
+indexed for ['term]: only if the ID of the section matches
+['regular-expression2] exactly will that section be indexed
+for occurrences of ['index term].
+
+For example, to limit indexing to just [*one specific section] (but not sub-sections below):
+
+``myclass "" "mylib.examples"``
+
+
+For example, to limit indexing to specific sections, [*and sub-sections below]:
+
+``myclass "" "mylib.examples.*"``
    
-Will index occurrences of "myclass" as a whole word only in sections
-whose ID begins "mylib.examples", while:
+will index occurrences of "myclass" as a whole word,
+but only in sections whose section ID [*begins] "mylib.examples", 
 
-   `myclass "" "(?!mylib.introduction.*).*"`
+``myclass "\<myclass\w*\>" "mylib.examples.*"``
+
+and will also index plurals myclass, myclasses, myclasss ...
+
+while:
+
+``myclass "" "(?!mylib.introduction.*).*"``
    
-will index occurrences of "myclass" in any section, except those whose
-ID's begin "mylib.introduction".
+will index occurrences of "myclass" in any section,
+except those whose section IDs begin "mylib.introduction".
 
-If this field is omitted or is "", then all sections are indexed for this term.]]
+``reflex "\<reflex\w*\>" "mylib.introduction.*"``
 
-[[category][Optionally an index category to place occurrences of
-['term] in.  If you have multiple indexes then this is the name
-assigned to the indexes "type" attribute.
-]]
-
+If this third section selection field is omitted (the default)
+or is "", then [*all sections] are indexed for this term.
 ]
+] [/regular-expression2]
+
+[[category][['Index Category.][br]
+Optionally an  to place occurrences of ['index term] in.
+If you have multiple indexes then this is the name
+assigned to the indexes "type" attribute.]
+[/ TODO Need an example of category?  function, class, macro, typdef???]
+] [/category]
+
+]  [/variablelist]
 
 [h4 Source File Scanning]
 
