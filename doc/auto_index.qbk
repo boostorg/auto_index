@@ -39,13 +39,12 @@ and extract all the ['function], ['class], ['macro] and ['typedef]
 names that are defined by those headers, and then insert the 
 `<indexterm>`s into the Docbook XML document for you.
 
-AutoIndex will also scan using a list of index terms that
-you need to manually provide a simple list of index terms
-(in a script file, for example index.idx , optionally using regular expressions).
-This may allow the user to find references to textual items
-that may not occur in the C++ classes and functions header files.
-
-Providing a manual list of search terms in the text to index is a tedious task 
+AutoIndex can also scan using a list of index terms 
+specified in a script file, for example index.idx.
+These manually provided terms can optionally be regular expressions,
+and may allow the user to find references to terms
+that may not occur in the C++ header files.  Of course providing a manual 
+list of search terms in to index is a tedious task 
 (especially handling plurals and variants),
 and requires enough knowledge of the library
  to guess what users may be seeking to know,
@@ -61,7 +60,7 @@ for each occurrence of each search term, it creates two index entries:
 
 # The section title as the main index entry and the search term as the subentry.
 
-Thus the user has two chances to find what their
+Thus the user has two chances to find what they're
 looking for, based upon either the section name 
 or the ['function], ['class], ['macro] or ['typedef] name. 
 
@@ -152,7 +151,7 @@ This declaration must go towards the end of `user-config.jam`, or in any case af
 
 Also note that Windows users must use forward slashes in the paths in `user-config.jam`]
 
-Finally note that `tools/auto_index/auto-index.jam` gets copied into the same directory as the rest of the Boost.Build tools
+Finally note that [=tools/auto_index/auto-index.jam] gets copied into the same directory as the rest of the Boost.Build tools
 (under `tools/build/v2/tools` in your main Boost tree): this is a temporary fix that will go away 
 if the tool is accepted into Boost.
 
@@ -191,7 +190,6 @@ you want to the ['build requirements section], for example:
         
         # Turns on (or off) auto-index-verbose for diagnostic info.
         # This is highly recommended until you have got all the many details correct!
-        # (uses \/bin auto-index-verbose folders).
         <auto-index-verbose>on 
         
         # Choose the indexing method (separately for html and PDF) - see manual.
@@ -203,12 +201,14 @@ you want to the ['build requirements section], for example:
         
         # Set the name of the script file to use (index.idx is popular):
         <auto-index-script>index.idx
-        # But see <auto-index-prefix> to use for the optional scan path to scan for script files,
-        # for example:        
-        # <auto-index-prefix>..\/..\/.. will get you back up to /mylibrary,
-        # so !scan-path "boost\/mylibrary/" is where headers *.hpp will be.
-        # and \/libs\/mylibrary for other files (doc, example...).
-        # Without a prefix you would need !scan-path "..\/..\/..\/boost\/mylibrary"
+        # Commands in the script file should all use RELATIVE PATHS
+        # otherwise the script will not be portable to other machines.
+        # Relative paths are normally taken as relative to the location 
+        # of the script file, but we can add a prefix to all
+        # those relative paths using the <auto-index-prefix> feature.
+        # The path specified by <auto-index-prefix> may be either relative or
+        # absolute, for example the following will get us up to the boost root
+        # directory for most Boost libraries:
         <auto-index-prefix>..\/..\/..
 
         # Tell Quickbook that it should enable indexing.
@@ -236,15 +236,17 @@ entry that uses the section title is not created.  Defaults to "on"]]
 [[<auto-index-verbose>off/on][Defaults to "off".  When turned on AutoIndex
 prints progress information - useful for debugging purposes during setup.]]
 [[<auto-index-prefix>filename][Optionally specifies a directory to apply
-as a prefix to all relative file paths in the script file.[br]
+as a prefix to all relative file paths in the script file.
+
 You may wish to do this to reduce typing of pathnames, and/or where the
 paths can't be located relative to the script file location,
 typically if the headers are in the Boost trunk,
-but the script file is in Boost sandbox.[br]
+but the script file is in Boost sandbox.
+
 For Boost standard library layout,
-[^<auto-index-prefix>..\/..\/..] will get you back up to the 'root' of your library /mylibrary,
-so !scan-path [~boost\/mylibrary/] is where headers *.hpp will be, and [~\/libs\/mylibrary] for other files.
-Without a prefix all relative paths are relative to the location of the script file.[br]
+[^<auto-index-prefix>..\/..\/..] will get you back up to the 'root' of the Boost tree,
+so !scan-path [~boost\/mylibrary/] is where your headers will be, and [~libs\/mylibrary] for other files.
+Without a prefix all relative paths are relative to the location of the script file.
 ]]
 [[<auto-index-type>element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
   defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.
@@ -268,9 +270,6 @@ Without a prefix all relative paths are relative to the location of the script f
 
 It is considerate to make the [*use of auto-index optional] in Boost.Build,
 to allow users who do not have auto-index installed to still be able to build your documentation.
-
-One method of setting up optional auto-index support is to place all auto-index
-configuration in a the body of a ['bjam if statement].
 
 This also very convenient while you are refining your documentation,
 to allow you to decide to build indexes, or not:
@@ -322,7 +321,7 @@ inspecting the log file is the only certain way.
 ] [/tip]
 
 [tip If you upgrade compiler version, for example MSVC from 9 to 10,
-then you will need to rebuild Autoindex
+then you may need to rebuild Autoindex
 to avoid what Microsoft call a 'side-by-side' error.
 And make sure that the autoindex.exe version you are using is the new one.
 ] [/tip]
@@ -387,6 +386,13 @@ by adding to the end of the Doxygen autodoc section in your jamfile.
 [pre
   <xsl:param>"boost.doxygen.reftitle=Boost.mylibrary C++ Reference"
 ]
+
+[note AutoIndex knows nothing of the XML `xinclude` element, so if
+you're writing raw Docbook XML then you may want to run this through an
+XSL processor to flatten everything to one XML file before passing to
+AutoIndex.  If you're using Boostbook or quickbook though, this all
+happens for you anyway, and AutoIndex will index the whole document
+including any sections included with `xinclude`.]
    
 If you are using auto-index's internal index generation on
 
@@ -444,7 +450,7 @@ AutoIndex works by reading a script file that tells it what terms to index.
 If your document contains largely text, and only a small amount of simple C++,
 and/or if you are using Doxygen to provide a C++ Reference section 
 (that lists the C++ elements),
-and/or if you are relying the indexinf provided from a Standalone Doxygen Index,
+and/or if you are relying on the indexing provided from a Standalone Doxygen Index,
 you may decide that a index is not needed 
 and that you may only want the text part indexed.
 
@@ -471,13 +477,13 @@ The final ['true] argument indicates
 that subdirectories in `/boost/math/mylibrary` should be searched
 recursively in addition to that directory.
 
-[caution The second ['file-name-regex] argument is a regular expression!]
+[caution The second ['file-name-regex] argument is a regular expression and not a filename GLOB!]
 
 [caution The scan-path is modified by any setting of <auto-index-prefix>.
-The examples here assume that this is `<auto-index-prefix>../../..`
+The examples here assume that this is [=<auto-index-prefix>../../..]
 so that `boost/mylibrary` will be your header files,
-`libs/mylibrary/doc` will be your docs, like .qbk
-`libs/mylibrary/example` will be your examples, usually .cpp.
+`libs/mylibrary/doc` will contain your documentation files and
+`libs/mylibrary/example` will contain your examples.
 ]
 
 You could also scan any examples (.cpp) files,
@@ -529,15 +535,6 @@ when AutoIndex uses them as an index entry:
 
    !rewrite-name "(?i)(?:A|The)\s+(.*)" "\1"
    
-This may lead to too much indexing
-(especially if you have provided a Doxygen autodoc C++ reference section
-that provides a good way of getting the C++ functions etc).
-
-
-This will scan and may index any explanatory C++ comments too.
-If an example's output is appended as a comment,
-then this text will also be scanned.
-   
 [h4 Step 5: Add Manual Index Entries to Docbook XML - Optional]
 
 If you add manual `<indexentry>` markup to your Docbook XML then these will be 
@@ -553,12 +550,7 @@ auto-index generates the index itself, with the exception of the "type" attribut
  
 [h4 Step 6: Build the Docs]
 
-Make sure that auto-index.jam is in your BOOST_BUILD_PATH, by either
-setting the environment variable BOOST_BUILD_PATH to point to the directory
-containing it, or by copying the `auto-index.jam` file into 
-`boost-root/tools/build/v2/tools`.
-
-Then you build the docs with either:
+Using Boost.Build you build the docs with either:
 
    bjam release > mylibrary_html.log
 
@@ -583,7 +575,8 @@ Again if you see that 0 entries were created then something is wrong!
 
 Examine the log file, and if the cause is not obvious, 
 make sure that you have [^<auto-index-verbose>on] and that
-[^!debug regular-expression directive] is at the head of the script file. 
+any needed
+[^!debug regular-expression] directives are in your script file. 
 
 [h4 Step 7: Iterate - to refine your index]
 
@@ -620,46 +613,6 @@ directive to the [link autoindex.script_ref script file].
 
 [endsect] [/section:tut Getting Started and Tutorial]
 
-[section:workflow  AutoIndex Workflow]
-
-# Load the script file (usually index.idx) 
-  and process it one line at a time,
-  probably producing one index term per (non-comment) line.
-
-# Reading all lines builds a list of ['terms to index].
-  Some of those may be terms defined (by you) directly in the script file,
-  others may be terms found by the scanning C++ header and source files
-  that were specified by the ['!scan-path].
-
-# Once the complete list of ['terms to index] is complete,
-  it loads the Docbook XML file.
-  (If this comes from Quickbook\/Doxygen\/Boostbook\/Docbook then this is
-  the complete documentation after conversion to Docbook format).
-
-# AutoIndex builds an internal __DOM of the Docbook XML.
-  This internal representation then gets scanned for occurrences of the ['terms to index].
-  This scanning works at the XML paragraph level
-  (or equivalent sibling such as a table or code block)
-  - so all the XML encoding within a paragraph gets flattened to plain text.[br]
-  This flattening means the regular expressions used to search for ['terms to index]
-  can find anything that is completely contained within a paragraph 
-  (or code block etc).
-
-# For each term found then an ['indexterm] Docbook element is inserted
-  into the __DOM (if internal index generation is off),
-
-# Also the tool's internal index gets updated.  TODO Which tool?  <<<<<<<<<<<<<<<<<<<
-
-# Once the whole XML document has been indexed, 
-  then, if autoindex has been instructed to generate the index itself,
-  it creates the necessary XML and inserts this into the __DOM.
-
-# Finally the whole DOM is written out as a new Docbook XML file,
-  and normal processing of this continues via the XSL stylesheets and program XSLTproc.exe 
-  to actually build the final human-readable docs.
-
-[endsect] [/section:workflow  Auto-index Workflow]
-
 
 [section:script_ref Script File Reference]
 
@@ -675,17 +628,21 @@ Blank lines consisting of only whitespace are ignored, so are lines that [*start
    term [regular-expression1 [regular-expression2 [category]]]
    
 [variablelist
-[[term][['Term to index.][br]
+[[term][
+['Term to index.]
+
 The index term will form a primary entry in the Index
 with the section title(s) containing the term as secondary entries, and
 also will be used as a secondary entry beneath each of the section
 titles that the index term occurs in.]
 ] [/term]
 
-[[regular-expression1][['Index term Searcher.][br]
+[[regular-expression1][
+['Index term Searcher.]
+
 An optional regular expression: each occurrence
 of the regular expression in the text of the document will result
-in one index index term being emitted.
+in one index term being emitted.
 
 If the regular expression is omitted (default) or is "", then the ['index term] itself
 will be used as the search text - and only occurrence of whole words matching
@@ -715,11 +672,12 @@ You will very often need to use this to deal with plurals and other variants.]
 ] [/regular-expression1]
 
 [[regular-expression2]
-[['Section(s) Selector.][br]
+[['Section(s) Selector.]
+
 A constraint that specifies which sections are
 indexed for ['term]: only if the ID of the section matches
 ['regular-expression2] exactly will that section be indexed
-for occurrences of ['index term].
+for occurrences of ['term].
 
 For example, to limit indexing to just [*one specific section] (but not sub-sections below):
 
@@ -751,12 +709,20 @@ or is "", then [*all sections] are indexed for this term.
 ]
 ] [/regular-expression2]
 
-[[category][['Index Category.][br]
-Optionally an  to place occurrences of ['index term] in.
+[[category][
+['Index Category Constraint.]
+
+Optionally a category to place occurrences of ['index term] in.
 If you have multiple indexes then this is the name
-assigned to the indexes "type" attribute.]
-[/ TODO Need an example of category?  function, class, macro, typdef???]
-] [/category]
+assigned to the indexes "type" attribute.
+
+For example:
+  
+  myclass "" "" class_name
+
+Will index occurances of ['myclass] and place them in the class-index if there is one.
+
+]] [/category]
 
 ]  [/variablelist]
 
@@ -921,6 +887,46 @@ it is worth switching it on.
 
 [endsect] [/section:script_ref Script File Reference]
 
+[section:workflow  Understanding The AutoIndex Workflow]
+
+# Load the script file (usually index.idx) 
+  and process it one line at a time,
+  producing one or more index term per (non-comment) line.
+
+# Reading all lines builds a list of ['terms to index].
+  Some of those may be terms defined (by you) directly in the script file,
+  others may be terms found by scanning C++ header and source files
+  that were specified by the ['!scan-path] directive.
+
+# Once the complete list of ['terms to index] is complete,
+  it loads the Docbook XML file.
+  (If this comes from Quickbook\/Doxygen\/Boostbook\/Docbook then this is
+  the complete documentation after conversion to Docbook format).
+
+# AutoIndex builds an internal __DOM of the Docbook XML.
+  This internal representation then gets scanned for occurrences of the ['terms to index].
+  This scanning works at the XML paragraph level
+  (or equivalent sibling such as a table or code block)
+  - so all the XML encoding within a paragraph gets flattened to plain text.[br]
+  This flattening means the regular expressions used to search for ['terms to index]
+  can find anything that is completely contained within a paragraph 
+  (or code block etc).
+
+# For each term found then an ['indexterm] Docbook element is inserted
+  into the __DOM (provided internal index generation is off),
+
+# Also the AutoIndex's internal index representation gets updated.
+
+# Once the whole XML document has been indexed, 
+  then, if autoindex has been instructed to generate the index itself,
+  it creates the necessary XML and inserts this into the __DOM.
+
+# Finally the whole DOM is written out as a new Docbook XML file,
+  and normal processing of this continues via the XSL stylesheets (with xsltproc)
+  to actually build the final human-readable docs.
+
+[endsect] [/section:workflow  Auto-index Workflow]
+
 
 [section:xml XML Handling]
 
@@ -960,7 +966,6 @@ to the XSL stylesheets.]]
 ]
 
 [endsect]  [/section:comm_ref Command Line Reference]
-
 
 
 

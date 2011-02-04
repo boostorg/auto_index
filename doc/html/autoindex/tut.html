@@ -7,20 +7,20 @@
 <link rel="home" href="../index.html" title="AutoIndex">
 <link rel="up" href="../index.html" title="AutoIndex">
 <link rel="prev" href="overview.html" title="Overview">
-<link rel="next" href="workflow.html" title="AutoIndex Workflow">
+<link rel="next" href="script_ref.html" title="Script File Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="overview.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="workflow.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="overview.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="script_ref.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="autoindex.tut"></a><a class="link" href="tut.html" title="Getting Started and Tutorial">Getting Started and Tutorial</a>
 </h2></div></div></div>
 <a name="autoindex.tut.step_1__build_the_autoindex_tool"></a><h5>
-<a name="id860648"></a>
+<a name="id992417"></a>
       <a class="link" href="tut.html#autoindex.tut.step_1__build_the_autoindex_tool">Step 1: Build
       the AutoIndex tool</a>
     </h5>
@@ -57,11 +57,10 @@
 </td></tr>
 </table></div>
 <p>
-      Finally note that <code class="computeroutput"><span class="identifier">tools</span><span class="special">/</span><span class="identifier">auto_index</span><span class="special">/</span><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">.</span><span class="identifier">jam</span></code> gets
-      copied into the same directory as the rest of the Boost.Build tools (under
-      <code class="computeroutput"><span class="identifier">tools</span><span class="special">/</span><span class="identifier">build</span><span class="special">/</span><span class="identifier">v2</span><span class="special">/</span><span class="identifier">tools</span></code> in
-      your main Boost tree): this is a temporary fix that will go away if the tool
-      is accepted into Boost.
+      Finally note that [=tools/auto_index/auto-index.jam] gets copied into the same
+      directory as the rest of the Boost.Build tools (under <code class="computeroutput"><span class="identifier">tools</span><span class="special">/</span><span class="identifier">build</span><span class="special">/</span><span class="identifier">v2</span><span class="special">/</span><span class="identifier">tools</span></code>
+      in your main Boost tree): this is a temporary fix that will go away if the
+      tool is accepted into Boost.
     </p>
 <div class="caution"><table border="0" summary="Caution">
 <tr>
@@ -74,7 +73,7 @@
       </p></td></tr>
 </table></div>
 <a name="autoindex.tut.step_2__configure_boost_build_to_use_autoindex"></a><h5>
-<a name="id860909"></a>
+<a name="id992642"></a>
       <a class="link" href="tut.html#autoindex.tut.step_2__configure_boost_build_to_use_autoindex">Step
       2: Configure Boost.Build to use AutoIndex</a>
     </h5>
@@ -108,7 +107,6 @@
         
         # Turns on (or off) auto-index-verbose for diagnostic info.
         # This is highly recommended until you have got all the many details correct!
-        # (uses /bin auto-index-verbose folders).
         &lt;auto-index-verbose&gt;on 
         
         # Choose the indexing method (separately for html and PDF) - see manual.
@@ -120,12 +118,14 @@
         
         # Set the name of the script file to use (index.idx is popular):
         &lt;auto-index-script&gt;index.idx
-        # But see &lt;auto-index-prefix&gt; to use for the optional scan path to scan for script files,
-        # for example:        
-        # &lt;auto-index-prefix&gt;../../.. will get you back up to /mylibrary,
-        # so !scan-path "boost/mylibrary/" is where headers *.hpp will be.
-        # and /libs/mylibrary for other files (doc, example...).
-        # Without a prefix you would need !scan-path "../../../boost/mylibrary"
+        # Commands in the script file should all use RELATIVE PATHS
+        # otherwise the script will not be portable to other machines.
+        # Relative paths are normally taken as relative to the location 
+        # of the script file, but we can add a prefix to all
+        # those relative paths using the &lt;auto-index-prefix&gt; feature.
+        # The path specified by &lt;auto-index-prefix&gt; may be either relative or
+        # absolute, for example the following will get us up to the boost root
+        # directory for most Boost libraries:
         &lt;auto-index-prefix&gt;../../..
 
         # Tell Quickbook that it should enable indexing.
@@ -173,19 +173,26 @@
             information - useful for debugging purposes during setup.
           </p></dd>
 <dt><span class="term">&lt;auto-index-prefix&gt;filename</span></dt>
-<dd><p>
+<dd>
+<p>
             Optionally specifies a directory to apply as a prefix to all relative
-            file paths in the script file.<br> You may wish to do this to reduce
-            typing of pathnames, and/or where the paths can't be located relative
-            to the script file location, typically if the headers are in the Boost
-            trunk, but the script file is in Boost sandbox.<br> For Boost standard
-            library layout, <code class="literal">&lt;auto-index-prefix&gt;../../..</code>
-            will get you back up to the 'root' of your library /mylibrary, so !scan-path
-            <em class="replaceable"><code>boost/mylibrary/</code></em> is where headers *.hpp will
-            be, and <em class="replaceable"><code>/libs/mylibrary</code></em> for other files. Without
+            file paths in the script file.
+          </p>
+<p>
+            You may wish to do this to reduce typing of pathnames, and/or where the
+            paths can't be located relative to the script file location, typically
+            if the headers are in the Boost trunk, but the script file is in Boost
+            sandbox.
+          </p>
+<p>
+            For Boost standard library layout, <code class="literal">&lt;auto-index-prefix&gt;../../..</code>
+            will get you back up to the 'root' of the Boost tree, so !scan-path
+            <em class="replaceable"><code>boost/mylibrary/</code></em> is where your headers will
+            be, and <em class="replaceable"><code>libs/mylibrary</code></em> for other files. Without
             a prefix all relative paths are relative to the location of the script
-            file.<br>
-          </p></dd>
+            file.
+          </p>
+</dd>
 <dt><span class="term">&lt;auto-index-type&gt;element-name</span></dt>
 <dd><p>
             Specifies the name of the XML element to enclose internally generated
@@ -358,10 +365,6 @@
       be able to build your documentation.
     </p>
 <p>
-      One method of setting up optional auto-index support is to place all auto-index
-      configuration in a the body of a <span class="emphasis"><em>bjam if statement</em></span>.
-    </p>
-<p>
       This also very convenient while you are refining your documentation, to allow
       you to decide to build indexes, or not: building indexes can take long time,
       if you are just correcting typos, you won't want wait while you keep rebuilding
@@ -432,13 +435,13 @@
 </tr>
 <tr><td align="left" valign="top"><p>
         If you upgrade compiler version, for example MSVC from 9 to 10, then you
-        will need to rebuild Autoindex to avoid what Microsoft call a 'side-by-side'
+        may need to rebuild Autoindex to avoid what Microsoft call a 'side-by-side'
         error. And make sure that the autoindex.exe version you are using is the
         new one.
       </p></td></tr>
 </table></div>
 <a name="autoindex.tut.step_3__add_indexes_to_your_documentation"></a><h5>
-<a name="id861552"></a>
+<a name="id1000965"></a>
       <a class="link" href="tut.html#autoindex.tut.step_3__add_indexes_to_your_documentation">Step
       3: Add indexes to your documentation</a>
     </h5>
@@ -506,6 +509,20 @@
     </p>
 <pre class="programlisting">&lt;xsl:param&gt;"boost.doxygen.reftitle=Boost.mylibrary C++ Reference"
 </pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        AutoIndex knows nothing of the XML <code class="computeroutput"><span class="identifier">xinclude</span></code>
+        element, so if you're writing raw Docbook XML then you may want to run this
+        through an XSL processor to flatten everything to one XML file before passing
+        to AutoIndex. If you're using Boostbook or quickbook though, this all happens
+        for you anyway, and AutoIndex will index the whole document including any
+        sections included with <code class="computeroutput"><span class="identifier">xinclude</span></code>.
+      </p></td></tr>
+</table></div>
 <p>
       If you are using auto-index's internal index generation on
     </p>
@@ -556,7 +573,7 @@ boostbook standalone
         &lt;xsl:param&gt;index.on.type=1
 </pre>
 <a name="autoindex.tut.step_4__create_the_script_file____to_control_what_to_terms_to_index"></a><h5>
-<a name="id861903"></a>
+<a name="id1001337"></a>
       <a class="link" href="tut.html#autoindex.tut.step_4__create_the_script_file____to_control_what_to_terms_to_index">Step
       4: Create the script file - to control what to terms to index</a>
     </h5>
@@ -566,9 +583,9 @@ boostbook standalone
 <p>
       If your document contains largely text, and only a small amount of simple C++,
       and/or if you are using Doxygen to provide a C++ Reference section (that lists
-      the C++ elements), and/or if you are relying the indexinf provided from a Standalone
-      Doxygen Index, you may decide that a index is not needed and that you may only
-      want the text part indexed.
+      the C++ elements), and/or if you are relying on the indexing provided from
+      a Standalone Doxygen Index, you may decide that a index is not needed and that
+      you may only want the text part indexed.
     </p>
 <p>
       But if you want C++ classes functions, typedefs and/or macros AutoIndexed,
@@ -603,7 +620,8 @@ boostbook standalone
 <th align="left">Caution</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-        The second <span class="emphasis"><em>file-name-regex</em></span> argument is a regular expression!
+        The second <span class="emphasis"><em>file-name-regex</em></span> argument is a regular expression
+        and not a filename GLOB!
       </p></td></tr>
 </table></div>
 <div class="caution"><table border="0" summary="Caution">
@@ -613,12 +631,14 @@ boostbook standalone
 </tr>
 <tr><td align="left" valign="top"><p>
         The scan-path is modified by any setting of &lt;auto-index-prefix&gt;. The
-        examples here assume that this is <code class="computeroutput"><span class="special">&lt;</span><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">-</span><span class="identifier">prefix</span><span class="special">&gt;../../..</span></code> so that <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mylibrary</span></code>
-        will be your header files, <code class="computeroutput"><span class="identifier">libs</span><span class="special">/</span><span class="identifier">mylibrary</span><span class="special">/</span><span class="identifier">doc</span></code> will
-        be your docs, like .qbk <code class="computeroutput"><span class="identifier">libs</span><span class="special">/</span><span class="identifier">mylibrary</span><span class="special">/</span><span class="identifier">example</span></code>
-        will be your examples, usually .cpp.
+        examples here assume that this is [=&lt;auto-index-prefix&gt;..<span class="emphasis"><em>..</em></span>..
       </p></td></tr>
 </table></div>
+<p>
+      so that <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mylibrary</span></code> will be your header files, <code class="computeroutput"><span class="identifier">libs</span><span class="special">/</span><span class="identifier">mylibrary</span><span class="special">/</span><span class="identifier">doc</span></code> will
+      contain your documentation files and <code class="computeroutput"><span class="identifier">libs</span><span class="special">/</span><span class="identifier">mylibrary</span><span class="special">/</span><span class="identifier">example</span></code>
+      will contain your examples. ]
+    </p>
 <p>
       You could also scan any examples (.cpp) files, typically in folder <code class="computeroutput"><span class="special">\/</span><span class="identifier">mylibrary</span><span class="special">\/</span><span class="identifier">lib</span><span class="special">\/</span><span class="identifier">example</span></code>.
     </p>
@@ -675,17 +695,8 @@ boostbook standalone
     </p>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>
-<p>
-      This may lead to too much indexing (especially if you have provided a Doxygen
-      autodoc C++ reference section that provides a good way of getting the C++ functions
-      etc).
-    </p>
-<p>
-      This will scan and may index any explanatory C++ comments too. If an example's
-      output is appended as a comment, then this text will also be scanned.
-    </p>
 <a name="autoindex.tut.step_5__add_manual_index_entries_to_docbook_xml___optional"></a><h5>
-<a name="id862346"></a>
+<a name="id1001751"></a>
       <a class="link" href="tut.html#autoindex.tut.step_5__add_manual_index_entries_to_docbook_xml___optional">Step
       5: Add Manual Index Entries to Docbook XML - Optional</a>
     </h5>
@@ -704,17 +715,11 @@ boostbook standalone
       "type" attribute.
     </p>
 <a name="autoindex.tut.step_6__build_the_docs"></a><h5>
-<a name="id862467"></a>
+<a name="id1001872"></a>
       <a class="link" href="tut.html#autoindex.tut.step_6__build_the_docs">Step 6: Build the Docs</a>
     </h5>
 <p>
-      Make sure that auto-index.jam is in your BOOST_BUILD_PATH, by either setting
-      the environment variable BOOST_BUILD_PATH to point to the directory containing
-      it, or by copying the <code class="computeroutput"><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">.</span><span class="identifier">jam</span></code>
-      file into <code class="computeroutput"><span class="identifier">boost</span><span class="special">-</span><span class="identifier">root</span><span class="special">/</span><span class="identifier">tools</span><span class="special">/</span><span class="identifier">build</span><span class="special">/</span><span class="identifier">v2</span><span class="special">/</span><span class="identifier">tools</span></code>.
-    </p>
-<p>
-      Then you build the docs with either:
+      Using Boost.Build you build the docs with either:
     </p>
 <pre class="programlisting"><span class="identifier">bjam</span> <span class="identifier">release</span> <span class="special">&gt;</span> <span class="identifier">mylibrary_html</span><span class="special">.</span><span class="identifier">log</span>
 </pre>
@@ -743,11 +748,11 @@ boostbook standalone
     </p>
 <p>
       Examine the log file, and if the cause is not obvious, make sure that you have
-      <code class="literal">&lt;auto-index-verbose&gt;on</code> and that <code class="literal">!debug regular-expression
-      directive</code> is at the head of the script file.
+      <code class="literal">&lt;auto-index-verbose&gt;on</code> and that any needed <code class="literal">!debug
+      regular-expression</code> directives are in your script file.
     </p>
 <a name="autoindex.tut.step_7__iterate___to_refine_your_index"></a><h5>
-<a name="id862661"></a>
+<a name="id1002000"></a>
       <a class="link" href="tut.html#autoindex.tut.step_7__iterate___to_refine_your_index">Step 7:
       Iterate - to refine your index</a>
     </h5>
@@ -772,7 +777,7 @@ boostbook standalone
       next iteration examined, and so on.
     </p>
 <a name="autoindex.tut.restricting_which_sections_are_indexed_for_a_particular_term"></a><h5>
-<a name="id863849"></a>
+<a name="id1002048"></a>
       <a class="link" href="tut.html#autoindex.tut.restricting_which_sections_are_indexed_for_a_particular_term">Restricting
       which Sections are indexed for a particular term</a>
     </h5>
@@ -814,7 +819,7 @@ boostbook standalone
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="overview.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="workflow.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="overview.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="script_ref.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

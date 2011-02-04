@@ -6,14 +6,14 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
 <link rel="home" href="../index.html" title="AutoIndex">
 <link rel="up" href="../index.html" title="AutoIndex">
-<link rel="prev" href="workflow.html" title="AutoIndex Workflow">
-<link rel="next" href="xml.html" title="XML Handling">
+<link rel="prev" href="tut.html" title="Getting Started and Tutorial">
+<link rel="next" href="workflow.html" title="Understanding The AutoIndex Workflow">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="workflow.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="xml.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="tut.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="workflow.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -23,7 +23,7 @@
       The following elements can occur in a script:
     </p>
 <a name="autoindex.script_ref.comments_and_blank_lines"></a><h5>
-<a name="id864035"></a>
+<a name="id1002121"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.comments_and_blank_lines">Comments and
       blank lines</a>
     </h5>
@@ -32,7 +32,7 @@
       comments onto the end of a line!).
     </p>
 <a name="autoindex.script_ref.inclusion_of_index_terms"></a><h5>
-<a name="id864056"></a>
+<a name="id1002142"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.inclusion_of_index_terms">Inclusion of
       Index terms</a>
     </h5>
@@ -42,18 +42,25 @@
 <p class="title"><b></b></p>
 <dl>
 <dt><span class="term">term</span></dt>
-<dd><p>
-            <span class="emphasis"><em>Term to index.</em></span><br> The index term will form a
-            primary entry in the Index with the section title(s) containing the term
-            as secondary entries, and also will be used as a secondary entry beneath
-            each of the section titles that the index term occurs in.
-          </p></dd>
+<dd>
+<p>
+            <span class="emphasis"><em>Term to index.</em></span>
+          </p>
+<p>
+            The index term will form a primary entry in the Index with the section
+            title(s) containing the term as secondary entries, and also will be used
+            as a secondary entry beneath each of the section titles that the index
+            term occurs in.
+          </p>
+</dd>
 <dt><span class="term">regular-expression1</span></dt>
 <dd>
 <p>
-            <span class="emphasis"><em>Index term Searcher.</em></span><br> An optional regular expression:
-            each occurrence of the regular expression in the text of the document
-            will result in one index index term being emitted.
+            <span class="emphasis"><em>Index term Searcher.</em></span>
+          </p>
+<p>
+            An optional regular expression: each occurrence of the regular expression
+            in the text of the document will result in one index term being emitted.
           </p>
 <p>
             If the regular expression is omitted (default) or is "", then
@@ -110,10 +117,12 @@
 <dt><span class="term">regular-expression2</span></dt>
 <dd>
 <p>
-            <span class="emphasis"><em>Section(s) Selector.</em></span><br> A constraint that specifies
-            which sections are indexed for <span class="emphasis"><em>term</em></span>: only if the
-            ID of the section matches <span class="emphasis"><em>regular-expression2</em></span> exactly
-            will that section be indexed for occurrences of <span class="emphasis"><em>index term</em></span>.
+            <span class="emphasis"><em>Section(s) Selector.</em></span>
+          </p>
+<p>
+            A constraint that specifies which sections are indexed for <span class="emphasis"><em>term</em></span>:
+            only if the ID of the section matches <span class="emphasis"><em>regular-expression2</em></span>
+            exactly will that section be indexed for occurrences of <span class="emphasis"><em>term</em></span>.
           </p>
 <p>
             For example, to limit indexing to just <span class="bold"><strong>one specific
@@ -175,15 +184,30 @@
           </p>
 </dd>
 <dt><span class="term">category</span></dt>
-<dd><p>
-            <span class="emphasis"><em>Index Category.</em></span><br> Optionally an to place occurrences
-            of <span class="emphasis"><em>index term</em></span> in. If you have multiple indexes then
-            this is the name assigned to the indexes "type" attribute.
-          </p></dd>
+<dd>
+<p>
+            <span class="emphasis"><em>Index Category Constraint.</em></span>
+          </p>
+<p>
+            Optionally a category to place occurrences of <span class="emphasis"><em>index term</em></span>
+            in. If you have multiple indexes then this is the name assigned to the
+            indexes "type" attribute.
+          </p>
+<p>
+            For example:
+          </p>
+<p>
+            myclass "" "" class_name
+          </p>
+<p>
+            Will index occurances of <span class="emphasis"><em>myclass</em></span> and place them
+            in the class-index if there is one.
+          </p>
+</dd>
 </dl>
 </div>
 <a name="autoindex.script_ref.source_file_scanning"></a><h5>
-<a name="id864493"></a>
+<a name="id1003183"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.source_file_scanning">Source File Scanning</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">source</span><span class="special">-</span><span class="identifier">file</span><span class="special">-</span><span class="identifier">name</span>
@@ -212,7 +236,7 @@
       </p></td></tr>
 </table></div>
 <a name="autoindex.script_ref.directory_and_source_file_scanning"></a><h5>
-<a name="id864571"></a>
+<a name="id1003261"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.directory_and_source_file_scanning">Directory
       and Source File Scanning</a>
     </h5>
@@ -241,7 +265,7 @@
 </dl>
 </div>
 <a name="autoindex.script_ref.excluding_terms"></a><h5>
-<a name="id864696"></a>
+<a name="id1003386"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.excluding_terms">Excluding Terms</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">exclude</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">list</span>
@@ -254,7 +278,7 @@
       of things to index.
     </p>
 <a name="autoindex.script_ref.rewriting_section_names"></a><h5>
-<a name="id864751"></a>
+<a name="id1003441"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.rewriting_section_names">Rewriting Section
       Names</a>
     </h5>
@@ -301,7 +325,7 @@
       all index entries - thus preventing lots of entries under "The" etc!
     </p>
 <a name="autoindex.script_ref.defining_or_changing_the_file_scanners"></a><h5>
-<a name="id864904"></a>
+<a name="id1003593"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.defining_or_changing_the_file_scanners">Defining
       or Changing the File Scanners</a>
     </h5>
@@ -404,7 +428,7 @@
       scanner may find in the documentation.
     </p>
 <a name="autoindex.script_ref.debugging_scanning"></a><h5>
-<a name="id865406"></a>
+<a name="id1004096"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.debugging_scanning">Debugging scanning</a>
     </h5>
 <p>
@@ -442,7 +466,7 @@ The index type for this entry is: qi_index
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="workflow.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="xml.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="tut.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="workflow.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

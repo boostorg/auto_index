@@ -37,17 +37,14 @@
       into the Docbook XML document for you.
     </p>
 <p>
-      AutoIndex will also scan using a list of index terms that you need to manually
-      provide a simple list of index terms (in a script file, for example index.idx
-      , optionally using regular expressions). This may allow the user to find references
-      to textual items that may not occur in the C++ classes and functions header
-      files.
-    </p>
-<p>
-      Providing a manual list of search terms in the text to index is a tedious task
-      (especially handling plurals and variants), and requires enough knowledge of
-      the library to guess what users may be seeking to know, but at least the real
-      'grunt work' of finding the term and listing the page number is automated.
+      AutoIndex can also scan using a list of index terms specified in a script file,
+      for example index.idx. These manually provided terms can optionally be regular
+      expressions, and may allow the user to find references to terms that may not
+      occur in the C++ header files. Of course providing a manual list of search
+      terms in to index is a tedious task (especially handling plurals and variants),
+      and requires enough knowledge of the library to guess what users may be seeking
+      to know, but at least the real 'grunt work' of finding the term and listing
+      the page number is automated.
     </p>
 <p>
       AutoIndex creates index entries as follows:
@@ -65,8 +62,8 @@
         </li>
 </ol></div>
 <p>
-      Thus the user has two chances to find what their looking for, based upon either
-      the section name or the <span class="emphasis"><em>function</em></span>, <span class="emphasis"><em>class</em></span>,
+      Thus the user has two chances to find what they're looking for, based upon
+      either the section name or the <span class="emphasis"><em>function</em></span>, <span class="emphasis"><em>class</em></span>,
       <span class="emphasis"><em>macro</em></span> or <span class="emphasis"><em>typedef</em></span> name.
     </p>
 <div class="note"><table border="0" summary="Note">
