@@ -201,13 +201,14 @@ rule auto-index ( target : source : properties * )
     # upon invocation of auto-index-to-boostbook.
     #ECHO "AI-COMMAND= " $(AI-COMMAND) ;
     DEPENDS $(target) : [ on $(target) return $(AI-DEPENDENCIES) ] ;
-    DEPENDS $(target) : [ on $(target) return $(SCRIPT) ] ;
+    #DEPENDS $(target) : [ on $(target) return $(SCRIPT) ] ;
 }
 
 actions auto-index
 {
     $(AI-COMMAND) $(FLAGS) prefix=$(PREFIX) script=$(SCRIPT) index-type=$(INDEX_TYPE) in=$(>) out=$(<)
 }
+
 
 
 
