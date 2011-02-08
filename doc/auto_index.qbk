@@ -15,11 +15,15 @@
 [def __boostbook_docs [@http://www.boost.org/doc/libs/1_41_0/doc/html/boostbook.html BoostBook documentation]]
 [def __quickbook_syntax [@http://www.boost.org/doc/libs/1_41_0/doc/html/quickbook/ref.html Quickbook Syntax Compendium]]
 [def __docbook [@http://www.docbook.org/ DocBook]]
+[def __docbook_params [@http://docbook.sourceforge.net/release/xsl/current/doc/ Docbook xsl:param format options]
 [def __DOM [@http://en.wikipedia.org/wiki/Document_Object_Model Document Object Model]]
 
 [def __doxygen [@http://www.doxygen.org/ Doxygen]]
 [def __autoindex [@boost:\tools\auto_index\doc\html\index.html AutoIndex]]
 [def __pdf [@http://www.adobe.com/products/acrobat/adobepdf.html PDF]]
+
+[template deg[]'''&#xB0;'''] [/ degree sign ]
+
 
 [section:overview Overview]
 
@@ -111,9 +115,9 @@ at the start of each Index:
 
 Finally, you can choose what kind of XML container wraps an internally generated index - 
 this defaults to `<section>...</section>` but you can use either command line options 
-or Boost.Build Jamfile features, to select an alternative wrapper - for example "appendix"
-or "chapter" would be good choices, whatever fits best into the flow of the
-document.  You can even set the container wrapper to type "index" provided you turn
+or Boost.Build Jamfile features, to select an alternative wrapper - for example ['appendix]
+or ['chapter] would be good choices, whatever fits best into the flow of the
+document.  You can even set the container wrapper to type ['index] provided you turn
 off index generation by the XSL stylesheets, for example by setting the following
 build requirements in the Jamfile:
 
@@ -125,10 +129,9 @@ build requirements in the Jamfile:
 
 [endsect] [/section:overview Overview]
 
-
 [section:tut Getting Started and Tutorial]
 
-[h4 Step 1: Build the AutoIndex tool]
+[section:build Step 1: Build the AutoIndex tool]
 
 [/ [note This step is strictly optional, but very desirable to speed up build times.]]
 
@@ -151,13 +154,15 @@ This declaration must go towards the end of `user-config.jam`, or in any case af
 
 Also note that Windows users must use forward slashes in the paths in `user-config.jam`]
 
-Finally note that [=tools/auto_index/auto-index.jam] gets copied into the same directory as the rest of the Boost.Build tools
+Finally note that `tools/auto_index/auto-index.jam` gets copied into the same directory as the rest of the Boost.Build tools
 (under `tools/build/v2/tools` in your main Boost tree): this is a temporary fix that will go away 
 if the tool is accepted into Boost.
 
 [caution If you move to a new machine you will need to do this!  An error message will warn about missing `auto-index.jam`. ]
 
-[h4 Step 2: Configure Boost.Build to use AutoIndex]
+[endsect] [/section:build Step 1: Build the AutoIndex tool]
+
+[section:configure Step 2: Configure Boost.Build jamfile to use AutoIndex]
 
 Assuming you have a Jamfile for building your documentation that looks
 something like:
@@ -217,6 +222,8 @@ you want to the ['build requirements section], for example:
     ;
 ] [/pre]
 
+[section:options Available Indexing Options]
+
 The available options are:
 
 [variablelist
@@ -226,10 +233,10 @@ The available options are:
 itself (feature on), or whether it simply inserts the necessary DocBook
 markup so that the DocBook XSL stylesheets can create the index.  Defaults to "off".]]
 [[<auto-index-script>filename][Specifies the name of the script to load.]]
-[[<auto-index-no-duplicates>off/on][When "on" AutoIndex will only index a term
+[[<auto-index-no-duplicates>off/on][When ['on] AutoIndex will only index a term
 once in any given section, otherwise (the default) multiple index entries per
 term may be created if the term occurs more than once in the section.]]
-[[<auto-index-section-names>off/on][When "on" AutoIndex will use create two
+[[<auto-index-section-names>off/on][When ['on] AutoIndex will use create two
 index entries for each term found - one uses the term itself as the primary
 index key, the other uses the enclosing section name.  When off the index
 entry that uses the section title is not created.  Defaults to "on"]]
@@ -249,7 +256,7 @@ so !scan-path [~boost\/mylibrary/] is where your headers will be, and [~libs\/my
 Without a prefix all relative paths are relative to the location of the script file.
 ]]
 [[<auto-index-type>element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
-  defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.
+  defaults to ['section], but could equally be ['appendix] or ['chapter] or some other block level element that has a formal title.
    The actual list of available options depends upon the document type, the following table gives the available options:]]
 ]
 
@@ -268,16 +275,20 @@ Without a prefix all relative paths are relative to the location of the script f
 [[set][N/A: an index would have to be placed within a subsection of the document.]]
 ]
 
+[endsect] [/section:options Available Indexing Options]
+
+[section:optional Making AutoIndex optional]
+
 It is considerate to make the [*use of auto-index optional] in Boost.Build,
-to allow users who do not have auto-index installed to still be able to build your documentation.
+to allow users who do not have AutoIndex installed to still be able to build your documentation.
 
 This also very convenient while you are refining your documentation,
 to allow you to decide to build indexes, or not:
 building indexes can take long time, if you are just correcting typos,
-you won't want wait while you keep rebuilding the index!
+you won't want to wait while you keep rebuilding the index!
 
-One method of setting up optional auto-index support is to place all 
-auto-index configuration in a the body of a bjam if statement:
+One method of setting up optional AutoIndex support is to place all 
+AutoIndex configuration in a the body of a bjam if statement:
 
 [pre
   if --enable-index in  \[ modules.peek : ARGV \]
@@ -309,6 +320,8 @@ and then run `bjam` to build the docs without index, for example:
 or with index(es)  
   
   bjam -a html --enable-index > mylibrary_html_index.log
+
+[endsect] [/section:optional Making AutoIndex optional]
   
 [tip Always send the output to a log file.
 It will contain of lot of stuff, but is invaluable to check if all has gone right,
@@ -326,8 +339,9 @@ to avoid what Microsoft call a 'side-by-side' error.
 And make sure that the autoindex.exe version you are using is the new one.
 ] [/tip]
 
+[endsect] [/section:configure Step 2: Configure Boost.Build to use AutoIndex]
 
-[h4 Step 3: Add indexes to your documentation]
+[section:add_indexes Step 3: Add indexes to your documentation]
 
 To add a single "include everything"  index to a BoostBook\/Docbook document,
 (perhaps generated using Quickbook, and perhaps also using Doxygen reference section),
@@ -443,7 +457,10 @@ boostbook standalone
         <xsl:param>index.on.type=1
 ]
    
-[h4 Step 4: Create the script file -  to control what to terms to index]
+
+[endsect] [/section:add_indexes Step 3: Add indexes to your documentation]
+
+[section:script Step 4: Create the .idx script file - to control what to terms to index]
 
 AutoIndex works by reading a script file that tells it what terms to index.
 
@@ -535,20 +552,23 @@ when AutoIndex uses them as an index entry:
 
    !rewrite-name "(?i)(?:A|The)\s+(.*)" "\1"
    
-[h4 Step 5: Add Manual Index Entries to Docbook XML - Optional]
+[endsect] [/section:script Step 4: Create the script file -  to control what to terms to index]
+
+[section:entries Step 5: Add Manual Index Entries to Docbook XML - Optional]
 
 If you add manual `<indexentry>` markup to your Docbook XML then these will be 
 passed through unchanged.  Please note however, that if you are using 
-auto-index's internal index generation then it only recognises
+AutoIndex's internal index generation then it only recognises
 `<primary>` and `<secondary>` elements within the `<indexterm>`.
 `<tertiary>`, `<see>` and `<seealso>` elements are not currently recognised
 and auto-index will emit a warning if these are used.
 
 Likewise none of the  attributes which can be applied to these elements are used when
-auto-index generates the index itself, with the exception of the "type" attribute.
+AutoIndex generates the index itself, with the exception of the `<type>` attribute.
 
- 
-[h4 Step 6: Build the Docs]
+[endsect]  [/section:entries Step 5: Add Manual Index Entries to Docbook XML - Optional]
+
+[section:build_docs Step 6: Build the Docs]
 
 Using Boost.Build you build the docs with either:
 
@@ -567,18 +587,20 @@ such as:
    
 If you don't see that, or if it's indexing 0 terms then something is wrong!
 
-Likewise when index generation is complete, auto-index will emit another message:
+Likewise when index generation is complete, AutoIndex will emit another message:
 
 [pre 38 Index entries were created.]
 
-Again if you see that 0 entries were created then something is wrong!
+Again, if you see that 0 entries were created then something is wrong!
 
 Examine the log file, and if the cause is not obvious, 
 make sure that you have [^<auto-index-verbose>on] and that
 any needed
 [^!debug regular-expression] directives are in your script file. 
 
-[h4 Step 7: Iterate - to refine your index]
+[endsect] [/section:build_docs Step 6: Build the Docs]
+
+[section:refine Step 7: Iterate - to refine your index]
 
 Creating a good index is an iterative process, often the first step is
 just to add a header scanning rule to the script file and then generate
@@ -591,7 +613,7 @@ the documentation and see:
 Further rules can then be added to the script to handle these cases
 and the next iteration examined, and so on.
 
-[h4 Restricting which Sections are indexed for a particular term]
+[section:restrict Restricting which Sections are indexed for a particular term]
 
 You can restrict which sections are indexed for a particular term.
 So assuming that the docbook document has the usual hierarchical names for section ID's
@@ -606,15 +628,26 @@ but only in the introduction section, you might then add:
 to the script file,
 assuming that the section ID of the intro is "some_library_or_chapter_name.introduction".
 
+This would avoid an index entry every time [deg] kelvin is found,
+something the user is unlikely to find helpful.
+
+[endsect] [/section:restrict Restricting which Sections are indexed for a particular term]
+
+[section:debug Why particular term is (or is not) present in the index]
+
 [tip If you don't understand why a particular term is (or is not) present in the index,
 try adding a ['!debug regular-expression] 
 directive to the [link autoindex.script_ref script file].
 ] [/tip]
 
+[endsect] [/section:debug Why particular term is (or is not) present in the index]
+
+[endsect] [/section:refine Step 7: Iterate - to refine your index]
+
 [endsect] [/section:tut Getting Started and Tutorial]
 
 
-[section:script_ref Script File Reference]
+[section:script_ref Script File (.idx) Reference]
 
 The following elements can occur in a script:
 
@@ -867,8 +900,8 @@ If you see a term in the index, and you don't understand why it's there, add a [
 !debug regular-expression
 ]
 
-Now, whenever ['regular-expression] matches either the found index term, or the section title it appears in,
-or the ['type] field of a scanner, then
+Now, whenever ['regular-expression] matches either the found index term,
+or the section title it appears in, or the ['type] field of a scanner, then
 some diagnostic information will be printed that will look something like:
 
 [pre
@@ -925,12 +958,12 @@ it is worth switching it on.
   and normal processing of this continues via the XSL stylesheets (with xsltproc)
   to actually build the final human-readable docs.
 
-[endsect] [/section:workflow  Auto-index Workflow]
+[endsect] [/section:workflow  AutoIndex Workflow]
 
 
 [section:xml XML Handling]
 
-Auto-index is rather simplistic in its handling of XML:
+AutoIndex is rather simplistic in its handling of XML:
 
 * When indexing a document, all block content at the paragraph level gets collapsed into a single
 string for matching against the regular expressions representing each index term.  In other words,
@@ -962,10 +995,19 @@ to the XSL stylesheets.]]
 [[--no-section-names][Prevents auto_index from using section names as index entries.]]
 [[prefix=pathname][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
 [[index-type=element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
-  defaults to "section", but could equally be "appendix" or "chapter" or some other block level element that has a formal title.]]
+  defaults to ['section], but could equally be ['appendix] or ['chapter]
+  or some other block level element that has a formal title.]]
 ]
 
 [endsect]  [/section:comm_ref Command Line Reference]
 
+[section:index Index]
+[/Insert a single index of the documentation text.]
 
+[pre
+'''
+  <index/>
+'''
+]
 
+[endsect]  [/section:index  Index]
