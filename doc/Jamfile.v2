@@ -108,6 +108,6 @@ boostbook standalone
 
 # install pdf-install : standalone : <install-type>PDF <location>. ;
 
-install pdf-install : standalone : <install-type>PDF <location>. <name>auto-index.pdf ;
+install pdf-install : standalone : <install-type>PDF <location>. <name>auto_index.pdf ;
 
 
