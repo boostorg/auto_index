@@ -3,12 +3,47 @@
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 using quickbook ;
-#using auto_index ;
 
 path-constant images_location : html ;
 
+import modules ;
+
+if --enable-index in  [ modules.peek : ARGV ]
+{
+   ECHO "Building the autoindex docs with automatic index generation enabled." ;
+   using auto-index ;
+   project : requirements
+   
+        <auto-index>on # Turns on index (or off).
+        # Turns on (or off) index-verbose for diagnostic info (using /bin auto-index-verbose folders).
+        <auto-index-verbose>on 
+        
+        # Choose indexing method (separately for html and pdf):
+        <format>html:<auto-index-internal>on  # on (or off) to use internally generated indexes.
+        # <format>html:<xsl:param>generate.index=0 # Don't let the XSL stylesheets generate indexes.
+        
+        <format>pdf:<auto-index-internal>off # on (or off) to use internally generated indexes.
+        # <auto-index-type>index  # Use <index>...</index> as the XML wrapper.
+        
+        <format>html:<xsl:param>index.on.type=1 # = 1 For the native stylesheets to generate multiple different indexes.
+        
+        <format>pdf:<xsl:param>index.on.type=1 # For the native stylesheets to generate multiple different indexes.
+        # PDF native index support is probably better for PDFs as then you actually get page numbers.
+
+        <auto-index-script>autoindex.idx # Specifies the name of the script to load for mylibrary. 
+        #<auto-index-prefix>../../.. # Will get you back up to /mylibrary, so !scan-path "boost/mylibrary/" is where *.hpp will be,
+        # and /libs/mylibrary for other files.
+        # Without this would need !scan-path "../../../boost/mylibrary"
+        
+        <quickbook-define>enable_index ;
+}
+else
+{
+   ECHO "Building the autoindex docs with automatic index generation disabled. To get an auto-index, try building with --enable-index." ;
+}
+
 xml auto_index : auto_index.qbk ;
-#autoindex index : auto_index ;
+
 boostbook standalone
     :
         auto_index
@@ -71,6 +106,8 @@ boostbook standalone
         <format>pdf:<xsl:param>draft.mode="no"
     ;
 
+# install pdf-install : standalone : <install-type>PDF <location>. ;
 
-install pdf-install : standalone : <install-type>PDF <location>. ;
+install pdf-install : standalone : <install-type>PDF <location>. <name>auto-index.pdf ;
+
 
