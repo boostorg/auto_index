@@ -245,14 +245,14 @@ prints progress information - useful for debugging purposes during setup.]]
 [[<auto-index-prefix>filename][Optionally specifies a directory to apply
 as a prefix to all relative file paths in the script file.
 
-You may wish to do this to reduce typing of pathnames, and/or where the
+You may wish to do this to reduce typing of pathnames, and\/or where the
 paths can't be located relative to the script file location,
 typically if the headers are in the Boost trunk,
 but the script file is in Boost sandbox.
 
 For Boost standard library layout,
 [^<auto-index-prefix>..\/..\/..] will get you back up to the 'root' of the Boost tree,
-so !scan-path [~boost\/mylibrary/] is where your headers will be, and [~libs\/mylibrary] for other files.
+so [^!scan-path boost\/mylibrary\/] is where your headers will be, and [^libs\/mylibrary] for other files.
 Without a prefix all relative paths are relative to the location of the script file.
 ]]
 [[<auto-index-type>element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
@@ -497,14 +497,14 @@ recursively in addition to that directory.
 [caution The second ['file-name-regex] argument is a regular expression and not a filename GLOB!]
 
 [caution The scan-path is modified by any setting of <auto-index-prefix>.
-The examples here assume that this is [=<auto-index-prefix>../../..]
+The examples here assume that this is [^<auto-index-prefix>..\/..\/..]
 so that `boost/mylibrary` will be your header files,
 `libs/mylibrary/doc` will contain your documentation files and
 `libs/mylibrary/example` will contain your examples.
 ]
 
 You could also scan any examples (.cpp) files,
-typically in folder `\/mylibrary\/lib\/example`.
+typically in folder `/mylibrary/lib/example`.
 
 [pre
 # All example source files, assuming no sub-folders.
@@ -613,7 +613,12 @@ the documentation and see:
 Further rules can then be added to the script to handle these cases
 and the next iteration examined, and so on.
 
-[section:restrict Restricting which Sections are indexed for a particular term]
+[tip If you don't understand why a particular term is (or is not) present in the index,
+try adding a ['!debug regular-expression] 
+directive to the [link autoindex.script_ref script file].
+] [/tip]
+
+[heading Restricting which Sections are indexed for a particular term]
 
 You can restrict which sections are indexed for a particular term.
 So assuming that the docbook document has the usual hierarchical names for section ID's
@@ -630,17 +635,6 @@ assuming that the section ID of the intro is "some_library_or_chapter_name.intro
 
 This would avoid an index entry every time [deg] kelvin is found,
 something the user is unlikely to find helpful.
-
-[endsect] [/section:restrict Restricting which Sections are indexed for a particular term]
-
-[section:debug Why particular term is (or is not) present in the index]
-
-[tip If you don't understand why a particular term is (or is not) present in the index,
-try adding a ['!debug regular-expression] 
-directive to the [link autoindex.script_ref script file].
-] [/tip]
-
-[endsect] [/section:debug Why particular term is (or is not) present in the index]
 
 [endsect] [/section:refine Step 7: Iterate - to refine your index]
 
@@ -954,7 +948,7 @@ it is worth switching it on.
   then, if autoindex has been instructed to generate the index itself,
   it creates the necessary XML and inserts this into the __DOM.
 
-# Finally the whole DOM is written out as a new Docbook XML file,
+# Finally the whole __DOM is written out as a new Docbook XML file,
   and normal processing of this continues via the XSL stylesheets (with xsltproc)
   to actually build the final human-readable docs.
 
@@ -1004,10 +998,10 @@ to the XSL stylesheets.]]
 [section:index Index]
 [/Insert a single index of the documentation text.]
 
-[pre
+[endsect]  [/section:index  Index]
+
 '''
   <index/>
 '''
-]
 
-[endsect]  [/section:index  Index]
+

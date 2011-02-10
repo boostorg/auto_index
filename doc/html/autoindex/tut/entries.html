@@ -1,0 +1,51 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Step 5: Add Manual Index Entries to Docbook XML - Optional</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="../../index.html" title="AutoIndex">
+<link rel="up" href="../tut.html" title="Getting Started and Tutorial">
+<link rel="prev" href="script.html" title="Step 4: Create the .idx script file - to control what to terms to index">
+<link rel="next" href="build_docs.html" title="Step 6: Build the Docs">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="script.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../tut.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="build_docs.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="autoindex.tut.entries"></a><a class="link" href="entries.html" title="Step 5: Add Manual Index Entries to Docbook XML - Optional">Step 5: Add Manual Index Entries
+      to Docbook XML - Optional</a>
+</h3></div></div></div>
+<p>
+        If you add manual <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexentry</span><span class="special">&gt;</span></code> markup to your Docbook XML then these
+        will be passed through unchanged. Please note however, that if you are using
+        AutoIndex's internal index generation then it only recognises <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">primary</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">secondary</span><span class="special">&gt;</span></code>
+        elements within the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code>. <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">tertiary</span><span class="special">&gt;</span></code>,
+        <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">see</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">seealso</span><span class="special">&gt;</span></code>
+        elements are not currently recognised and auto-index will emit a warning
+        if these are used.
+      </p>
+<p>
+        Likewise none of the attributes which can be applied to these elements are
+        used when AutoIndex generates the index itself, with the exception of the
+        <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;</span></code> attribute.
+      </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2008 , 2011 John Maddock<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="script.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../tut.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="build_docs.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
