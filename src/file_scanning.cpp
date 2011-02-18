@@ -332,9 +332,9 @@ void process_script(const char* script)
    boost::smatch what;
    std::string line;
    std::ifstream is(script);
-   if(is.bad())
+   if(is.bad() || !exists(boost::filesystem::path(script)))
    {
-      throw std::runtime_error("Could not open script file");
+      throw std::runtime_error(std::string("Could not open script file: ") + script);
    }
    while(std::getline(is, line).good())
    {

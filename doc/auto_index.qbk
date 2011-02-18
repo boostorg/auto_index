@@ -995,13 +995,9 @@ to the XSL stylesheets.]]
 
 [endsect]  [/section:comm_ref Command Line Reference]
 
-[section:index Index]
-[/Insert a single index of the documentation text.]
-
-[endsect]  [/section:index  Index]
-
+[? enable_index
 '''
   <index/>
 '''
-
+]
 
