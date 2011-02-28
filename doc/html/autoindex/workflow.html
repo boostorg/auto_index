@@ -36,7 +36,8 @@
           then this is the complete documentation after conversion to Docbook format).
         </li>
 <li>
-          AutoIndex builds an internal __DOM of the Docbook XML. This internal representation
+          AutoIndex builds an internal <a href="http://en.wikipedia.org/wiki/Document_Object_Model" target="_top">Document
+          Object Model (DOM)</a> of the Docbook XML. This internal representation
           then gets scanned for occurrences of the <span class="emphasis"><em>terms to index</em></span>.
           This scanning works at the XML paragraph level (or equivalent sibling such
           as a table or code block) - so all the XML encoding within a paragraph
@@ -46,7 +47,8 @@
         </li>
 <li>
           For each term found then an <span class="emphasis"><em>indexterm</em></span> Docbook element
-          is inserted into the __DOM (provided internal index generation is off),
+          is inserted into the <a href="http://en.wikipedia.org/wiki/Document_Object_Model" target="_top">Document
+          Object Model (DOM)</a> (provided internal index generation is off),
         </li>
 <li>
           Also the AutoIndex's internal index representation gets updated.
@@ -54,12 +56,14 @@
 <li>
           Once the whole XML document has been indexed, then, if autoindex has been
           instructed to generate the index itself, it creates the necessary XML and
-          inserts this into the __DOM.
+          inserts this into the <a href="http://en.wikipedia.org/wiki/Document_Object_Model" target="_top">Document
+          Object Model (DOM)</a>.
         </li>
 <li>
-          Finally the whole __DOM is written out as a new Docbook XML file, and normal
-          processing of this continues via the XSL stylesheets (with xsltproc) to
-          actually build the final human-readable docs.
+          Finally the whole <a href="http://en.wikipedia.org/wiki/Document_Object_Model" target="_top">Document
+          Object Model (DOM)</a> is written out as a new Docbook XML file, and
+          normal processing of this continues via the XSL stylesheets (with xsltproc)
+          to actually build the final human-readable docs.
         </li>
 </ol></div>
 </div>

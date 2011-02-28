@@ -45,7 +45,10 @@
           &lt;auto-index-script&gt;index.idx
           
            ... other auto-index options here...
-          ;
+
+        # And tell Quickbook that it should enable indexing.
+        &lt;quickbook-define&gt;
+    ;
   }
   else
   {
@@ -53,7 +56,18 @@
   }
 </pre>
 <p>
-          To use this, you need to cd to your docs folder, for example:
+          You will also need to add a conditional statement at the end of your Quickbook
+          file, so that the index(es) is/are only added after the last section if
+          indexing is enabled.
+        </p>
+<pre class="programlisting">[? enable_index
+'''
+  &lt;index/&gt;
+'''
+]
+</pre>
+<p>
+          To use this jamfile, you need to cd to your docs folder, for example:
         </p>
 <pre class="programlisting"><span class="identifier">cd</span> <span class="special">\</span><span class="identifier">boost</span><span class="special">-</span><span class="identifier">sandbox</span><span class="special">\</span><span class="identifier">guild</span><span class="special">\</span><span class="identifier">mylibrary</span><span class="special">\</span><span class="identifier">libs</span><span class="special">\</span><span class="identifier">mylibrary</span><span class="special">\</span><span class="identifier">doc</span>
 </pre>
