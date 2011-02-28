@@ -15,8 +15,8 @@
 [def __boostbook_docs [@http://www.boost.org/doc/libs/1_41_0/doc/html/boostbook.html BoostBook documentation]]
 [def __quickbook_syntax [@http://www.boost.org/doc/libs/1_41_0/doc/html/quickbook/ref.html Quickbook Syntax Compendium]]
 [def __docbook [@http://www.docbook.org/ DocBook]]
-[def __docbook_params [@http://docbook.sourceforge.net/release/xsl/current/doc/ Docbook xsl:param format options]
-[def __DOM [@http://en.wikipedia.org/wiki/Document_Object_Model Document Object Model]]
+[def __docbook_params [@http://docbook.sourceforge.net/release/xsl/current/doc/ Docbook xsl:param format options]]
+[def __DocObjMod [@http://en.wikipedia.org/wiki/Document_Object_Model Document Object Model (DOM)]]
 
 [def __doxygen [@http://www.doxygen.org/ Doxygen]]
 [def __autoindex [@boost:\tools\auto_index\doc\html\index.html AutoIndex]]
@@ -301,7 +301,10 @@ AutoIndex configuration in a the body of a bjam if statement:
           <auto-index-script>index.idx
           
            ... other auto-index options here...
-          ;
+
+        \# And tell Quickbook that it should enable indexing.
+        <quickbook-define>enable_index
+    ;
   }
   else
   {
@@ -309,7 +312,19 @@ AutoIndex configuration in a the body of a bjam if statement:
   }
 ] [/pre]
 
-To use this, you need to cd to your docs folder, for example:
+You will also need to add a conditional statement at the end of your Quickbook file,
+so that the index(es) is/are only added after the last section if indexing is enabled.
+
+[pre
+\[\? '''enable_index'''
+\'\'\'
+  <index/>
+\'\'\'
+\]
+] [/pre]
+
+
+To use this jamfile, you need to cd to your docs folder, for example:
 
  cd \boost-sandbox\guild\mylibrary\libs\mylibrary\doc
   
@@ -383,7 +398,7 @@ requirements in the Jamfile.]
 In Quickbook, you add the same markup but enclose it between two triple-tick \'\'\' escapes,
 thus
 
-[pre    \'\'\'<index\/>\'\'\' ]
+[pre   \'\'\'<index\/>\'\'\' ]
    
 If you are writing a Quickbook document with Doxygen reference documentation,
 the position of a `[xinclude autodoc.xml]` line in the Quickbook file
@@ -930,7 +945,7 @@ it is worth switching it on.
   (If this comes from Quickbook\/Doxygen\/Boostbook\/Docbook then this is
   the complete documentation after conversion to Docbook format).
 
-# AutoIndex builds an internal __DOM of the Docbook XML.
+# AutoIndex builds an internal __DocObjMod of the Docbook XML.
   This internal representation then gets scanned for occurrences of the ['terms to index].
   This scanning works at the XML paragraph level
   (or equivalent sibling such as a table or code block)
@@ -940,15 +955,15 @@ it is worth switching it on.
   (or code block etc).
 
 # For each term found then an ['indexterm] Docbook element is inserted
-  into the __DOM (provided internal index generation is off),
+  into the __DocObjMod (provided internal index generation is off),
 
 # Also the AutoIndex's internal index representation gets updated.
 
 # Once the whole XML document has been indexed, 
   then, if autoindex has been instructed to generate the index itself,
-  it creates the necessary XML and inserts this into the __DOM.
+  it creates the necessary XML and inserts this into the __DocObjMod.
 
-# Finally the whole __DOM is written out as a new Docbook XML file,
+# Finally the whole __DocObjMod is written out as a new Docbook XML file,
   and normal processing of this continues via the XSL stylesheets (with xsltproc)
   to actually build the final human-readable docs.
 

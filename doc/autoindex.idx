@@ -8,9 +8,7 @@
 # http://www.boost.org/LICENSE_1_0.txt)
 
 # Diagnostic output - useful during refinement of the index.
-!debug regular-expression 
-
-#  No header or source files.
+# !debug your-choice-of-regular-expression-to-debug
 
 # Terms that you want to appear in the Index.
 # Term to display in index, and word(s) that are to be matched (as a regular expression).
