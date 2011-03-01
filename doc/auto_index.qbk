@@ -302,7 +302,7 @@ AutoIndex configuration in a the body of a bjam if statement:
           
            ... other auto-index options here...
 
-        \# And tell Quickbook that it should enable indexing.
+        # And tell Quickbook that it should enable indexing.
         <quickbook-define>enable_index
     ;
   }
