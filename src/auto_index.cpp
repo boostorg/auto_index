@@ -601,7 +601,7 @@ int main(int argc, char* argv[])
    }
 
    std::ifstream is(infile.c_str());
-   if(!is.good())
+   if((0 == is.peek()) || !is.good())
    {
       std::cerr << "Unable to open XML data file " << argv[1] << std::endl;
       return 1;
