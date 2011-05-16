@@ -18,7 +18,9 @@
 !rewrite-name "(?:A|An|The)\s+(.*)" "\1"
 
 "Constrained Index Term" add_const "boost_typetraits\.reference.*" class_name
+"This term should not appear anywhere because of the ID constraint" strlen "(?!boost_typetraits.background).*" function_name
 
 
 type-traits "" ".*.intro" test_index_1
 type-traits "" ".*.background" test_index_2
+

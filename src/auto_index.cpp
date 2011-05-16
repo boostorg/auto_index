@@ -349,7 +349,7 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
             //
             std::pair<std::string, std::string> item_index(*pid, i->term);
             if(((no_duplicates == false) || (0 == found_terms.count(item_index))) 
-               && (i->search_id.empty() || regex_search(*pid, i->search_id)))
+               && (i->search_id.empty() || regex_match(*pid, i->search_id)))
             {
                // We have something to index!
                found_terms.insert(item_index);
