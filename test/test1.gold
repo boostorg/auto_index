@@ -83,7 +83,7 @@ to ensure complete testing.
       terminated string, safe in the knowledge that specializations of <computeroutput xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="identifier">char_traits</phrase></computeroutput> will use the most appropriate
       method available to them.
     </para>
-    <anchor id="boost_typetraits.background.type_traits"></anchor>
+    <anchor id="boost_typetraits.background.type_traits"/>
     <bridgehead renderas="sect4">
       <link linkend="boost_typetraits.background.type_traits">Type Traits</link>
     </bridgehead>
@@ -111,7 +111,7 @@ to ensure complete testing.
       for brevity, namespace-qualification is omitted in most of the code samples
       given.
     </para>
-    <anchor id="boost_typetraits.background.implementation"></anchor>
+    <anchor id="boost_typetraits.background.implementation"/>
     <bridgehead renderas="sect4">
       <link linkend="boost_typetraits.background.implementation">Implementation</link>
     </bridgehead>
@@ -206,7 +206,7 @@ to ensure complete testing.
       after the class name do have to match the number and type of the parameters
       in the default template.
     </para>
-    <anchor id="boost_typetraits.background.optimized_copy"></anchor>
+    <anchor id="boost_typetraits.background.optimized_copy"/>
     <bridgehead renderas="sect4">
       <link linkend="boost_typetraits.background.optimized_copy">Optimized copy</link>
     </bridgehead>
@@ -280,7 +280,7 @@ to ensure complete testing.
       as the final parameter: this will dispatch to the optimized version where appropriate,
       otherwise it will call the "slow but safe version".
     </para>
-    <anchor id="boost_typetraits.background.was_it_worth_it_"></anchor>
+    <anchor id="boost_typetraits.background.was_it_worth_it_"/>
     <bridgehead renderas="sect4">
       <link linkend="boost_typetraits.background.was_it_worth_it_">Was it worth it?</link>
     </bridgehead>
@@ -396,7 +396,7 @@ to ensure complete testing.
         </row>
       </tbody>
     </tgroup>
-    </table> <anchor id="boost_typetraits.background.pair_of_references"></anchor>
+    </table> <anchor id="boost_typetraits.background.pair_of_references"/>
     <bridgehead renderas="sect4">
       <link linkend="boost_typetraits.background.pair_of_references">Pair of References</link>
     </bridgehead>
@@ -597,7 +597,7 @@ to ensure complete testing.
       partial specialization to the type traits classes, resulting in code that is
       easier to maintain and easier to understand.
     </para>
-    <anchor id="boost_typetraits.background.conclusion"></anchor>
+    <anchor id="boost_typetraits.background.conclusion"/>
     <bridgehead renderas="sect4">
       <link linkend="boost_typetraits.background.conclusion">Conclusion</link>
     </bridgehead>
@@ -610,7 +610,7 @@ to ensure complete testing.
       does not have to sink to the lowest common denominator, and that templates
       can be optimal as well as generic.
     </para>
-    <anchor id="boost_typetraits.background.acknowledgements"></anchor>
+    <anchor id="boost_typetraits.background.acknowledgements"/>
     <bridgehead renderas="sect4">
       <link linkend="boost_typetraits.background.acknowledgements">Acknowledgements</link>
     </bridgehead>
@@ -618,7 +618,7 @@ to ensure complete testing.
       The authors would like to thank Beman Dawes and Howard Hinnant for their helpful
       comments when preparing this article.
     </para>
-    <anchor id="background.references"></anchor> <anchor id="boost_typetraits.background.references"></anchor>
+    <anchor id="background.references"/> <anchor id="boost_typetraits.background.references"/>
     <bridgehead renderas="sect4">
       <link linkend="boost_typetraits.background.references">References</link>
     </bridgehead>
@@ -947,7 +947,7 @@ to ensure complete testing.
 <phrase role="keyword">template</phrase> <phrase role="special">&lt;</phrase><phrase role="keyword">class</phrase> <phrase role="identifier">T</phrase><phrase role="special">&gt;</phrase>
 <phrase role="keyword">struct</phrase> <link linkend="boost_typetraits.reference.remove_volatile">remove_volatile</link><phrase role="special">;</phrase>
 </programlisting>
-      <anchor id="boost_typetraits.category.transform.broken_compiler_workarounds_"></anchor>
+      <anchor id="boost_typetraits.category.transform.broken_compiler_workarounds_"/>
       <bridgehead renderas="sect4">
         <link linkend="boost_typetraits.category.transform.broken_compiler_workarounds_">Broken
         Compiler Workarounds:</link>
@@ -6623,6 +6623,6 @@ to ensure complete testing.
      <index type="test_index_2">
         <title>Index Test 2</title>
      </index>
-     <index></index>
+     <index/>
   
 </chapter>

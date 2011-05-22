@@ -266,7 +266,11 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    title_info title = { "", pt};
    bool flatten = should_flatten_node(node->name.c_str());
 
-   if((node->name == "title") && (id.prev->id))
+   if(node->name.size() && node->name[0] == '?')
+   {
+      return; // Ignore processing instructions
+   }
+   else if((node->name == "title") && (id.prev->id))
    {
       //
       // This actually sets the title of the enclosing scope, 
@@ -501,6 +505,8 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
       const std::string* pid = get_current_block_id(&id);
       const std::string* attr = find_attr(node, "type");
       index_entry_ptr item1;
+      // If we have a secondary term then the link is associated with that,
+      // otherwise with the primary key:
       if(last_secondary.size())
          item1.reset(new index_entry(last_primary));
       else

@@ -43,23 +43,34 @@ namespace boost
          : private boost::noncopyable  // because deep copy semantics would be required
       {
       public:
+         // The name of the XML element, or "" if this is inline content,
+         // or begins with '?' if this is a processing instruction.
          std::string       name;
+         // List of attributes applied to this element
          attribute_list    attributes;
+         // List of sub-elements, this will be empty if the name is empty
+         // or starts with a '?'.  Plain text content will be inside
+         // anonymous elements in this list - this preserves the order of
+         // plain text mixed with true XML <elements>.
          element_list      elements;
+         // The plain text content of this element, only present if the name is ""
+         // or if this is a processing instruction in which case it is the content 
+         // after the name of the instruction.
          std::string       content;
+         // Pointer to our parent
          weak_element_ptr  parent;
 
          element() {}
          explicit element( const std::string & name ) : name(name) {}
       };
 
-      element_ptr parse( std::istream & in, const std::string & msg );
       // Precondition: stream positioned at either the initial "<"
       // or the first character after the initial "<".
       // Postcondition: stream positioned at the first character after final
       //  ">" (or eof).
       // Returns: an element_ptr to an element representing the parsed stream.
       // Throws: std::string on syntax error. msg appended to what() string.
+      element_ptr parse( std::istream & in, const std::string & msg );
 
       void write( const element & e, std::ostream & out );
 

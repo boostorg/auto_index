@@ -272,6 +272,9 @@ void generate_indexes()
                member->elements.push_back(para);
                secondary_list->elements.push_back(member);
             }
+            // Remove the secondary list of there's nothing in it! :
+            if(secondary_list->elements.empty())
+               subitem->elements.pop_back();
          }
       }
       node->name = internal_index_type;

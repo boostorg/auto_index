@@ -104,13 +104,19 @@ namespace boost
          if(c == '?')
          {
             // XML processing instruction.
-            do
+            e->name += c;
+            if(!in.get( c )) // next char
+               throw std::string("xml: unexpected eof");
+            e->name += get_name(c, in);
+            in >> std::ws;
+            if(!in.get( c )) // next char
+               throw std::string("xml: unexpected eof");
+            while(c != '?')
             {
-               e->name += c;
+               e->content += c;
                if(!in.get( c )) // next char
                   throw std::string("xml: unexpected eof");
-            }while(c != '?');
-            e->name += c;
+            }
             if(!in.get( c )) // next char
                throw std::string("xml: unexpected eof");
             if(c != '>')
@@ -215,6 +221,16 @@ namespace boost
                {
                   out << " " << itr->name << "=\"" << itr->value << "\"";
                }
+            }
+            if(e.name[0] == '?')
+            {
+               out << " " << e.content << "?>";
+               return;
+            }
+            if(e.elements.empty() && e.content.empty())
+            {
+               out << "/>";
+               return;
             }
             out << ">";
          }
