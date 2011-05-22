@@ -19,6 +19,7 @@
 #include "tiny_xml.hpp"
 #include <boost/regex.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string/case_conv.hpp>
 #include <fstream>
 #include <cctype>
 #include <map>
@@ -43,14 +44,6 @@ typedef boost::shared_ptr<index_entry> index_entry_ptr;
 bool operator < (const index_entry_ptr& a, const index_entry_ptr& b);
 typedef std::set<index_entry_ptr> index_entry_set;
 
-inline std::string make_upper_key(const std::string& s)
-{
-   std::string result;
-   for(std::string::const_iterator i = s.begin(); i != s.end(); ++i)
-      result.append(1, std::toupper(*i));
-   return result;
-}
-
 struct index_entry
 {
    std::string key;            // The index term.
@@ -61,9 +54,9 @@ struct index_entry
    bool preferred;             // This entry is the preferred one for this key
 
    index_entry() : preferred(false) {}
-   index_entry(const std::string& k) : key(k), preferred(false)  { sort_key = make_upper_key(key); }
-   index_entry(const std::string& k, const std::string& i) : key(k), id(i), preferred(false)  { sort_key = make_upper_key(key); }
-   index_entry(const std::string& k, const std::string& i, const std::string& c) : key(k), id(i), category(c), preferred(false)  { sort_key = make_upper_key(key); }
+   index_entry(const std::string& k) : key(k), sort_key(k), preferred(false)  { boost::to_upper(sort_key); }
+   index_entry(const std::string& k, const std::string& i) : key(k), sort_key(k), id(i), preferred(false)  { boost::to_upper(sort_key); }
+   index_entry(const std::string& k, const std::string& i, const std::string& c) : key(k), sort_key(k), id(i), category(c), preferred(false)  { boost::to_upper(sort_key); }
 };
 
 

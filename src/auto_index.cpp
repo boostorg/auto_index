@@ -31,16 +31,6 @@ int help()
    return 1;
 }
 
-void eat_whitespace(std::istream & is)
-{
-   char c = is.peek();
-   while(std::isspace(c))
-   {
-      is.get(c);
-      c = is.peek();
-   }
-}
-
 void eat_block(std::string& result, std::istream & is)
 {
    //
@@ -65,15 +55,16 @@ std::string get_header(std::istream & is)
    // We need to get any leading <? and <! elements:
    //
    std::string result;
-   eat_whitespace(is);
+   is >> std::ws;
    if(is.get() != '<')
       throw std::runtime_error("Invalid leading markup in XML file found");
    char c = is.peek();
    while((c == '?') || (c == '!'))
    {
-      result += '<';
-      eat_block(result, is);
-      eat_whitespace(is);
+      std::string temp;
+      std::getline(is, temp, '>');
+      result += '<' + temp + '>';
+      is >> std::ws;
       if(is.get() != '<')
          throw std::runtime_error("Invalid leading markup in XML file found");
       c = is.peek();

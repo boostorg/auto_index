@@ -11,7 +11,7 @@
 namespace
 {
 
-   void eat_whitespace( char & c, std::istream & in )
+   inline void eat_whitespace( char & c, std::istream & in )
    {
       while ( c == ' ' || c == '\r' || c == '\n' || c == '\t' )
          in.get( c );
