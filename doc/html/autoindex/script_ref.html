@@ -23,16 +23,24 @@
       The following elements can occur in a script:
     </p>
 <a name="autoindex.script_ref.comments_and_blank_lines"></a><h5>
-<a name="id1005489"></a>
+<a name="id1052221"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.comments_and_blank_lines">Comments and
       blank lines</a>
     </h5>
 <p>
-      Blank lines consisting of only whitespace are ignored, so are lines that <span class="bold"><strong>start with a #</strong></span>. (But, of course, you can't append #
-      comments onto the end of a line!).
+      Blank lines consisting of only whitespace are ignored, so are lines that <span class="bold"><strong>start with a #</strong></span>.
     </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        You can't append # comments onto the end of a line!
+      </p></td></tr>
+</table></div>
 <a name="autoindex.script_ref.inclusion_of_index_terms"></a><h5>
-<a name="id1005510"></a>
+<a name="id1052251"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.inclusion_of_index_terms">Inclusion of
       Index terms</a>
     </h5>
@@ -131,7 +139,7 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">""</span> <span class="string">"mylib.examples"</span></pre>
+<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">""</span> <span class="string">"mylib\.examples"</span></pre>
 <p>
           </p>
 <p>
@@ -141,30 +149,30 @@
 <p>
             
 </p>
-<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">""</span> <span class="string">"mylib.examples.*"</span></pre>
+<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">""</span> <span class="string">"mylib\.examples.*"</span></pre>
 <p>
           </p>
 <p>
             will index occurrences of "myclass" as a whole word, but only
             in sections whose section ID <span class="bold"><strong>begins</strong></span>
-            "mylib.examples",
+            "mylib.examples", while
           </p>
 <p>
             
 </p>
-<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">"\&lt;myclass\w*\&gt;"</span> <span class="string">"mylib.examples.*"</span></pre>
+<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">"\&lt;myclass\w*\&gt;"</span> <span class="string">"mylib\.examples.*"</span></pre>
 <p>
           </p>
 <p>
-            and will also index plurals myclass, myclasses, myclasss ...
+            will also index plurals myclass, myclasses, myclasss ...
           </p>
 <p>
-            while:
+            and:
           </p>
 <p>
             
 </p>
-<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">""</span> <span class="string">"(?!mylib.introduction.*).*"</span></pre>
+<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">""</span> <span class="string">"(?!mylib\.introduction).*"</span></pre>
 <p>
           </p>
 <p>
@@ -172,10 +180,17 @@
             those whose section IDs begin "mylib.introduction".
           </p>
 <p>
+            Finally, two (or more) sections can be excluded by OR'ing them together:
+          </p>
+<p>
             
 </p>
-<pre class="programlisting"><span class="identifier">reflex</span> <span class="string">"\&lt;reflex\w*\&gt;"</span> <span class="string">"mylib.introduction.*"</span></pre>
+<pre class="programlisting"><span class="identifier">myclass</span> <span class="string">""</span> <span class="string">"(?!mylib\.introduction|mylib\.reference).*"</span></pre>
 <p>
+          </p>
+<p>
+            which excludes searching for this term in sections whose ID's start with
+            either "mylib.introduction" or "mylib.reference".
           </p>
 <p>
             If this third section selection field is omitted (the default) or is
@@ -206,8 +221,38 @@
 </dd>
 </dl>
 </div>
+<p>
+      You can have an index term appear more than once in the script file:
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+          If they have different <span class="emphasis"><em>category</em></span> names then they are
+          treated quite separately.
+        </li>
+<li>
+          Otherwise they are combined, so that the logical or of the regular expressions
+          provided are taken.
+        </li>
+</ul></div>
+<p>
+      Thus:
+    </p>
+<pre class="programlisting"><span class="identifier">myterm</span> <span class="identifier">search_expression1</span> <span class="identifier">constrait_expression2</span> <span class="identifier">foo</span>
+<span class="identifier">myterm</span> <span class="identifier">search_expression1</span> <span class="identifier">constrait_expression2</span> <span class="identifier">bar</span>
+</pre>
+<p>
+      Will be treated as different terms each with their own entries, while:
+    </p>
+<pre class="programlisting"><span class="identifier">myterm</span> <span class="identifier">search_expression1</span> <span class="identifier">constrait_expression2</span> <span class="identifier">mycategory</span>
+<span class="identifier">myterm</span> <span class="identifier">search_expression1</span> <span class="identifier">constrait_expression2</span> <span class="identifier">mycategory</span>
+</pre>
+<p>
+      Will be combined into a single term equivalent to:
+    </p>
+<pre class="programlisting"><span class="identifier">myterm</span> <span class="special">(?:</span><span class="identifier">search_expression1</span><span class="special">|</span><span class="identifier">search_expression1</span><span class="special">)</span> <span class="special">(?:</span><span class="identifier">constrait_expression2</span><span class="special">|</span><span class="identifier">constrait_expression2</span><span class="special">)</span> <span class="identifier">mycategory</span>
+</pre>
 <a name="autoindex.script_ref.source_file_scanning"></a><h5>
-<a name="id1006005"></a>
+<a name="id1052894"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.source_file_scanning">Source File Scanning</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">source</span><span class="special">-</span><span class="identifier">file</span><span class="special">-</span><span class="identifier">name</span>
@@ -236,7 +281,7 @@
       </p></td></tr>
 </table></div>
 <a name="autoindex.script_ref.directory_and_source_file_scanning"></a><h5>
-<a name="id1006083"></a>
+<a name="id1052971"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.directory_and_source_file_scanning">Directory
       and Source File Scanning</a>
     </h5>
@@ -260,12 +305,12 @@
 <dd><p>
             An optional boolean value - either "true" or "false"
             - that indicates whether to recurse into subdirectories. This defaults
-            to "false"
+            to "false".
           </p></dd>
 </dl>
 </div>
 <a name="autoindex.script_ref.excluding_terms"></a><h5>
-<a name="id1006208"></a>
+<a name="id1053096"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.excluding_terms">Excluding Terms</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">exclude</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">list</span>
@@ -278,7 +323,7 @@
       of things to index.
     </p>
 <a name="autoindex.script_ref.rewriting_section_names"></a><h5>
-<a name="id1006263"></a>
+<a name="id1053151"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.rewriting_section_names">Rewriting Section
       Names</a>
     </h5>
@@ -325,7 +370,7 @@
       all index entries - thus preventing lots of entries under "The" etc!
     </p>
 <a name="autoindex.script_ref.defining_or_changing_the_file_scanners"></a><h5>
-<a name="id1006415"></a>
+<a name="id1053305"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.defining_or_changing_the_file_scanners">Defining
       or Changing the File Scanners</a>
     </h5>
@@ -428,7 +473,7 @@
       scanner may find in the documentation.
     </p>
 <a name="autoindex.script_ref.debugging_scanning"></a><h5>
-<a name="id1006918"></a>
+<a name="id1053806"></a>
       <a class="link" href="script_ref.html#autoindex.script_ref.debugging_scanning">Debugging scanning</a>
     </h5>
 <p>

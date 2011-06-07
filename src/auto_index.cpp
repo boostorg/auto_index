@@ -9,6 +9,7 @@
 #include <cstring>
 #include <boost/array.hpp>
 #include <boost/exception/all.hpp>
+#include <boost/program_options.hpp>
 #include "auto_index.hpp"
 
 std::string infile, outfile, prefix, last_primary, last_secondary;
@@ -531,70 +532,86 @@ int main(int argc, char* argv[])
 {
    try{
 
-   if(argc < 2)
-      return help();
+   namespace po = boost::program_options;
+   po::options_description desc("AutoIndex Allowed Options");
+   desc.add_options()
+      ("help", "Print help message")
+      ("in", po::value<std::string>(), "Set the input XML file.")
+      ("out", po::value<std::string>(), "Set output input XML file.")
+      ("scan", po::value<std::string>(), "Scan the specified file for terms to try and index.")
+      ("script", po::value<std::string>(), "Specifies the script file to use.")
+      ("no-duplicates", "Prevents duplicate index entries within the same section.")
+      ("no-section-names", "Suppresses use of section names as index entries.")
+      ("internal-index", "Causes AutoIndex to generate the index itself, rather than relying on the XSL stylesheets.")
+      ("verbose", "Turns on verbose mode.")
+      ("prefix", po::value<std::string>(), "Sets the prefix to be prepended to all file names and paths in the script file.")
+      ("index-type", po::value<std::string>(), "Sets the XML container type to use the index.")
+   ;
+
+   po::variables_map vm;
+   po::store(po::parse_command_line(argc, argv, desc), vm);
+   po::notify(vm);
 
    //
    // Process arguments:
    //
-   for(int i = 1; i < argc; ++i)
+   if(vm.count("help"))
    {
-      if(std::strncmp(argv[i], "in=", 3) == 0)
-      {
-         infile = argv[i] + 3;
-      }
-      else if(std::strncmp(argv[i], "out=", 4) == 0)
-      {
-         outfile = argv[i] + 4;
-      }
-      else if(std::strncmp(argv[i], "scan=", 5) == 0)
-      {
-         if(!exists(boost::filesystem::path(argv[i] + 5)))
-            throw std::runtime_error("Error the file requested for scanning does not exist: " + std::string(argv[i] + 5));
-         scan_file(argv[i] + 5);
-      }
-      else if(std::strncmp(argv[i], "script=", 7) == 0)
-      {
-         process_script(argv[i] + 7);
-      }
-      else if(std::strcmp(argv[i], "--no-duplicates") == 0)
-      {
-         no_duplicates = true;
-      }
-      else if(std::strcmp(argv[i], "--no-section-names") == 0)
-      {
-         use_section_names = false;
-      }
-      else if(std::strcmp(argv[i], "--internal-index") == 0)
-      {
-         internal_indexes = true;
-      }
-      else if(std::strcmp(argv[i], "--verbose") == 0)
-      {
-         verbose = true;
-      }
-      else if(std::strncmp(argv[i], "prefix=", 7) == 0)
-      {
-         prefix = argv[i] + 7;
-      }
-      else if(std::strncmp(argv[i], "index-type=", 11) == 0)
-      {
-         internal_index_type = argv[i] + 11;
-      }
-      else
-      {
-         std::cerr << "Unrecognised option " << argv[i] << std::endl;
-         return 1;
-      }
+      std::cout << desc;
+      return 0;
    }
-
-   if(infile.empty())
+   if(vm.count("in"))
    {
-      return help();
+      infile = vm["in"].as<std::string>();
    }
-   if(outfile.empty())
+   else
    {
-      return help();
+      //std::cerr << "No input XML file specified" << std::endl;
+      //return 1;
+   }
+   if(vm.count("out"))
+   {
+      outfile = vm["out"].as<std::string>();
+   }
+   else
+   {
+      //std::cerr << "No output XML file specified" << std::endl;
+      //return 1;
+   }
+   if(vm.count("verbose"))
+   {
+      verbose = true;
+   }
+   if(vm.count("prefix"))
+   {
+      prefix = vm["prefix"].as<std::string>();
+   }
+   if(vm.count("scan"))
+   {
+      std::string f = vm["scan"].as<std::string>();
+      if(!exists(boost::filesystem::path(f)))
+         throw std::runtime_error("Error the file requested for scanning does not exist: " + f);
+      scan_file(f);
+   }
+   if(vm.count("script"))
+   {
+      process_script(vm["script"].as<std::string>());
+   }
+   if(vm.count("no-duplicates"))
+   {
+      no_duplicates = true;
+   }
+   if(vm.count("no-section-names"))
+   {
+      use_section_names = false;
+   }
+   if(vm.count("internal-index"))
+   {
+      internal_indexes = true;
+   }
+   if(vm.count("index-type"))
+   {
+      internal_index_type = vm["index-type"].as<std::string>();
    }
 
    std::ifstream is(infile.c_str());

@@ -23,10 +23,10 @@ rule auto-index-test ( target-name : input-file : output-file ? : options * )
             : [ alias autoindex : ../build//auto_index : release ]
             : $(requirements)
                 <location-prefix>$(target-name).test
-                <testing.arg>prefix=$(local-boost-root)
+                <testing.arg>--prefix=$(local-boost-root)
                 <testing.arg>$(options)
-                <testing.arg>in=$(input-file)
-                <testing.arg>out=$(target-name).out
+                <testing.arg>--in=$(input-file)
+                <testing.arg>--out=$(target-name).out
                 <preserve-test-targets>on
                 <dependency>Jamfile.v2
                 <dependency>$(input-file)
@@ -55,17 +55,8 @@ rule auto-index-test ( target-name : input-file : output-file ? : options * )
     return $(t) ;
 }
 
-auto-index-test test1 : type_traits.docbook : : script=index.idx ;
-auto-index-test test2 : type_traits.docbook : : --internal-index script=index.idx ;
-auto-index-test test3 : type_traits.docbook : : --internal-index index-type=index script=index.idx ;
-
-
-
-
-
-
-
-
-
+auto-index-test test1 : type_traits.docbook : : --script=index.idx ;
+auto-index-test test2 : type_traits.docbook : : --internal-index --script=index.idx ;
+auto-index-test test3 : type_traits.docbook : : --internal-index --index-type=index --script=index.idx ;
 
 

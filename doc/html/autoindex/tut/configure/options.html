@@ -83,12 +83,14 @@
 </dd>
 <dt><span class="term">&lt;auto-index-type&gt;element-name</span></dt>
 <dd><p>
-                Specifies the name of the XML element to enclose internally generated
-                indexes in: defaults to <span class="emphasis"><em>section</em></span>, but could equally
-                be <span class="emphasis"><em>appendix</em></span> or <span class="emphasis"><em>chapter</em></span>
+                Specifies the name of the XML element in which to enclose an internally
+                generated indexes: defaults to <span class="emphasis"><em>section</em></span>, but
+                could equally be <span class="emphasis"><em>appendix</em></span> or <span class="emphasis"><em>chapter</em></span>
                 or some other block level element that has a formal title. The actual
-                list of available options depends upon the document type, the following
-                table gives the available options:
+                list of available options depends upon the Quickbook document type,
+                the following table gives the available options, assuming that the
+                index is placed at the top level, and not in some sub-section or
+                other container:
               </p></dd>
 </dl>
 </div>
@@ -105,7 +107,7 @@
                 </th>
 <th>
                   <p>
-                    Available Index Types
+                    Permitted Index Types
                   </p>
                 </th>
 </tr></thead>
@@ -137,24 +139,24 @@
 <tr>
 <td>
                   <p>
-                    library
-                  </p>
-                </td>
-<td>
-                  <p>
-                    See Chapter
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
                     chapter
                   </p>
                 </td>
 <td>
                   <p>
                     section index sect1
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    library
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The same as Chapter (section index sect1)
                   </p>
                 </td>
 </tr>
@@ -248,6 +250,140 @@
 </tr>
 </tbody>
 </table></div>
+<p>
+          In large part then the choice of <code class="computeroutput"><span class="special">&lt;</span><span class="keyword">auto</span><span class="special">-</span><span class="identifier">index</span><span class="special">-</span><span class="identifier">type</span><span class="special">&gt;</span><span class="identifier">element</span><span class="special">-</span><span class="identifier">name</span></code>
+          depends on the formatting you want to be applied to the index:
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    XML Container Used for the Index
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Formatting Applied by the XSL Stylesheets
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    appendix
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Starts a new page.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    article
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Starts a new page.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    chapter
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Starts a new page.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    index
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Starts a new page only if it's contained within an article or
+                    book.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    part
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Starts a new page.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    reference
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Starts a new page.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    sect1
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Starts a new page as long as it's not the first section (but
+                    is controlled by the XSL parameters chunk.section.depth and/or
+                    chunk.first.sections).
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    section
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Starts a new page as long as it's not the first section or nested
+                    within another section (but is controlled by the XSL parameters
+                    chunk.section.depth and/or chunk.first.sections).
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+          In almost all cases the default (section) is the correct choice - the exception
+          is when the index is to be placed directly inside a <span class="emphasis"><em>book</em></span>
+          or <span class="emphasis"><em>part</em></span>, in which case you should probably use the
+          same XML container for the index as you use for whatever subdivisions are
+          in the <span class="emphasis"><em>book</em></span> or <span class="emphasis"><em>part</em></span>. In any event
+          placing a <span class="emphasis"><em>section</em></span> within a <span class="emphasis"><em>book</em></span>
+          or <span class="emphasis"><em>part</em></span> will result in invalid XML.
+        </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>

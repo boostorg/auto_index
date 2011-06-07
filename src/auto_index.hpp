@@ -100,9 +100,9 @@ inline bool operator < (const file_scanner & a, const file_scanner& b)
 
 typedef std::multiset<file_scanner> file_scanner_set_type;
 
-void process_script(const char* script);
+void process_script(const std::string& script);
 void scan_dir(const std::string& dir, const std::string& mask, bool recurse);
-void scan_file(const char* file);
+void scan_file(const std::string& file);
 void generate_indexes();
 const std::string* find_attr(boost::tiny_xml::element_ptr node, const char* name);
 

@@ -9,6 +9,7 @@ exe auto_index :
    /boost//regex 
    /boost//filesystem 
    /boost//system 
+   /boost//program_options
 : <define>BOOST_ALL_NO_LIB=1 <link>static ;
 
 install aii : auto_index : <location>. ;

@@ -106,18 +106,20 @@
 <pre class="programlisting">&lt;auto-index-internal&gt;on
 </pre>
 <p>
-        (usually recommended for HTML output, and not the default) then you can also
-        decide what kind of XML wrapper the generated index is placed in. By default
-        this is a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;...&lt;/</span><span class="identifier">section</span><span class="special">&gt;</span></code> XML block (this replaces the original
-        <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;...&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span></code> block). However, depending upon the structure
-        of the document and whether or not you want the index on a separate page
-        - or else on the front page after the TOC - you may want to place the index
-        inside a different type of XML block. For example if your document uses
-        <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">chapter</span><span class="special">&gt;</span></code> top level content rather than <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;</span></code>s then it may be preferable to place the
-        index in a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">chapter</span><span class="special">&gt;</span></code> or <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">appendix</span><span class="special">&gt;</span></code>
-        block. You can also place the index inside an <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;</span></code>
-        block if you prefer, in which case the index does not appear in on a page
-        of its own, but after the TOC in the HTML output.
+        (usually recommended for HTML output, but <span class="emphasis"><em>not</em></span> the default)
+        then you can also decide what kind of XML wrapper the generated index is
+        placed in. By default this is a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;...&lt;/</span><span class="identifier">section</span><span class="special">&gt;</span></code>
+        XML block (this replaces the original <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;...&lt;/</span><span class="identifier">index</span><span class="special">&gt;</span></code>
+        block). However, depending upon the structure of the document and whether
+        or not you want the index on a separate page - or else on the front page
+        after the TOC - you may want to place the index inside a different type of
+        XML block. For example if your document uses <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">chapter</span><span class="special">&gt;</span></code>
+        top level content rather than <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">section</span><span class="special">&gt;</span></code>s
+        then it may be preferable to place the index in a <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">chapter</span><span class="special">&gt;</span></code>
+        or <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">appendix</span><span class="special">&gt;</span></code> block. You can also place the index inside
+        an <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">index</span><span class="special">&gt;</span></code> block if you prefer, in which case the
+        index does not appear in on a page of its own, but after the TOC in the HTML
+        output.
       </p>
 <p>
         You control the type of XML block used by setting the <code class="literal">&lt;auto-index-type&gt;element-name</code>

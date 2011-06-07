@@ -137,7 +137,7 @@ std::string escape_to_xml(const std::string& in)
 //
 // Scan a source file for things to index:
 //
-void scan_file(const char* file)
+void scan_file(const std::string& file)
 {
    if(need_defaults)
       install_default_scanners();
@@ -243,7 +243,7 @@ void scan_dir(const std::string& dir, const std::string& mask, bool recurse)
    {
       if(regex_match(i->path().filename().string(), e))
       {
-         scan_file(i->path().string().c_str());
+         scan_file(i->path().string());
       }
       else if(recurse && is_directory(i->status()))
       {
@@ -268,7 +268,7 @@ std::string unquote(const std::string& s)
 //
 // Load and process a script file:
 //
-void process_script(const char* script)
+void process_script(const std::string& script)
 {
    static const boost::regex comment_parser(
       "\\s*(?:#.*)?$"
@@ -363,7 +363,7 @@ void process_script(const char* script)
          }
          if(!exists(boost::filesystem::path(f)))
             throw std::runtime_error("Error the file requested for scanning does not exist: " + f);
-         scan_file(f.c_str());
+         scan_file(f);
       }
       else if(regex_match(line, what, debug_parser))
       {

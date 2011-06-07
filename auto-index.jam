@@ -206,9 +206,7 @@ rule auto-index ( target : source : properties * )
 
 actions auto-index
 {
-    $(AI-COMMAND) $(FLAGS) prefix=$(PREFIX) script=$(SCRIPT) index-type=$(INDEX_TYPE) in=$(>) out=$(<)
+    $(AI-COMMAND) $(FLAGS) "--prefix="$(PREFIX) "--script="$(SCRIPT) "--index-type="$(INDEX_TYPE) "--in="$(>) "--out="$(<)
 }
-
-
 
 
