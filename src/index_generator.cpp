@@ -128,6 +128,14 @@ void check_index_type_and_placement(const std::string& parent, const std::string
       throw std::runtime_error("Error: element " + container + " is unknown, and can not be used as a container for an index: try using a different value for property \"auto-index-type\".");
    }
 }
+
+//
+// Generate an index entry using our own internal method:
+//
+template <class Range>
+void generate_entry(const Range& range)
+{
+}
 //
 // Generate indexes using our own internal method:
 //
@@ -248,9 +256,12 @@ void generate_indexes()
                boost::tiny_xml::element_ptr member(new boost::tiny_xml::element());
                member->name = "member";
                boost::tiny_xml::element_ptr para(new boost::tiny_xml::element());
-               para->name = "para";
+               //para->name = "para";
                if((**k).id.empty())
+               {
                   para->content = (**k).key;
+                  member->elements.push_back(para);
+               }
                else
                {
                   boost::tiny_xml::element_ptr link(new boost::tiny_xml::element());
@@ -272,9 +283,8 @@ void generate_indexes()
                   {
                      link->content = (**k).key;
                   }
-                  para->elements.push_back(link);
+                  member->elements.push_back(link);
                }
-               member->elements.push_back(para);
                secondary_list->elements.push_back(member);
             }
             // Remove the secondary list of there's nothing in it! :
