@@ -25,7 +25,7 @@ boostbook standalone
         # Path for libraries index:
         <xsl:param>boost.libraries=http://www.boost.org/doc/libs/release/libs/libraries.htm
         # Use the main Boost stylesheet:
-        <xsl:param>html.stylesheet=http://www.boost.org/doc/libs/release/doc/html/boostbook.css
+        <xsl:param>html.stylesheet=../../../../../../../trunk/doc/src/boostbook.css
         
         # Some general style settings:
         <xsl:param>table.footnote.number.format=1
@@ -70,5 +70,7 @@ boostbook standalone
     ;
 
 install pdf-install : standalone : <location>. <install-type>PDF <name>type_traits.pdf ;
+
+
 
 

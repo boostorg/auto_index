@@ -6,6 +6,8 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #include "auto_index.hpp"
+#include <boost/range.hpp>
+#include <boost/format.hpp>
 
 //
 // Get a numerical ID for the next item:
@@ -129,12 +131,127 @@ void check_index_type_and_placement(const std::string& parent, const std::string
    }
 }
 
+boost::tiny_xml::element_ptr make_element(const std::string& name)
+{
+   boost::tiny_xml::element_ptr result(new boost::tiny_xml::element);
+   result->name = name;
+   return result;
+}
+
+boost::tiny_xml::element_ptr add_attribute(boost::tiny_xml::element_ptr ptr, const std::string& name, const std::string& value)
+{
+   boost::tiny_xml::attribute attr;
+   attr.name = name;
+   attr.value = value;
+   ptr->attributes.push_back(attr);
+   return ptr;
+}
+
+boost::regex make_primary_key_matcher(const std::string& s)
+{
+   static const boost::regex e("[-_[:space:]]+");
+   static const char* format = "[-_[:space:]]+";
+   return boost::regex(regex_replace(s, e, format), boost::regex::icase|boost::regex::perl);
+}
+
 //
 // Generate an index entry using our own internal method:
 //
 template <class Range>
-void generate_entry(const Range& range)
+boost::tiny_xml::element_ptr generate_entry(const Range& range, const std::string* pcategory, int level = 0, const boost::regex* primary_key = 0)
 {
+   boost::tiny_xml::element_ptr list = add_attribute(add_attribute(::add_attribute(make_element("itemizedlist"), "mark", "none"), "spacing", "compact"), "role", "index");
+
+   for(typename boost::range_iterator<Range>::type i = boost::begin(range); i != boost::end(range);)
+   {
+      std::string key = (*i)->key;
+      index_entry_set entries;
+      bool preferred = false;
+      std::string id;
+      bool collapse = false;
+      
+      //
+      // Create a regular expression for comparing key to other key's:
+      //
+      boost::regex key_regex;
+      if(level == 0)
+      {
+         key_regex = make_primary_key_matcher(key);
+         primary_key = &key_regex;
+      }
+      //
+      // Begin by consolidating entries with identical keys but possibly different categories:
+      //
+      while((i != boost::end(range)) && ((*i)->key == key))
+      {
+         if((0 == pcategory) || (pcategory->size() == 0) || (pcategory && (**i).category == *pcategory))
+         {
+            entries.insert((*i)->sub_keys.begin(), (*i)->sub_keys.end());
+            if((*i)->preferred)
+               preferred = true;
+            if((*i)->id.size())
+            {
+               if(id.size())
+               {
+                  std::cerr << "WARNING: two identical index terms have different link destinations!!" << std::endl;
+               }
+               id = (*i)->id;
+            }
+         }
+         ++i;
+      }
+      //
+      // Only actually generate content if we have anything in the entries set:
+      //
+      if(entries.size() || id.size())
+      {
+         //
+         // See if we can collapse any sub-entries into this one:
+         //
+         if(entries.size() == 1)
+         {
+            if((regex_match((*entries.begin())->key, *primary_key) || ((*entries.begin())->key == key)) 
+               && ((*entries.begin())->id.size()) 
+               && ((*entries.begin())->id != id))
+            {
+               collapse = true;
+               id = (*entries.begin())->id;
+            }
+         }
+         //
+         // See if this key is the same as the primary key, if it is then make it prefered:
+         //
+         if(level && regex_match(key, *primary_key))
+         {
+            preferred = true;
+         }
+         boost::tiny_xml::element_ptr item = make_element("listitem");
+         boost::tiny_xml::element_ptr para = make_element("para");
+         item->elements.push_back(para);
+         list->elements.push_back(item);
+         if(preferred)
+         {
+            para->elements.push_back(make_element("emphasis"));
+            para = para->elements.back();
+         }
+         if(id.size())
+         {
+            boost::tiny_xml::element_ptr link = add_attribute(make_element("link"), "linkend", id);
+            para->elements.push_back(link);
+            para = link;
+         }
+         std::string classname = (boost::format("index-entry-level-%1%") % level).str();
+         para->elements.push_back(add_attribute(make_element("phrase"), "role", classname));
+         para = para->elements.back();
+         para->content = key;
+         if(!collapse && entries.size())
+         {
+            std::pair<index_entry_set::const_iterator, index_entry_set::const_iterator> subrange(entries.begin(), entries.end());
+            item->elements.push_back(generate_entry(subrange, 0, level+1, primary_key));
+         }
+      }
+   }
+   return list;
 }
 //
 // Generate indexes using our own internal method:
@@ -156,142 +273,43 @@ void generate_indexes()
          }
       }
 
-      boost::tiny_xml::element_ptr navbar(new boost::tiny_xml::element());
-      navbar->name = "para";
+      boost::tiny_xml::element_ptr navbar = make_element("para");
       node->elements.push_back(navbar);
 
-      char last_c = 0;
-      boost::tiny_xml::element_ptr list(new boost::tiny_xml::element());
-      list->name = "variablelist";
-      boost::tiny_xml::element_ptr listentry;
-      boost::tiny_xml::element_ptr listitem;
-      boost::tiny_xml::element_ptr sublist;
-      node->elements.push_back(list);
-
-      for(index_entry_set::const_iterator i = index_entries.begin(); i != index_entries.end(); ++i)
+      index_entry_set::const_iterator m = index_entries.begin();
+      index_entry_set::const_iterator n = m;
+      boost::tiny_xml::element_ptr vlist = make_element("variablelist");
+      node->elements.push_back(vlist);
+      while(n != index_entries.end())
       {
-         if((0 == category) || (category->size() == 0) || (category && (**i).category == *category))
+         char current_letter = std::toupper((*n)->key[0]);
+         std::string id_name = get_next_index_id();
+         boost::tiny_xml::element_ptr entry = add_attribute(make_element("varlistentry"), "id", id_name);
+         boost::tiny_xml::element_ptr term = make_element("term");
+         term->content = std::string(1, current_letter);
+         entry->elements.push_back(term);
+         boost::tiny_xml::element_ptr item = make_element("listitem");
+         entry->elements.push_back(item);
+         while((n != index_entries.end()) && (std::toupper((*n)->key[0]) == current_letter))
+            ++n;
+         std::pair<index_entry_set::const_iterator, index_entry_set::const_iterator> range(m, n);
+         item->elements.push_back(generate_entry(range, category));
+         if(item->elements.size() && (*item->elements.begin())->elements.size())
          {
-            if(std::toupper((**i).key[0]) != last_c)
+            vlist->elements.push_back(entry);
+            boost::tiny_xml::element_ptr p = make_element("");
+            p->content = " ";
+            if(navbar->elements.size())
             {
-               std::string id_name = get_next_index_id();
-               last_c = std::toupper((**i).key[0]);
-               listentry.reset(new boost::tiny_xml::element());
-               listentry->name = "varlistentry";
-               boost::tiny_xml::attribute id;
-               id.name = "id";
-               id.value = id_name;
-               listentry->attributes.push_back(id);
-               boost::tiny_xml::element_ptr term(new boost::tiny_xml::element());
-               term->name = "term";
-               term->content.assign(&last_c, 1);
-               listentry->elements.push_front(term);
-               list->elements.push_back(listentry);
-               listitem.reset(new boost::tiny_xml::element());
-               listitem->name = "listitem";
-               sublist.reset(new boost::tiny_xml::element());
-               sublist->name = "variablelist";
-               listitem->elements.push_back(sublist);
-               listentry->elements.push_back(listitem);
-
-               boost::tiny_xml::element_ptr nav(new boost::tiny_xml::element());
-               nav->name = "";
-               nav->content = " ";
-               boost::tiny_xml::element_ptr navlink(new boost::tiny_xml::element());
-               navlink->name = "link";
-               navlink->content = term->content;
-               boost::tiny_xml::attribute navid;
-               navid.name = "linkend";
-               navid.value = id_name;
-               navlink->attributes.push_back(navid);
-               navbar->elements.push_back(navlink);
-               navbar->elements.push_back(nav);
+               navbar->elements.push_back(p);
             }
-            boost::tiny_xml::element_ptr subentry(new boost::tiny_xml::element());
-            subentry->name = "varlistentry";
-            boost::tiny_xml::element_ptr subterm(new boost::tiny_xml::element());
-            subterm->name = "term";
-            if((**i).id.empty())
-               subterm->content = (**i).key;
-            else
-            {
-               boost::tiny_xml::element_ptr link(new boost::tiny_xml::element());
-               link->name = "link";
-               link->content = (**i).key;
-               boost::tiny_xml::attribute at;
-               at.name = "linkend";
-               at.value = (**i).id;
-               link->attributes.push_back(at);
-               subterm->elements.push_back(link);
-            }
-            subentry->elements.push_back(subterm);
-            boost::tiny_xml::element_ptr subitem(new boost::tiny_xml::element());
-            subitem->name = "listitem";
-            subentry->elements.push_back(subitem);
-            sublist->elements.push_back(subentry);
-
-            boost::tiny_xml::element_ptr secondary_list(new boost::tiny_xml::element());
-            secondary_list->name = "simplelist";
-            subitem->elements.push_back(secondary_list);
-
-            //
-            // we need to examine subsequent entries to see if they're the same as this one
-            // (albeit with different "type" attributes) and if so merge with this entry
-            // if we're creating the main index:
-            //
-            index_entry_set sub_keys((**i).sub_keys);
-            if((0 == category) || (category->size() == 0) )
-            {
-               ++i;
-               while((i != index_entries.end()) && (subterm->content == (**i).key))
-               {
-                  sub_keys.insert((**i).sub_keys.begin(), (**i).sub_keys.end());
-                  ++i;
-               }
-               --i;
-            }
-
-            for(index_entry_set::const_iterator k = sub_keys.begin(); k != sub_keys.end(); ++k)
-            {
-               boost::tiny_xml::element_ptr member(new boost::tiny_xml::element());
-               member->name = "member";
-               boost::tiny_xml::element_ptr para(new boost::tiny_xml::element());
-               //para->name = "para";
-               if((**k).id.empty())
-               {
-                  para->content = (**k).key;
-                  member->elements.push_back(para);
-               }
-               else
-               {
-                  boost::tiny_xml::element_ptr link(new boost::tiny_xml::element());
-                  link->name = "link";
-                  boost::tiny_xml::attribute at;
-                  at.name = "linkend";
-                  at.value = (**k).id;
-                  link->attributes.push_back(at);
-                  if((**k).preferred)
-                  {
-                     boost::tiny_xml::element_ptr em(new boost::tiny_xml::element());
-                     em->name = "emphasis";
-                     em->content = (**k).key;
-                     boost::tiny_xml::attribute b("role", "bold");
-                     em->attributes.push_back(b);
-                     link->elements.push_back(em);
-                  }
-                  else
-                  {
-                     link->content = (**k).key;
-                  }
-                  member->elements.push_back(link);
-               }
-               secondary_list->elements.push_back(member);
-            }
-            // Remove the secondary list of there's nothing in it! :
-            if(secondary_list->elements.empty())
-               subitem->elements.pop_back();
+            p = add_attribute(make_element("link"), "linkend", id_name);
+            p->content = current_letter;
+            navbar->elements.push_back(p);
          }
+         m = n;
       }
+
       node->name = internal_index_type;
       boost::tiny_xml::element_ptr p(node->parent);
       while(p->name.empty())
@@ -300,8 +318,7 @@ void generate_indexes()
       node->attributes.clear();
       if(!has_title)
       {
-         boost::tiny_xml::element_ptr t(new boost::tiny_xml::element());
-         t->name = "title";
+         boost::tiny_xml::element_ptr t = make_element("title");
          t->content = "Index";
          node->elements.push_front(t);
       }
