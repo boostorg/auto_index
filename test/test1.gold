@@ -1611,8 +1611,12 @@ to ensure complete testing.
     <title><link linkend="boost_typetraits.reference"> Alphabetical Reference</link></title>
     <section id="boost_typetraits.reference.add_const"><indexterm type="class_name"><primary>Constrained Index Term</primary><secondary>add_const</secondary></indexterm><indexterm><primary>add_const</primary><secondary>Constrained Index Term</secondary></indexterm><indexterm type="class_name"><primary>Constrained Index Term</primary><secondary>add_const</secondary></indexterm><indexterm><primary>add_const</primary><secondary>Constrained Index Term</secondary></indexterm><indexterm type="class_name"><primary>add_const</primary><secondary>add_const</secondary></indexterm><indexterm type="class_name"><primary>Constrained Index Term</primary><secondary>add_const</secondary></indexterm><indexterm><primary>add_const</primary><secondary>Constrained Index Term</secondary></indexterm><indexterm type="class_name"><primary>Constrained Index Term</primary><secondary>add_const</secondary></indexterm><indexterm><primary>add_const</primary><secondary>Constrained Index Term</secondary></indexterm>
       <title><link linkend="boost_typetraits.reference.add_const"> add_const</link></title>
-      
-<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">template</phrase> <phrase role="special">&lt;</phrase><phrase role="keyword">class</phrase> <phrase role="identifier">T</phrase><phrase role="special">&gt;</phrase>
+       <indexterm type="class_name">
+          <primary>one</primary>
+          <secondary>two</secondary>
+       </indexterm>
+
+       <programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">template</phrase> <phrase role="special">&lt;</phrase><phrase role="keyword">class</phrase> <phrase role="identifier">T</phrase><phrase role="special">&gt;</phrase>
 <phrase role="keyword">struct</phrase> <phrase role="identifier">add_const</phrase>
 <phrase role="special">{</phrase>
    <phrase role="keyword">typedef</phrase> <replaceable>see-below</replaceable> <phrase role="identifier">type</phrase><phrase role="special">;</phrase>
@@ -1705,8 +1709,13 @@ to ensure complete testing.
     </section>
     <section id="boost_typetraits.reference.add_cv"><indexterm type="class_name"><primary>add_cv</primary><secondary>add_cv</secondary></indexterm>
       <title><link linkend="boost_typetraits.reference.add_cv"> add_cv</link></title>
-      
-<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">template</phrase> <phrase role="special">&lt;</phrase><phrase role="keyword">class</phrase> <phrase role="identifier">T</phrase><phrase role="special">&gt;</phrase>
+       <indexterm type="class_name">
+          <primary>one</primary>
+          <secondary>two</secondary>
+          <tertiary>three</tertiary>
+       </indexterm>
+
+       <programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">template</phrase> <phrase role="special">&lt;</phrase><phrase role="keyword">class</phrase> <phrase role="identifier">T</phrase><phrase role="special">&gt;</phrase>
 <phrase role="keyword">struct</phrase> <phrase role="identifier">add_cv</phrase>
 <phrase role="special">{</phrase>
    <phrase role="keyword">typedef</phrase> <replaceable>see-below</replaceable> <phrase role="identifier">type</phrase><phrase role="special">;</phrase>
@@ -1991,8 +2000,11 @@ to ensure complete testing.
     </section>
     <section id="boost_typetraits.reference.add_volatile"><indexterm type="class_name"><primary>add_volatile</primary><secondary>add_volatile</secondary></indexterm>
       <title><link linkend="boost_typetraits.reference.add_volatile"> add_volatile</link></title>
-      
-<programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">template</phrase> <phrase role="special">&lt;</phrase><phrase role="keyword">class</phrase> <phrase role="identifier">T</phrase><phrase role="special">&gt;</phrase>
+       <indexterm type="class_name">
+          <primary>one</primary>
+       </indexterm>
+
+       <programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">template</phrase> <phrase role="special">&lt;</phrase><phrase role="keyword">class</phrase> <phrase role="identifier">T</phrase><phrase role="special">&gt;</phrase>
 <phrase role="keyword">struct</phrase> <phrase role="identifier">add_volatile</phrase>
 <phrase role="special">{</phrase>
    <phrase role="keyword">typedef</phrase> <replaceable>see-below</replaceable> <phrase role="identifier">type</phrase><phrase role="special">;</phrase>

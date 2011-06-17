@@ -12,7 +12,7 @@
 #include <boost/program_options.hpp>
 #include "auto_index.hpp"
 
-std::string infile, outfile, prefix, last_primary, last_secondary;
+std::string infile, outfile, prefix, last_primary, last_secondary, last_tertiary;
 std::set<index_info> index_terms;
 std::set<std::pair<std::string, std::string> > found_terms;
 bool no_duplicates = false;
@@ -295,6 +295,10 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    {
       last_secondary = get_consolidated_content(node);
    }
+   else if(node->name == "tertiary")
+   {
+      last_tertiary = get_consolidated_content(node);
+   }
    else if((node->name == "see") && internal_indexes)
    {
       std::cerr << "WARNING: <see> in XML source will be ignored for the index generation" << std::endl;
@@ -302,10 +306,6 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    else if((node->name == "seealso") && internal_indexes)
    {
       std::cerr << "WARNING: <seealso> in XML source will be ignored for the index generation" << std::endl;
-   }
-   else if((node->name == "tertiary") && internal_indexes)
-   {
-      std::cerr << "WARNING: <tertiary> in XML source will be ignored for the index generation" << std::endl;
    }
 
    std::string flattenned_text;
@@ -496,28 +496,27 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
       // Track the entry in our internal index:
       const std::string* pid = get_current_block_id(&id);
       const std::string* attr = find_attr(node, "type");
-      index_entry_ptr item1;
-      // If we have a secondary term then the link is associated with that,
-      // otherwise with the primary key:
-      if(last_secondary.size())
-         item1.reset(new index_entry(last_primary));
-      else
-         item1.reset(new index_entry(last_primary, *pid));
-      if(index_entries.find(item1) == index_entries.end())
-      {
-         index_entries.insert(item1);
-      }
+      const std::string& rtitle = get_current_block_title(&title);
+      const std::string simple_title = rewrite_title(rtitle, *pid);
+      index_entry_ptr item1(new index_entry(last_primary, "", attr ? *attr : ""));
+      index_entry_set* parent = &((*index_entries.insert(item1).first)->sub_keys);
+
       if(last_secondary.size())
       {
-         index_entry_ptr item2(new index_entry(last_secondary, *pid));
-         (**index_entries.find(item1)).sub_keys.insert(item2);
+         item1.reset(new index_entry(last_secondary, "", attr ? *attr : ""));
+         parent = &((*parent->insert(item1).first)->sub_keys);
       }
-      if(attr && attr->size())
+      if(last_tertiary.size())
       {
-         (**index_entries.find(item1)).category = *attr;
+         item1.reset(new index_entry(last_tertiary, "", attr ? *attr : ""));
+         parent = &((*parent->insert(item1).first)->sub_keys);
       }
+      item1.reset(new index_entry(simple_title, *pid, attr ? *attr : ""));
+      parent->insert(item1);
+
       last_primary = "";
       last_secondary = "";
+      last_tertiary = "";
    }
 }
 

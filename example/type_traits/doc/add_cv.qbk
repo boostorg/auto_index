@@ -23,6 +23,10 @@ type `T` except where __transform_workaround have been applied.
 
 __header ` #include <boost/type_traits/add_cv.hpp>` or ` #include <boost/type_traits.hpp>`
 
+'''
+<indexterm><primary>one</primary><secondary>two</secondary><tertiary>three</tertiary></indexterm>
+'''
+
 [table Examples
 
 [ [Expression] [Result Type]]
@@ -38,4 +42,5 @@ __header ` #include <boost/type_traits/add_cv.hpp>` or ` #include <boost/type_tr
 ]
 
 [endsect]
+
 

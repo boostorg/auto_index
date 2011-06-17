@@ -23,6 +23,10 @@ type `T` except where __transform_workaround have been applied.
 
 __header ` #include <boost/type_traits/add_volatile.hpp>` or ` #include <boost/type_traits.hpp>`
 
+'''
+<indexterm><primary>one</primary></indexterm>
+'''
+
 [table Examples
 
 [ [Expression] [Result Type]]
@@ -38,4 +42,5 @@ __header ` #include <boost/type_traits/add_volatile.hpp>` or ` #include <boost/t
 ]
 
 [endsect]
+
 
