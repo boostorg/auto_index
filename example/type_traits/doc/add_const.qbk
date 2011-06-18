@@ -6,6 +6,7 @@
 ]
 
 [section:add_const add_const]
+'''<?BoostAutoIndex IgnoreSection?>'''
 
    template <class T>
    struct add_const
@@ -42,5 +43,7 @@ __header ` #include <boost/type_traits/add_const.hpp>` or ` #include <boost/type
 ]
 
 [endsect]
+
+
 
 

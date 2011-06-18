@@ -599,7 +599,39 @@ AutoIndex generates the index itself, with the exception of the `<type>` attribu
 
 [endsect]  [/section:entries Step 5: Add Manual Index Entries to Docbook XML - Optional]
 
-[section:build_docs Step 6: Build the Docs]
+[section:pis Step 6: Using XML processing instructions to control what gets indexed.]
+
+Sometimes when you need to exclude certain sections of text from indexing, 
+then you can achieve this with the following XML processing instructions:
+
+[table
+[[Instruction][Effect]]
+[[`<?BoostAutoIndex IgnoreSection?>`]
+   [Causes the whole of the current section to be excluded from indexing.
+    By "section" we mean either a true "section" or any sibling XML element:
+    "dedication", "toc", "lot", "glossary", "bibliography", "preface", "chapter", 
+      "reference", "part", "article", "appendix", "index", "setindex", "colophon",
+      "sect1", "refentry", "simplesect", "section" or "partintro".]]
+[[`<?BoostAutoIndex IgnoreBlock?>`]
+   [Causes the whole of the current text block to be excluded from indexing.
+    A text block may be any of the section/chapter elements listed above, or a 
+    paragraph, code listing, table etc.  The complete list is:
+    "calloutlist", "glosslist", "bibliolist", "itemizedlist", "orderedlist", 
+      "segmentedlist", "simplelist", "variablelist", "caution", "important", "note", 
+      "tip", "warning", "literallayout", "programlisting", "programlistingco", 
+      "screen", "screenco", "screenshot", "synopsis", "cmdsynopsis", "funcsynopsis", 
+      "classsynopsis", "fieldsynopsis", "constructorsynopsis", 
+      "destructorsynopsis", "methodsynopsis", "formalpara", "para", "simpara", 
+      "address", "blockquote", "graphic", "graphicco", "mediaobject", 
+      "mediaobjectco", "informalequation", "informalexample", "informalfigure", 
+      "informaltable", "equation", "example", "figure", "table", "msgset", "procedure", 
+      "sidebar", "qandaset", "task", "productionset", "constraintdef", "anchor", 
+      "bridgehead", "remark", "highlights", "abstract", "authorblurb" or "epigraph".]]
+]
+
+[endsect] [/section:pis Step 6: Using XML processing instructions to control what gets indexed.]
+
+[section:build_docs Step 7: Build the Docs]
 
 Using Boost.Build you build the docs with either:
 
@@ -629,9 +661,9 @@ make sure that you have [^<auto-index-verbose>on] and that
 any needed
 [^!debug regular-expression] directives are in your script file. 
 
-[endsect] [/section:build_docs Step 6: Build the Docs]
+[endsect] [/section:build_docs Step 7: Build the Docs]
 
-[section:refine Step 7: Iterate - to refine your index]
+[section:refine Step 8: Iterate - to refine your index]
 
 Creating a good index is an iterative process, often the first step is
 just to add a header scanning rule to the script file and then generate
@@ -667,7 +699,7 @@ assuming that the section ID of the intro is "some_library_or_chapter_name.intro
 This would avoid an index entry every time 'Kelvin' is found,
 something the user is unlikely to find helpful.
 
-[endsect] [/section:refine Step 7: Iterate - to refine your index]
+[endsect] [/section:refine Step 8: Iterate - to refine your index]
 
 [endsect] [/section:tut Getting Started and Tutorial]
 
