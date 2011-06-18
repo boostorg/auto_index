@@ -6620,6 +6620,37 @@ to ensure complete testing.
       for subscription details).
     </para>
   </section>
+   
+  <section id="boost_typetraits.ignored_section">
+    <title>This section must not be indexed.</title>
+     <?BoostAutoIndex IgnoreSection?>
+       <programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">template</phrase> <phrase role="special">&lt;</phrase><phrase role="keyword">class</phrase> <phrase role="identifier">T</phrase><phrase role="special">&gt;</phrase>
+<phrase role="keyword">struct</phrase> <phrase role="identifier">add_const</phrase>
+<phrase role="special">{</phrase>
+   <phrase role="keyword">typedef</phrase> <replaceable>see-below</replaceable> <phrase role="identifier">type</phrase><phrase role="special">;</phrase>
+<phrase role="special">};</phrase>
+</programlisting>
+  </section>
+
+  <section id="boost_typetraits.ignored_block">
+    <title>This section contains one block that must not be indexed and one that should be.</title>
+       <programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">
+     <?BoostAutoIndex IgnoreBlock?>
+          template</phrase> <phrase role="special">&lt;</phrase><phrase role="keyword">class</phrase> <phrase role="identifier">T</phrase><phrase role="special">&gt;</phrase>
+<phrase role="keyword">struct</phrase> <phrase role="identifier">add_const</phrase>
+<phrase role="special">{</phrase>
+   <phrase role="keyword">typedef</phrase> <replaceable>see-below</replaceable> <phrase role="identifier">type</phrase><phrase role="special">;</phrase>
+<phrase role="special">};</phrase>
+</programlisting>
+       <programlisting xmlns:xi="http://www.w3.org/2001/XInclude"><phrase role="keyword">
+          template</phrase> <phrase role="special">&lt;</phrase><phrase role="keyword">class</phrase> <phrase role="identifier">T</phrase><phrase role="special">&gt;</phrase>
+<phrase role="keyword">struct</phrase> <phrase role="identifier">add_volatile</phrase>
+<phrase role="special">{</phrase>
+   <phrase role="keyword">typedef</phrase> <replaceable>see-below</replaceable> <phrase role="identifier">type</phrase><phrase role="special">;</phrase>
+<phrase role="special">};</phrase>
+</programlisting>
+  </section>
+
   <para>
     <index type="class_name">
   <title>Class Index</title>

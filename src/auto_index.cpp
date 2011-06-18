@@ -190,14 +190,9 @@ bool can_contain_indexterm(const char* name)
    static std::set<const char*, string_cmp> permitted;
 
    if(permitted.empty())
-   {
-      for(unsigned i = 0; i < names.size(); ++i)
-      {
-         permitted.insert(names[i]);
-      }
-   }
+      permitted.insert(names.begin(), names.end());
 
-   return permitted.find(name) != permitted.end();
+   return 0 != permitted.count(name);
 }
 //
 // Decide whether to flatten this node for searching purposes:
@@ -230,19 +225,88 @@ bool should_flatten_node(const char* name)
    static std::set<const char*, string_cmp> terminals;
 
    if(terminals.empty())
-   {
-      for(unsigned i = 0; i < names.size(); ++i)
-      {
-         terminals.insert(names[i]);
-      }
-   }
-
-   return terminals.find(name) != terminals.end();
+         terminals.insert(names.begin(), names.end());
+   return 0 != terminals.count(name);
 }
 std::string unescape_xml(const std::string& s)
 {
    boost::regex e("&(?:(quot)|(amp)|(apos)|(lt)|(gt));");
    return regex_replace(s, e, "(?1\")(?2&)(?3\')(?4<)(?5>)", boost::regex_constants::format_all);
+}
+//
+// Exception classes to propagate processing instruction info:
+//
+struct ignore_section{};
+struct ignore_block{};
+//
+// Check if we're in a section (or chapter etc) or not:
+//
+bool is_section(const std::string& name)
+{
+   static const boost::array<const char*, 19> data = 
+   {{
+      "dedication", "toc", "lot", "glossary", "bibliography", "preface", "chapter", 
+      "reference", "part", "article", "appendix", "index", "setindex", "colophon",
+      "sect1", "refentry", "simplesect", "section", "partintro"
+   }};
+   std::set<std::string> names;
+   if(names.empty())
+      names.insert(data.begin(), data.end());
+   return 0 != names.count(name);
+}
+//
+// Check if we're in a block/paragraph or not:
+//
+bool is_block(const std::string& name)
+{
+   static const boost::array<const char*, 58> data = 
+   {{
+      "calloutlist", "glosslist", "bibliolist", "itemizedlist", "orderedlist", 
+      "segmentedlist", "simplelist", "variablelist", "caution", "important", "note", 
+      "tip", "warning", "literallayout", "programlisting", "programlistingco", 
+      "screen", "screenco", "screenshot", "synopsis", "cmdsynopsis", "funcsynopsis", 
+      "classsynopsis", "fieldsynopsis", "constructorsynopsis", 
+      "destructorsynopsis", "methodsynopsis", "formalpara", "para", "simpara", 
+      "address", "blockquote", "graphic", "graphicco", "mediaobject", 
+      "mediaobjectco", "informalequation", "informalexample", "informalfigure", 
+      "informaltable", "equation", "example", "figure", "table", "msgset", "procedure", 
+      "sidebar", "qandaset", "task", "productionset", "constraintdef", "anchor", 
+      "bridgehead", "remark", "highlights", "abstract", "authorblurb", "epigraph"
+   }};
+   std::set<std::string> names;
+   if(names.empty())
+      names.insert(data.begin(), data.end());
+   return 0 != names.count(name);
+}
+//
+// Helper proc to recurse through children:
+//
+void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* pt, bool seen);
+bool recurse_through_children(boost::tiny_xml::element_ptr node, node_id* id, title_info* pt, bool seen)
+{
+   try
+   {
+      for(boost::tiny_xml::element_list::const_iterator i = node->elements.begin();
+         i != node->elements.end(); ++i)
+      {
+         process_node(*i, id, pt, seen);
+      }
+   }
+   catch(const ignore_section&)
+   {
+      if(is_section(node->name))
+         return false;
+      else
+         throw;
+   }
+   catch(const ignore_block&)
+   {
+      if(is_block(node->name) || is_section(node->name))
+         return false;
+      else
+         throw;
+   }
+   return true;
 }
 //
 // This does most of the work: process the node pointed to, and any children
@@ -260,6 +324,17 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
 
    if(node->name.size() && node->name[0] == '?')
    {
+      if(node->name == "?BoostAutoIndex")
+      {
+         if(node->content == "IgnoreSection")
+         {
+            throw ignore_section();
+         }
+         else if(node->content == "IgnoreBlock")
+         {
+            throw ignore_block();
+         }
+      }
       return; // Ignore processing instructions
    }
    else if((node->name == "title") && (id.prev->id))
@@ -314,6 +389,11 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    {
       flattenned_text = unescape_xml(get_consolidated_content(node));
       ptext = &flattenned_text;
+      //
+      // Recurse through children here if we're going to flatten the text, that way we see any processing instructions first:
+      //
+      if(!recurse_through_children(node, &id, &title, flatten || seen))
+         return;
    }
    else
    {
@@ -481,13 +561,10 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
       }
    }
    //
-   // Recurse through children:
+   // Recurse through children, if not done already:
    //
-   for(boost::tiny_xml::element_list::const_iterator i = node->elements.begin();
-      i != node->elements.end(); ++i)
-   {
-      process_node(*i, &id, &title, flatten || seen);
-   }
+   if(!flatten)
+      recurse_through_children(node, &id, &title, flatten || seen);
    //
    // Process manual index entries last of all:
    //
