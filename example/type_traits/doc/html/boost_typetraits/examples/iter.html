@@ -29,12 +29,12 @@
         the swap to ensure that the algorithm works correctly for both proxying iterators,
         and even iterators of different types (see <a href="../../../../examples/iter_swap_example.cpp" target="_top">iter_swap_example.cpp</a>):
       </p>
-<pre class="programlisting"><span class="comment">//
-</span><span class="comment">// iter_swap:
-</span><span class="comment">// tests whether iterator is a proxying iterator or not, and
-</span><span class="comment">// uses optimal form accordingly:
-</span><span class="comment">//
-</span><span class="keyword">namespace</span> <span class="identifier">detail</span><span class="special">{</span>
+<pre class="programlisting"><span class="comment">//</span>
+<span class="comment">// iter_swap:</span>
+<span class="comment">// tests whether iterator is a proxying iterator or not, and</span>
+<span class="comment">// uses optimal form accordingly:</span>
+<span class="comment">//</span>
+<span class="keyword">namespace</span> <span class="identifier">detail</span><span class="special">{</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">I</span><span class="special">&gt;</span>
 <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">do_swap</span><span class="special">(</span><span class="identifier">I</span> <span class="identifier">one</span><span class="special">,</span> <span class="identifier">I</span> <span class="identifier">two</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><a class="link" href="../reference/integral_constant.html" title="integral_constant">false_type</a><span class="special">&amp;)</span>
@@ -56,11 +56,11 @@
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">I1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">I2</span><span class="special">&gt;</span>
 <span class="keyword">inline</span> <span class="keyword">void</span> <span class="identifier">iter_swap</span><span class="special">(</span><span class="identifier">I1</span> <span class="identifier">one</span><span class="special">,</span> <span class="identifier">I2</span> <span class="identifier">two</span><span class="special">)</span>
 <span class="special">{</span>
-   <span class="comment">//
-</span>   <span class="comment">// See is both arguments are non-proxying iterators, 
-</span>   <span class="comment">// and if both iterator the same type:
-</span>   <span class="comment">//
-</span>   <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">I1</span><span class="special">&gt;::</span><span class="identifier">reference</span> <span class="identifier">r1_t</span><span class="special">;</span>
+   <span class="comment">//</span>
+   <span class="comment">// See is both arguments are non-proxying iterators, </span>
+   <span class="comment">// and if both iterator the same type:</span>
+   <span class="comment">//</span>
+   <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">I1</span><span class="special">&gt;::</span><span class="identifier">reference</span> <span class="identifier">r1_t</span><span class="special">;</span>
    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">I2</span><span class="special">&gt;::</span><span class="identifier">reference</span> <span class="identifier">r2_t</span><span class="special">;</span>
 
    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><a class="link" href="../reference/integral_constant.html" title="integral_constant">integral_constant</a><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">,</span>

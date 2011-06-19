@@ -384,10 +384,21 @@
           placing a <span class="emphasis"><em>section</em></span> within a <span class="emphasis"><em>book</em></span>
           or <span class="emphasis"><em>part</em></span> will result in invalid XML.
         </p>
+<p>
+          Finally, if you are using Quickbook to generate the documentation, then
+          you may wish to add:
+        </p>
+<pre class="programlisting">&lt;include&gt;$boost-root/tools/auto_index/include</pre>
+<p>
+          to your projects requirements (replacing $boost-root with the path to the
+          root of the Boost tree), so that the file auto_index_helpers.qbk can be
+          included in your quickbook source with simply a:
+        </p>
+<pre class="programlisting">[include auto_index_helpers.qbk]</pre>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2008 , 2011 John Maddock<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2008, 2011 John Maddock<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

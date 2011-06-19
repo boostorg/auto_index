@@ -23,9 +23,8 @@ type `T` except where __transform_workaround have been applied.
 
 __header ` #include <boost/type_traits/add_volatile.hpp>` or ` #include <boost/type_traits.hpp>`
 
-'''
-<indexterm><primary>one</primary></indexterm>
-'''
+[typed_indexterm1 class_name..Level One]
+[indexterm1 one]
 
 [table Examples
 

@@ -29,10 +29,10 @@
         Note that this template does not detect <span class="emphasis"><em>pointers to functions</em></span>,
         or <span class="emphasis"><em>references to functions</em></span>, these are detected by <a class="link" href="is_pointer.html" title="is_pointer">is_pointer</a> and <a class="link" href="is_reference.html" title="is_reference">is_reference</a> respectively:
       </p>
-<pre class="programlisting"><span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">f1</span><span class="special">();</span>      <span class="comment">// f1 is of function type.
-</span><span class="keyword">typedef</span> <span class="keyword">int</span> <span class="special">(</span><span class="identifier">f2</span><span class="special">*)();</span>   <span class="comment">// f2 is a pointer to a function.
-</span><span class="keyword">typedef</span> <span class="keyword">int</span> <span class="special">(</span><span class="identifier">f3</span><span class="special">&amp;)();</span>   <span class="comment">// f3 is a reference to a function.
-</span></pre>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">f1</span><span class="special">();</span>      <span class="comment">// f1 is of function type.</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="special">(</span><span class="identifier">f2</span><span class="special">*)();</span>   <span class="comment">// f2 is a pointer to a function.</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="special">(</span><span class="identifier">f3</span><span class="special">&amp;)();</span>   <span class="comment">// f3 is a reference to a function.</span>
+</pre>
 <p>
         <span class="bold"><strong>C++ Standard Reference:</strong></span> 3.9.2p1 and 8.3.5.
       </p>

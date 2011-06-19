@@ -23,9 +23,8 @@ type `T` except where __transform_workaround have been applied.
 
 __header ` #include <boost/type_traits/add_cv.hpp>` or ` #include <boost/type_traits.hpp>`
 
-'''
-<indexterm><primary>one</primary><secondary>two</secondary><tertiary>three</tertiary></indexterm>
-'''
+[typed_indexterm3 class_name..Level One..Level Two..Level Three]
+[indexterm3 one two three]
 
 [table Examples
 

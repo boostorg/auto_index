@@ -291,6 +291,15 @@ directly inside a /book/ or /part/, in which case you should probably use the sa
 you use for whatever subdivisions are in the /book/ or /part/.  In any event placing a /section/ within a /book/ or 
 /part/ will result in invalid XML.
 
+Finally, if you are using Quickbook to generate the documentation, then you may wish to add:
+
+[pre <include>$boost-root/tools/auto_index/include]
+
+to your projects requirements (replacing $boost-root with the path to the root of the Boost tree), so that
+the file auto_index_helpers.qbk can be included in your quickbook source with simply a:
+
+[pre \[include auto_index_helpers.qbk\]]
+
 [endsect] [/section:options Available Indexing Options]
 
 [section:optional Making AutoIndex optional]
@@ -415,23 +424,21 @@ In Quickbook, you add the same markup but enclose it between two triple-tick \'\
 thus
 
 [pre   \'\'\'<index\/>\'\'\' ]
+
+Or more easily via the helper file auto_index_helpers.qbk, so that given:
+
+[pre \[include auto_index_helpers.qbk\]]
+
+one can simply write:
+
+[pre
+\[named_index class_name Class Index\]
+\[named_index function_name Function Index\]
+\[named_index typedef_name Typedef Index\]
+\[named_index macro_name Macro Index\]
+\[index\]
+]
    
-If you are writing a Quickbook document with Doxygen reference documentation,
-the position of a `[xinclude autodoc.xml]` line in the Quickbook file
-determines the location of the Doxygen references section.
-You will almost certainly want this as well.
-
-[pre
-  \[xinclude autodoc.xml\] # Using ['Doxygen reference documentation].
-]
-
-You can control the ['displayed name] of the Doxygen reference section thus
-by adding to the end of the Doxygen autodoc section in your jamfile.
-
-[pre
-  <xsl:param>"boost.doxygen.reftitle=Boost.mylibrary C++ Reference"
-]
-
 [note AutoIndex knows nothing of the XML `xinclude` element, so if
 you're writing raw Docbook XML then you may want to run this through an
 XSL processor to flatten everything to one XML file before passing to
@@ -590,12 +597,15 @@ when AutoIndex uses them as an index entry:
 If you add manual `<indexentry>` markup to your Docbook XML then these will be 
 passed through unchanged.  Please note however, that if you are using 
 AutoIndex's internal index generation then it only recognises
-`<primary>` and `<secondary>` elements within the `<indexterm>`.
-`<tertiary>`, `<see>` and `<seealso>` elements are not currently recognised
+`<primary>`, `<secondary>` and `<tertiary>` elements within the `<indexterm>`.
+`<see>` and `<seealso>` elements are not currently recognised
 and auto-index will emit a warning if these are used.
 
 Likewise none of the  attributes which can be applied to these elements are used when
 AutoIndex generates the index itself, with the exception of the `<type>` attribute.
+
+For Quickbook users, there are some templates in auto_index_helpers.qbk that assist
+in adding manual entries without having to escape to Docbook.
 
 [endsect]  [/section:entries Step 5: Add Manual Index Entries to Docbook XML - Optional]
 
@@ -628,6 +638,13 @@ then you can achieve this with the following XML processing instructions:
       "sidebar", "qandaset", "task", "productionset", "constraintdef", "anchor", 
       "bridgehead", "remark", "highlights", "abstract", "authorblurb" or "epigraph".]]
 ]
+
+For Quickbook users the file auto_index_helpers.qbk contains a helper template
+that assists in inserting these processing instructions, for example:
+
+[pre \[AutoIndex IgnoreSection\]]
+
+Will cause that section to not be indexed.
 
 [endsect] [/section:pis Step 6: Using XML processing instructions to control what gets indexed.]
 
@@ -1057,6 +1074,50 @@ or from scanning source files) and the characters &, ", < and > will be escaped 
 
 [endsect] [/section:xml XML Handling]
 
+[section:qbk Quickbook Support]
+
+The file auto_index_helpers.qbk in ['boost-path]/tools/auto_index/include contains various Quickbook
+templates to assist with AutoIndex support.  One would normally add the above path to your include
+search path via an `<include>path` statement in your Jamfile, and then make the templates available
+to your Quickbook source via a:
+
+[pre \[include auto_index_helpers.qbk\]]
+
+statement at the start of your Quickbook file.
+
+The available templates are then:
+
+[table
+[[Template][Description]]
+[[`[index]`][Creates a main index, with no "type" category set, which will be titled simply "Index".]]
+[[`[named_index type title]`][Creates an index with the type attribute set to "type" and the title will be "title".[br]
+         For example to create an index containing only class names one would typically add `[named_index class_name Class Index]`
+         to your Quickbook source.]]
+[[`[AutoIndex Arg]`][Creates a Docbook processing instruction that will be handled by AutoIndex, valid values for "Arg" 
+                     are either "IgnoreSection" or "IgnoreBlock".]]
+[[`[indexterm1 primary-key]`][Creates a manual index entry that will link to the current section, and have a single primary key "primary-key".
+         Note that this index key will not have a "type" attribute set, and so will only appear in the main index.]]
+[[`[indexterm2 primary-key secondary-key]`][Creates a manual index entry that will link to the current section, and has 
+         "primary-key" and "secondary key" as the primary and secondary keys respectively.
+         Note that this index key will not have a "type" attribute set, and so will only appear in the main index.]]
+[[`[indexterm3 primary-key secondary-key tertiary-key]`][Creates a manual index entry that will link to the current section, 
+         and have primary, secondary and tertiary keys: "primary-key", "secondary key" and "tertiary key".
+         Note that this index key will not have a "type" attribute set, and so will only appear in the main index.]]
+
+[[`[typed_indexterm1 type primary-key]`][Creates a manual index entry that will link to the current section, and have a single primary key "primary-key".
+         Note that this index key will have the  "type" attribute set to the "type" argument, and so may appear in named sub-indexes
+         that also have their type attribute set.]]
+[[`[typed_indexterm2 type primary-key secondary-key]`][Creates a manual index entry that will link to the current section, and has 
+         "primary-key" and "secondary key" as the primary and secondary keys respectively.
+         Note that this index key will have the  "type" attribute set to the "type" argument, and so may appear in named sub-indexes
+         that also have their type attribute set.]]
+[[`[typed_indexterm3 type primary-key secondary-key tertiary-key]`][Creates a manual index entry that will link to the current section, 
+         and have primary, secondary and tertiary keys: "primary-key", "secondary key" and "tertiary key".
+         Note that this index key will have the  "type" attribute set to the "type" argument, and so may appear in named sub-indexes
+         that also have their type attribute set.]]
+]
+
+[endsect]
 
 [section:comm_ref Command Line Reference]
 

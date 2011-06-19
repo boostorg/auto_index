@@ -71,20 +71,17 @@
       </p>
 <pre class="programlisting">'''&lt;index/&gt;''' </pre>
 <p>
-        If you are writing a Quickbook document with Doxygen reference documentation,
-        the position of a <code class="computeroutput"><span class="special">[</span><span class="identifier">xinclude</span>
-        <span class="identifier">autodoc</span><span class="special">.</span><span class="identifier">xml</span><span class="special">]</span></code> line
-        in the Quickbook file determines the location of the Doxygen references section.
-        You will almost certainly want this as well.
+        Or more easily via the helper file auto_index_helpers.qbk, so that given:
       </p>
-<pre class="programlisting">[xinclude autodoc.xml] # Using <span class="emphasis"><em>Doxygen reference documentation</em></span>.
-</pre>
+<pre class="programlisting">[include auto_index_helpers.qbk]</pre>
 <p>
-        You can control the <span class="emphasis"><em>displayed name</em></span> of the Doxygen reference
-        section thus by adding to the end of the Doxygen autodoc section in your
-        jamfile.
+        one can simply write:
       </p>
-<pre class="programlisting">&lt;xsl:param&gt;"boost.doxygen.reftitle=Boost.mylibrary C++ Reference"
+<pre class="programlisting">[named_index class_name Class Index]
+[named_index function_name Function Index]
+[named_index typedef_name Typedef Index]
+[named_index macro_name Macro Index]
+[index]
 </pre>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -156,7 +153,7 @@ boostbook standalone
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2008 , 2011 John Maddock<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2008, 2011 John Maddock<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

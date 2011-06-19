@@ -6,7 +6,7 @@
 ]
 
 [section:add_const add_const]
-'''<?BoostAutoIndex IgnoreSection?>'''
+[AutoIndex IgnoreSection]
 
    template <class T>
    struct add_const
@@ -24,9 +24,8 @@ type `T` except where __transform_workaround have been applied.
 
 __header ` #include <boost/type_traits/add_const.hpp>` or ` #include <boost/type_traits.hpp>`
 
-'''
-<indexterm><primary>one</primary><secondary>two</secondary></indexterm>
-'''
+[indexterm2 one two]
+[typed_indexterm2 class_name..Level One..Level Two]
 
 [table Examples
 

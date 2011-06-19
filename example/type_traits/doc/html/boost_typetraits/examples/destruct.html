@@ -24,12 +24,12 @@
         Demonstrates a simple algorithm that uses <code class="computeroutput"><span class="identifier">__has_trivial_destruct</span></code>
         to determine whether to destructors need to be called (see <a href="../../../../examples/trivial_destructor_example.cpp" target="_top">trivial_destructor_example.cpp</a>):
       </p>
-<pre class="programlisting"><span class="comment">//
-</span><span class="comment">// algorithm destroy_array:
-</span><span class="comment">// The reverse of std::unitialized_copy, takes a block of
-</span><span class="comment">// initialized memory and calls destructors on all objects therein.
-</span><span class="comment">//
-</span>
+<pre class="programlisting"><span class="comment">//</span>
+<span class="comment">// algorithm destroy_array:</span>
+<span class="comment">// The reverse of std::unitialized_copy, takes a block of</span>
+<span class="comment">// initialized memory and calls destructors on all objects therein.</span>
+<span class="comment">//</span>
+
 <span class="keyword">namespace</span> <span class="identifier">detail</span><span class="special">{</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
@@ -47,8 +47,8 @@
 <span class="special">{</span>
 <span class="special">}</span>
 
-<span class="special">}</span> <span class="comment">// namespace detail
-</span>
+<span class="special">}</span> <span class="comment">// namespace detail</span>
+
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="keyword">inline</span> <span class="keyword">void</span> <span class="identifier">destroy_array</span><span class="special">(</span><span class="identifier">T</span><span class="special">*</span> <span class="identifier">p1</span><span class="special">,</span> <span class="identifier">T</span><span class="special">*</span> <span class="identifier">p2</span><span class="special">)</span>
 <span class="special">{</span>

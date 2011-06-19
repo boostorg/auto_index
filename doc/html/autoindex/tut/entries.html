@@ -23,8 +23,8 @@
 <p>
         If you add manual <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexentry</span><span class="special">&gt;</span></code> markup to your Docbook XML then these
         will be passed through unchanged. Please note however, that if you are using
-        AutoIndex's internal index generation then it only recognises <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">primary</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">secondary</span><span class="special">&gt;</span></code>
-        elements within the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code>. <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">tertiary</span><span class="special">&gt;</span></code>,
+        AutoIndex's internal index generation then it only recognises <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">primary</span><span class="special">&gt;</span></code>, <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">secondary</span><span class="special">&gt;</span></code>
+        and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">tertiary</span><span class="special">&gt;</span></code> elements within the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code>.
         <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">see</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">seealso</span><span class="special">&gt;</span></code>
         elements are not currently recognised and auto-index will emit a warning
         if these are used.
@@ -34,10 +34,14 @@
         used when AutoIndex generates the index itself, with the exception of the
         <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;</span></code> attribute.
       </p>
+<p>
+        For Quickbook users, there are some templates in auto_index_helpers.qbk that
+        assist in adding manual entries without having to escape to Docbook.
+      </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2008 , 2011 John Maddock<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2008, 2011 John Maddock<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

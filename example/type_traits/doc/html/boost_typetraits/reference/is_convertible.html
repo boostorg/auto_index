@@ -55,8 +55,8 @@
 <span class="keyword">struct</span> <span class="identifier">B</span> <span class="special">:</span> <span class="identifier">A</span> <span class="special">{};</span>
 <span class="keyword">struct</span> <span class="identifier">C</span> <span class="special">:</span> <span class="identifier">A</span> <span class="special">{};</span>
 <span class="keyword">struct</span> <span class="identifier">D</span> <span class="special">:</span> <span class="identifier">B</span><span class="special">,</span> <span class="identifier">C</span> <span class="special">{};</span>
-<span class="comment">// This produces a compiler error, the conversion is ambiguous:
-</span><span class="keyword">bool</span> <span class="keyword">const</span> <span class="identifier">y</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_convertible</span><span class="special">&lt;</span><span class="identifier">D</span><span class="special">*,</span><span class="identifier">A</span><span class="special">*&gt;::</span><span class="identifier">value</span><span class="special">;</span>
+<span class="comment">// This produces a compiler error, the conversion is ambiguous:</span>
+<span class="keyword">bool</span> <span class="keyword">const</span> <span class="identifier">y</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_convertible</span><span class="special">&lt;</span><span class="identifier">D</span><span class="special">*,</span><span class="identifier">A</span><span class="special">*&gt;::</span><span class="identifier">value</span><span class="special">;</span>
 </pre>
 <p>
         <span class="bold"><strong>C++ Standard Reference:</strong></span> 4 and 8.5.

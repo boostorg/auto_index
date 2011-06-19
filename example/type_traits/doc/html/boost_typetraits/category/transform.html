@@ -84,7 +84,7 @@
 <span class="keyword">struct</span> <a class="link" href="../reference/remove_volatile.html" title="remove_volatile">remove_volatile</a><span class="special">;</span>
 </pre>
 <a name="boost_typetraits.category.transform.broken_compiler_workarounds_"></a><h5>
-<a name="id915130"></a>
+<a name="boost_typetraits.category.transform.broken_compiler_workarounds_-heading"></a>
         <a class="link" href="transform.html#boost_typetraits.category.transform.broken_compiler_workarounds_">Broken
         Compiler Workarounds:</a>
       </h5>
@@ -127,13 +127,13 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">myspace</span><span class="special">{</span>
    <span class="keyword">struct</span> <span class="identifier">MyClass</span> <span class="special">{};</span>
 <span class="special">}</span>
-<span class="comment">// declare this at global scope:
-</span><span class="identifier">BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION</span><span class="special">(</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">)</span>
-<span class="comment">// transformations on myspace::MyClass now work:
-</span><span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">remove_reference</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">&amp;&gt;::</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">));</span>
+<span class="comment">// declare this at global scope:</span>
+<span class="identifier">BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION</span><span class="special">(</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">)</span>
+<span class="comment">// transformations on myspace::MyClass now work:</span>
+<span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">remove_reference</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">&amp;&gt;::</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">));</span>
 <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">remove_const</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span> <span class="keyword">const</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">));</span>
-<span class="comment">// etc.
-</span></pre>
+<span class="comment">// etc.</span>
+</pre>
 <p>
         Note that the macro BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION evaluates
         to nothing on those compilers that <span class="bold"><strong>do</strong></span> support
