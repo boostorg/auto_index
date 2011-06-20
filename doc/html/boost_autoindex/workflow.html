@@ -1,11 +1,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Understanding The AutoIndex Workflow</title>
+<title>Understanding The Boost.AutoIndex Workflow</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
-<link rel="home" href="../index.html" title="AutoIndex">
-<link rel="up" href="../index.html" title="AutoIndex">
+<link rel="home" href="../index.html" title="Boost.AutoIndex">
+<link rel="up" href="../index.html" title="Boost.AutoIndex">
 <link rel="prev" href="script_ref.html" title="Script File (.idx) Reference">
 <link rel="next" href="xml.html" title="XML Handling">
 </head>
@@ -17,7 +17,8 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="autoindex.workflow"></a><a class="link" href="workflow.html" title="Understanding The AutoIndex Workflow">Understanding The AutoIndex Workflow</a>
+<a name="boost_autoindex.workflow"></a><a class="link" href="workflow.html" title="Understanding The Boost.AutoIndex Workflow">Understanding The Boost.AutoIndex
+    Workflow</a>
 </h2></div></div></div>
 <div class="orderedlist"><ol type="1">
 <li>
@@ -36,7 +37,7 @@
           then this is the complete documentation after conversion to Docbook format).
         </li>
 <li>
-          AutoIndex builds an internal <a href="http://en.wikipedia.org/wiki/Document_Object_Model" target="_top">Document
+          Boost.AutoIndex builds an internal <a href="http://en.wikipedia.org/wiki/Document_Object_Model" target="_top">Document
           Object Model (DOM)</a> of the Docbook XML. This internal representation
           then gets scanned for occurrences of the <span class="emphasis"><em>terms to index</em></span>.
           This scanning works at the XML paragraph level (or equivalent sibling such
@@ -51,12 +52,12 @@
           Object Model (DOM)</a> (provided internal index generation is off),
         </li>
 <li>
-          Also the AutoIndex's internal index representation gets updated.
+          Also the Boost.AutoIndex's internal index representation gets updated.
         </li>
 <li>
-          Once the whole XML document has been indexed, then, if autoindex has been
-          instructed to generate the index itself, it creates the necessary XML and
-          inserts this into the <a href="http://en.wikipedia.org/wiki/Document_Object_Model" target="_top">Document
+          Once the whole XML document has been indexed, then, if Boost.AutoIndex
+          has been instructed to generate the index itself, it creates the necessary
+          XML and inserts this into the <a href="http://en.wikipedia.org/wiki/Document_Object_Model" target="_top">Document
           Object Model (DOM)</a>.
         </li>
 <li>

@@ -4,9 +4,9 @@
 <title>Step 3: Add indexes to your documentation</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
-<link rel="home" href="../../index.html" title="AutoIndex">
+<link rel="home" href="../../index.html" title="Boost.AutoIndex">
 <link rel="up" href="../tut.html" title="Getting Started and Tutorial">
-<link rel="prev" href="configure/optional.html" title="Making AutoIndex optional">
+<link rel="prev" href="configure/optional.html" title="Making Boost.AutoIndex optional">
 <link rel="next" href="script.html" title="Step 4: Create the .idx script file - to control what to terms to index">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -17,8 +17,8 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="autoindex.tut.add_indexes"></a><a class="link" href="add_indexes.html" title="Step 3: Add indexes to your documentation">Step 3: Add indexes to your
-      documentation</a>
+<a name="boost_autoindex.tut.add_indexes"></a><a class="link" href="add_indexes.html" title="Step 3: Add indexes to your documentation">Step 3: Add indexes
+      to your documentation</a>
 </h3></div></div></div>
 <p>
         To add a single "include everything" index to a BoostBook/Docbook
@@ -32,8 +32,8 @@
         To add multiple indexes, then give each one a title and set its <code class="computeroutput"><span class="identifier">type</span></code> attribute to specify which terms will
         be included, for example to place the <span class="emphasis"><em>function</em></span>, <span class="emphasis"><em>class</em></span>,
         <span class="emphasis"><em>macro</em></span> or <span class="emphasis"><em>typedef</em></span> names indexed
-        by <span class="emphasis"><em>auto_index</em></span> in separate indexes along with a main
-        "include everything" index as well, one could add:
+        by Boost.AutoIndex in separate indexes along with a main "include everything"
+        index as well, one could add:
       </p>
 <pre class="programlisting">&lt;index type="class_name"&gt;
 &lt;title&gt;Class Index&lt;/title&gt;
@@ -71,7 +71,8 @@
       </p>
 <pre class="programlisting">'''&lt;index/&gt;''' </pre>
 <p>
-        Or more easily via the helper file auto_index_helpers.qbk, so that given:
+        Or more easily via the helper file <a class="link" href="../qbk.html" title="Quickbook Support">auto_index_helpers.qbk</a>,
+        so that given:
       </p>
 <pre class="programlisting">[include auto_index_helpers.qbk]</pre>
 <p>
@@ -89,16 +90,16 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          AutoIndex knows nothing of the XML <code class="computeroutput"><span class="identifier">xinclude</span></code>
+          Boost.AutoIndex knows nothing of the XML <code class="computeroutput"><span class="identifier">xinclude</span></code>
           element, so if you're writing raw Docbook XML then you may want to run
           this through an XSL processor to flatten everything to one XML file before
-          passing to AutoIndex. If you're using Boostbook or quickbook though, this
-          all happens for you anyway, and AutoIndex will index the whole document
-          including any sections included with <code class="computeroutput"><span class="identifier">xinclude</span></code>.
+          passing to Boost.AutoIndex. If you're using Boostbook or quickbook though,
+          this all happens for you anyway, and Boost.AutoIndex will index the whole
+          document including any sections included with <code class="computeroutput"><span class="identifier">xinclude</span></code>.
         </p></td></tr>
 </table></div>
 <p>
-        If you are using auto-index's internal index generation on
+        If you are using Boost.AutoIndex's internal index generation:
       </p>
 <pre class="programlisting">&lt;auto-index-internal&gt;on
 </pre>
@@ -120,7 +121,7 @@
       </p>
 <p>
         You control the type of XML block used by setting the <code class="literal">&lt;auto-index-type&gt;element-name</code>
-        attribute in the Jamfile, or via the <code class="computeroutput"><span class="identifier">index</span><span class="special">-</span><span class="identifier">type</span><span class="special">=</span><span class="identifier">element</span><span class="special">-</span><span class="identifier">name</span></code> command line option to auto-index
+        attribute in the Jamfile, or via the <code class="computeroutput"><span class="identifier">index</span><span class="special">-</span><span class="identifier">type</span><span class="special">=</span><span class="identifier">element</span><span class="special">-</span><span class="identifier">name</span></code> command line option to Boost.AutoIndex
         itself. For example, to place the index in an appendix, your Jamfile might
         look like:
       </p>

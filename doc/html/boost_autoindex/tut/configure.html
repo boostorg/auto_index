@@ -1,12 +1,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Step 2: Configure Boost.Build jamfile to use AutoIndex</title>
+<title>Step 2: Configure Boost.Build jamfile to use Boost.AutoIndex</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
-<link rel="home" href="../../index.html" title="AutoIndex">
+<link rel="home" href="../../index.html" title="Boost.AutoIndex">
 <link rel="up" href="../tut.html" title="Getting Started and Tutorial">
-<link rel="prev" href="build.html" title="Step 1: Build the AutoIndex tool">
+<link rel="prev" href="build.html" title="Step 1: Build the Boost.AutoIndex tool">
 <link rel="next" href="configure/options.html" title="Available Indexing Options">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -17,13 +17,13 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="autoindex.tut.configure"></a><a class="link" href="configure.html" title="Step 2: Configure Boost.Build jamfile to use AutoIndex">Step 2: Configure Boost.Build
-      jamfile to use AutoIndex</a>
+<a name="boost_autoindex.tut.configure"></a><a class="link" href="configure.html" title="Step 2: Configure Boost.Build jamfile to use Boost.AutoIndex">Step 2: Configure Boost.Build
+      jamfile to use Boost.AutoIndex</a>
 </h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section"><a href="configure/options.html">Available Indexing
         Options</a></span></dt>
-<dt><span class="section"><a href="configure/optional.html">Making AutoIndex
+<dt><span class="section"><a href="configure/optional.html">Making Boost.AutoIndex
         optional</a></span></dt>
 </dl></div>
 <p>
@@ -42,8 +42,8 @@
       </p>
 <pre class="programlisting">using auto-index ; </pre>
 <p>
-        to the start of the Jamfile, and then add whatever auto-index options you
-        want to the <span class="emphasis"><em>build requirements section</em></span>, for example:
+        to the start of the Jamfile, and then add whatever Boost.AutoIndex options
+        you want to the <span class="emphasis"><em>build requirements section</em></span>, for example:
       </p>
 <pre class="programlisting">boostbook standalone
     :
@@ -110,7 +110,7 @@
 </tr>
 <tr><td align="left" valign="top"><p>
           If you upgrade compiler version, for example MSVC from 9 to 10, then you
-          may need to rebuild Autoindex to avoid what Microsoft call a 'side-by-side'
+          may need to rebuild Boost.AutoIndex to avoid what Microsoft call a 'side-by-side'
           error. And make sure that the autoindex.exe version you are using is the
           new one.
         </p></td></tr>

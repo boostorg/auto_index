@@ -4,7 +4,7 @@
 <title>Step 4: Create the .idx script file - to control what to terms to index</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
-<link rel="home" href="../../index.html" title="AutoIndex">
+<link rel="home" href="../../index.html" title="Boost.AutoIndex">
 <link rel="up" href="../tut.html" title="Getting Started and Tutorial">
 <link rel="prev" href="add_indexes.html" title="Step 3: Add indexes to your documentation">
 <link rel="next" href="entries.html" title="Step 5: Add Manual Index Entries to Docbook XML - Optional">
@@ -17,11 +17,12 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="autoindex.tut.script"></a><a class="link" href="script.html" title="Step 4: Create the .idx script file - to control what to terms to index">Step 4: Create the .idx script
+<a name="boost_autoindex.tut.script"></a><a class="link" href="script.html" title="Step 4: Create the .idx script file - to control what to terms to index">Step 4: Create the .idx script
       file - to control what to terms to index</a>
 </h3></div></div></div>
 <p>
-        AutoIndex works by reading a script file that tells it what terms to index.
+        Boost.AutoIndex works by reading a script file that tells it what terms to
+        index.
       </p>
 <p>
         If your document contains largely text, and only a small amount of simple
@@ -132,7 +133,7 @@
         Finally the script can add rewrite rules, that rename section names that
         are automatically used as index entries. For example we might want to remove
         leading "A" or "The" prefixes from section titles when
-        AutoIndex uses them as an index entry:
+        Boost.AutoIndex uses them as an index entry:
       </p>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>

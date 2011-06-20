@@ -4,7 +4,7 @@
 <title>Step 5: Add Manual Index Entries to Docbook XML - Optional</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
-<link rel="home" href="../../index.html" title="AutoIndex">
+<link rel="home" href="../../index.html" title="Boost.AutoIndex">
 <link rel="up" href="../tut.html" title="Getting Started and Tutorial">
 <link rel="prev" href="script.html" title="Step 4: Create the .idx script file - to control what to terms to index">
 <link rel="next" href="pis.html" title="Step 6: Using XML processing instructions to control what gets indexed.">
@@ -17,26 +17,26 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="autoindex.tut.entries"></a><a class="link" href="entries.html" title="Step 5: Add Manual Index Entries to Docbook XML - Optional">Step 5: Add Manual Index Entries
-      to Docbook XML - Optional</a>
+<a name="boost_autoindex.tut.entries"></a><a class="link" href="entries.html" title="Step 5: Add Manual Index Entries to Docbook XML - Optional">Step 5: Add Manual Index
+      Entries to Docbook XML - Optional</a>
 </h3></div></div></div>
 <p>
         If you add manual <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexentry</span><span class="special">&gt;</span></code> markup to your Docbook XML then these
         will be passed through unchanged. Please note however, that if you are using
-        AutoIndex's internal index generation then it only recognises <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">primary</span><span class="special">&gt;</span></code>, <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">secondary</span><span class="special">&gt;</span></code>
+        Boost.AutoIndex's internal index generation then it only recognises <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">primary</span><span class="special">&gt;</span></code>, <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">secondary</span><span class="special">&gt;</span></code>
         and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">tertiary</span><span class="special">&gt;</span></code> elements within the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">indexterm</span><span class="special">&gt;</span></code>.
         <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">see</span><span class="special">&gt;</span></code> and <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">seealso</span><span class="special">&gt;</span></code>
-        elements are not currently recognised and auto-index will emit a warning
+        elements are not currently recognised and Boost.AutoIndex will emit a warning
         if these are used.
       </p>
 <p>
         Likewise none of the attributes which can be applied to these elements are
-        used when AutoIndex generates the index itself, with the exception of the
-        <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;</span></code> attribute.
+        used when Boost.AutoIndex generates the index itself, with the exception
+        of the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">type</span><span class="special">&gt;</span></code> attribute.
       </p>
 <p>
-        For Quickbook users, there are some templates in auto_index_helpers.qbk that
-        assist in adding manual entries without having to escape to Docbook.
+        For Quickbook users, there are some templates in <a class="link" href="../qbk.html" title="Quickbook Support">auto_index_helpers.qbk</a>
+        that assist in adding manual entries without having to escape to Docbook.
       </p>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>

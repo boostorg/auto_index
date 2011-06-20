@@ -4,10 +4,10 @@
 <title>Script File (.idx) Reference</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
-<link rel="home" href="../index.html" title="AutoIndex">
-<link rel="up" href="../index.html" title="AutoIndex">
+<link rel="home" href="../index.html" title="Boost.AutoIndex">
+<link rel="up" href="../index.html" title="Boost.AutoIndex">
 <link rel="prev" href="tut/refine.html" title="Step 8: Iterate - to refine your index">
-<link rel="next" href="workflow.html" title="Understanding The AutoIndex Workflow">
+<link rel="next" href="workflow.html" title="Understanding The Boost.AutoIndex Workflow">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
@@ -17,15 +17,15 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="autoindex.script_ref"></a><a class="link" href="script_ref.html" title="Script File (.idx) Reference">Script File (.idx) Reference</a>
+<a name="boost_autoindex.script_ref"></a><a class="link" href="script_ref.html" title="Script File (.idx) Reference">Script File (.idx) Reference</a>
 </h2></div></div></div>
 <p>
       The following elements can occur in a script:
     </p>
-<a name="autoindex.script_ref.comments_and_blank_lines"></a><h5>
-<a name="autoindex.script_ref.comments_and_blank_lines-heading"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.comments_and_blank_lines">Comments and
-      blank lines</a>
+<a name="boost_autoindex.script_ref.comments_and_blank_lines"></a><h5>
+<a name="boost_autoindex.script_ref.comments_and_blank_lines-heading"></a>
+      <a class="link" href="script_ref.html#boost_autoindex.script_ref.comments_and_blank_lines">Comments
+      and blank lines</a>
     </h5>
 <p>
       Blank lines consisting of only whitespace are ignored, so are lines that <span class="bold"><strong>start with a #</strong></span>.
@@ -39,10 +39,10 @@
         You can't append # comments onto the end of a line!
       </p></td></tr>
 </table></div>
-<a name="autoindex.script_ref.inclusion_of_index_terms"></a><h5>
-<a name="autoindex.script_ref.inclusion_of_index_terms-heading"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.inclusion_of_index_terms">Inclusion of
-      Index terms</a>
+<a name="boost_autoindex.script_ref.inclusion_of_index_terms"></a><h5>
+<a name="boost_autoindex.script_ref.inclusion_of_index_terms-heading"></a>
+      <a class="link" href="script_ref.html#boost_autoindex.script_ref.inclusion_of_index_terms">Inclusion
+      of Index terms</a>
     </h5>
 <pre class="programlisting"><span class="identifier">term</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression1</span> <span class="special">[</span><span class="identifier">regular</span><span class="special">-</span><span class="identifier">expression2</span> <span class="special">[</span><span class="identifier">category</span><span class="special">]]]</span>
 </pre>
@@ -251,9 +251,10 @@
     </p>
 <pre class="programlisting"><span class="identifier">myterm</span> <span class="special">(?:</span><span class="identifier">search_expression1</span><span class="special">|</span><span class="identifier">search_expression1</span><span class="special">)</span> <span class="special">(?:</span><span class="identifier">constrait_expression2</span><span class="special">|</span><span class="identifier">constrait_expression2</span><span class="special">)</span> <span class="identifier">mycategory</span>
 </pre>
-<a name="autoindex.script_ref.source_file_scanning"></a><h5>
-<a name="autoindex.script_ref.source_file_scanning-heading"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.source_file_scanning">Source File Scanning</a>
+<a name="boost_autoindex.script_ref.source_file_scanning"></a><h5>
+<a name="boost_autoindex.script_ref.source_file_scanning-heading"></a>
+      <a class="link" href="script_ref.html#boost_autoindex.script_ref.source_file_scanning">Source File
+      Scanning</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span> <span class="identifier">source</span><span class="special">-</span><span class="identifier">file</span><span class="special">-</span><span class="identifier">name</span>
 </pre>
@@ -280,9 +281,9 @@
         on how to change this.
       </p></td></tr>
 </table></div>
-<a name="autoindex.script_ref.directory_and_source_file_scanning"></a><h5>
-<a name="autoindex.script_ref.directory_and_source_file_scanning-heading"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.directory_and_source_file_scanning">Directory
+<a name="boost_autoindex.script_ref.directory_and_source_file_scanning"></a><h5>
+<a name="boost_autoindex.script_ref.directory_and_source_file_scanning-heading"></a>
+      <a class="link" href="script_ref.html#boost_autoindex.script_ref.directory_and_source_file_scanning">Directory
       and Source File Scanning</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">scan</span><span class="special">-</span><span class="identifier">path</span> <span class="identifier">directory</span><span class="special">-</span><span class="identifier">name</span> <span class="identifier">file</span><span class="special">-</span><span class="identifier">name</span><span class="special">-</span><span class="identifier">regex</span> <span class="special">[</span><span class="identifier">recurse</span><span class="special">]</span>
@@ -309,9 +310,9 @@
           </p></dd>
 </dl>
 </div>
-<a name="autoindex.script_ref.excluding_terms"></a><h5>
-<a name="autoindex.script_ref.excluding_terms-heading"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.excluding_terms">Excluding Terms</a>
+<a name="boost_autoindex.script_ref.excluding_terms"></a><h5>
+<a name="boost_autoindex.script_ref.excluding_terms-heading"></a>
+      <a class="link" href="script_ref.html#boost_autoindex.script_ref.excluding_terms">Excluding Terms</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">exclude</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">list</span>
 </pre>
@@ -322,10 +323,10 @@
       included. In other words this removes terms from the scanners internal list
       of things to index.
     </p>
-<a name="autoindex.script_ref.rewriting_section_names"></a><h5>
-<a name="autoindex.script_ref.rewriting_section_names-heading"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.rewriting_section_names">Rewriting Section
-      Names</a>
+<a name="boost_autoindex.script_ref.rewriting_section_names"></a><h5>
+<a name="boost_autoindex.script_ref.rewriting_section_names-heading"></a>
+      <a class="link" href="script_ref.html#boost_autoindex.script_ref.rewriting_section_names">Rewriting
+      Section Names</a>
     </h5>
 <pre class="programlisting">!rewrite-id regular-expression new-name</pre>
 <div class="variablelist">
@@ -369,9 +370,9 @@
       Will remove any leading "A", "An" or "The" from
       all index entries - thus preventing lots of entries under "The" etc!
     </p>
-<a name="autoindex.script_ref.defining_or_changing_the_file_scanners"></a><h5>
-<a name="autoindex.script_ref.defining_or_changing_the_file_scanners-heading"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.defining_or_changing_the_file_scanners">Defining
+<a name="boost_autoindex.script_ref.defining_or_changing_the_file_scanners"></a><h5>
+<a name="boost_autoindex.script_ref.defining_or_changing_the_file_scanners-heading"></a>
+      <a class="link" href="script_ref.html#boost_autoindex.script_ref.defining_or_changing_the_file_scanners">Defining
       or Changing the File Scanners</a>
     </h5>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">define</span><span class="special">-</span><span class="identifier">scanner</span> <span class="identifier">type</span> <span class="identifier">file</span><span class="special">-</span><span class="identifier">search</span><span class="special">-</span><span class="identifier">expression</span> <span class="identifier">xml</span><span class="special">-</span><span class="identifier">regex</span><span class="special">-</span><span class="identifier">formatter</span> <span class="identifier">term</span><span class="special">-</span><span class="identifier">formatter</span> <span class="identifier">id</span><span class="special">-</span><span class="identifier">filter</span> <span class="identifier">filename</span><span class="special">-</span><span class="identifier">filter</span>
@@ -472,9 +473,9 @@
       Will look for <span class="emphasis"><em>any</em></span> occurrence of whatever class names the
       scanner may find in the documentation.
     </p>
-<a name="autoindex.script_ref.debugging_scanning"></a><h5>
-<a name="autoindex.script_ref.debugging_scanning-heading"></a>
-      <a class="link" href="script_ref.html#autoindex.script_ref.debugging_scanning">Debugging scanning</a>
+<a name="boost_autoindex.script_ref.debugging_scanning"></a><h5>
+<a name="boost_autoindex.script_ref.debugging_scanning-heading"></a>
+      <a class="link" href="script_ref.html#boost_autoindex.script_ref.debugging_scanning">Debugging scanning</a>
     </h5>
 <p>
       If you see a term in the index, and you don't understand why it's there, add

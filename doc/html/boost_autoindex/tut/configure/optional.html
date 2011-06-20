@@ -1,11 +1,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Making AutoIndex optional</title>
+<title>Making Boost.AutoIndex optional</title>
 <link rel="stylesheet" href="../../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
-<link rel="home" href="../../../index.html" title="AutoIndex">
-<link rel="up" href="../configure.html" title="Step 2: Configure Boost.Build jamfile to use AutoIndex">
+<link rel="home" href="../../../index.html" title="Boost.AutoIndex">
+<link rel="up" href="../configure.html" title="Step 2: Configure Boost.Build jamfile to use Boost.AutoIndex">
 <link rel="prev" href="options.html" title="Available Indexing Options">
 <link rel="next" href="../add_indexes.html" title="Step 3: Add indexes to your documentation">
 </head>
@@ -17,13 +17,13 @@
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="autoindex.tut.configure.optional"></a><a class="link" href="optional.html" title="Making AutoIndex optional">Making AutoIndex
+<a name="boost_autoindex.tut.configure.optional"></a><a class="link" href="optional.html" title="Making Boost.AutoIndex optional">Making Boost.AutoIndex
         optional</a>
 </h4></div></div></div>
 <p>
-          It is considerate to make the <span class="bold"><strong>use of auto-index optional</strong></span>
-          in Boost.Build, to allow users who do not have AutoIndex installed to still
-          be able to build your documentation.
+          It is considerate to make the <span class="bold"><strong>use of Boost.AutoIndex
+          optional</strong></span> in Boost.Build, to allow users who do not have Boost.AutoIndex
+          installed to still be able to build your documentation.
         </p>
 <p>
           This also very convenient while you are refining your documentation, to
@@ -32,8 +32,8 @@
           you keep rebuilding the index!
         </p>
 <p>
-          One method of setting up optional AutoIndex support is to place all AutoIndex
-          configuration in a the body of a bjam if statement:
+          One method of setting up optional Boost.AutoIndex support is to place all
+          Boost.AutoIndex configuration in a the body of a bjam if statement:
         </p>
 <pre class="programlisting">if --enable-index in  [ modules.peek : ARGV ]
   {
@@ -52,7 +52,7 @@
   }
   else
   {
-     ECHO "Building the my_library docs with automatic index generation disabled. To get an auto-index, try building with --enable-index." ;
+     ECHO "Building the my_library docs with automatic index generation disabled. To get an index, try building with --enable-index." ;
   }
 </pre>
 <p>
