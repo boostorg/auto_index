@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Step 4: Create the .idx script file - to control what to terms to index</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="Boost.AutoIndex">
 <link rel="up" href="../tut.html" title="Getting Started and Tutorial">
 <link rel="prev" href="add_indexes.html" title="Step 3: Add indexes to your documentation">
@@ -15,14 +15,13 @@
 <div class="spirit-nav">
 <a accesskey="p" href="add_indexes.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../tut.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="entries.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost_autoindex.tut.script"></a><a class="link" href="script.html" title="Step 4: Create the .idx script file - to control what to terms to index">Step 4: Create the .idx script
       file - to control what to terms to index</a>
 </h3></div></div></div>
 <p>
-        Boost.AutoIndex works by reading a script file that tells it what terms to
-        index.
+        AutoIndex works by reading a script file that tells it what terms to index.
       </p>
 <p>
         If your document contains largely text, and only a small amount of simple
@@ -133,7 +132,7 @@
         Finally the script can add rewrite rules, that rename section names that
         are automatically used as index entries. For example we might want to remove
         leading "A" or "The" prefixes from section titles when
-        Boost.AutoIndex uses them as an index entry:
+        AutoIndex uses them as an index entry:
       </p>
 <pre class="programlisting"><span class="special">!</span><span class="identifier">rewrite</span><span class="special">-</span><span class="identifier">name</span> <span class="string">"(?i)(?:A|The)\s+(.*)"</span> <span class="string">"\1"</span>
 </pre>

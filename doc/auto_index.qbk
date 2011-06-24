@@ -1,4 +1,4 @@
-[article AutoIndex
+[article Boost.AutoIndex
     [quickbook 1.5]
     [copyright 2008, 2011 John Maddock]
     [license
@@ -19,7 +19,6 @@
 [def __DocObjMod [@http://en.wikipedia.org/wiki/Document_Object_Model Document Object Model (DOM)]]
 
 [def __doxygen [@http://www.doxygen.org/ Doxygen]]
-[def __autoindex [@boost:\tools\auto_index\doc\html\index.html AutoIndex]]
 [def __pdf [@http://www.adobe.com/products/acrobat/adobepdf.html PDF]]
 
 [template deg[]'''&#xB0;'''] [/ degree sign ]
@@ -325,7 +324,7 @@ AutoIndex configuration in a the body of a bjam if statement:
           <auto-index>on
           <auto-index-script>index.idx
           
-           ... other auto-index options here...
+           ... other AutoIndex options here...
 
         # And tell Quickbook that it should enable indexing.
         <quickbook-define>enable_index
@@ -333,7 +332,7 @@ AutoIndex configuration in a the body of a bjam if statement:
   }
   else
   {
-     ECHO "Building the my_library docs with automatic index generation disabled. To get an auto-index, try building with --enable-index." ;
+     ECHO "Building the my_library docs with automatic index generation disabled. To get an Index, try building with --enable-index." ;
   }
 ] [/pre]
 
@@ -392,7 +391,7 @@ when the documentation is built.
 To add multiple indexes, then give each one a title and set its
 `type` attribute to specify which terms will be included, for example
 to place the ['function], ['class], ['macro] or ['typedef] names
-indexed by ['auto_index] in separate indexes along with a main
+indexed by ['AutoIndex] in separate indexes along with a main
 "include everything" index as well, one could add:
 
 [pre
@@ -446,7 +445,7 @@ AutoIndex.  If you're using Boostbook or quickbook though, this all
 happens for you anyway, and AutoIndex will index the whole document
 including any sections included with `xinclude`.]
    
-If you are using auto-index's internal index generation on
+If you are using AutoIndex's internal index generation on
 
 [pre
 <auto-index-internal>on
@@ -464,7 +463,7 @@ does not appear in on a page of its own, but after the TOC in the HTML output.
 
 You control the type of XML block used by setting the =<auto-index-type>element-name= 
 attribute in the Jamfile, or via the `index-type=element-name` command line option to
-auto-index itself.  For example, to place the index in an appendix, your Jamfile might 
+AutoIndex itself.  For example, to place the index in an appendix, your Jamfile might 
 look like:
 
 [pre
@@ -599,7 +598,7 @@ passed through unchanged.  Please note however, that if you are using
 AutoIndex's internal index generation then it only recognises
 `<primary>`, `<secondary>` and `<tertiary>` elements within the `<indexterm>`.
 `<see>` and `<seealso>` elements are not currently recognised
-and auto-index will emit a warning if these are used.
+and AutoIndex will emit a warning if these are used.
 
 Likewise none of the  attributes which can be applied to these elements are used when
 AutoIndex generates the index itself, with the exception of the `<type>` attribute.
@@ -695,7 +694,7 @@ and the next iteration examined, and so on.
 
 [tip If you don't understand why a particular term is (or is not) present in the index,
 try adding a ['!debug regular-expression] 
-directive to the [link autoindex.script_ref script file].
+directive to the [link boost_autoindex.script_ref script file].
 ] [/tip]
 
 [heading Restricting which Sections are indexed for a particular term]
@@ -1049,7 +1048,7 @@ it is worth switching it on.
 # Also the AutoIndex's internal index representation gets updated.
 
 # Once the whole XML document has been indexed, 
-  then, if autoindex has been instructed to generate the index itself,
+  then, if AutoIndex has been instructed to generate the index itself,
   it creates the necessary XML and inserts this into the __DocObjMod.
 
 # Finally the whole __DocObjMod is written out as a new Docbook XML file,
@@ -1121,22 +1120,22 @@ The available templates are then:
 
 [section:comm_ref Command Line Reference]
 
-The following command line options are supported by auto_index:
+The following command line options are supported by AutoIndex:
 
 [variablelist
-[[in=infilename][Specifies the name of the XML input file to be indexed.]]
-[[out=outfilename][Specifies the name of the new XML file to create.]]
-[[scan=source-filename][Specifies that ['source-filename] should be scanned
+[[--in=infilename][Specifies the name of the XML input file to be indexed.]]
+[[--out=outfilename][Specifies the name of the new XML file to create.]]
+[[--scan=source-filename][Specifies that ['source-filename] should be scanned
 for terms to index.]]
-[[script=script-filename][Specifies the name of the script file to process.]]
+[[--script=script-filename][Specifies the name of the script file to process.]]
 [[--no-duplicates][If a term occurs more than once in the same section, then
 include only one index entry.]]
-[[--internal-index][Specifies that auto_index should generate the actual
+[[--internal-index][Specifies that AutoIndex should generate the actual
 indexes rather than inserting `<indexterm>`s and leaving index generation
 to the XSL stylesheets.]]
-[[--no-section-names][Prevents auto_index from using section names as index entries.]]
-[[prefix=pathname][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
-[[index-type=element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
+[[--no-section-names][Prevents AutoIndex from using section names as index entries.]]
+[[--prefix=pathname][Specifies a directory to apply as a prefix to all relative file paths in the script file.]]
+[[--index-type=element-name][Specifies the name of the XML element to enclose internally generated indexes in: 
   defaults to ['section], but could equally be ['appendix] or ['chapter]
   or some other block level element that has a formal title.]]
 ]

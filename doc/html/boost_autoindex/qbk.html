@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Quickbook Support</title>
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../index.html" title="Boost.AutoIndex">
 <link rel="up" href="../index.html" title="Boost.AutoIndex">
 <link rel="prev" href="xml.html" title="XML Handling">
@@ -15,16 +15,16 @@
 <div class="spirit-nav">
 <a accesskey="p" href="xml.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="comm_ref.html"><img src="../images/next.png" alt="Next"></a>
 </div>
-<div class="section" lang="en">
+<div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="boost_autoindex.qbk"></a><a class="link" href="qbk.html" title="Quickbook Support">Quickbook Support</a>
 </h2></div></div></div>
 <p>
-      The file <a class="link" href="qbk.html" title="Quickbook Support">auto_index_helpers.qbk</a>
-      in <span class="emphasis"><em>boost-path</em></span>/tools/auto_index/include contains various
-      Quickbook templates to assist with Boost.AutoIndex support. One would normally
-      add the above path to your include search path via an <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">include</span><span class="special">&gt;</span><span class="identifier">path</span></code> statement in your Jamfile, and then
-      make the templates available to your Quickbook source via a:
+      The file auto_index_helpers.qbk in <span class="emphasis"><em>boost-path</em></span>/tools/auto_index/include
+      contains various Quickbook templates to assist with AutoIndex support. One
+      would normally add the above path to your include search path via an <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">include</span><span class="special">&gt;</span><span class="identifier">path</span></code>
+      statement in your Jamfile, and then make the templates available to your Quickbook
+      source via a:
     </p>
 <pre class="programlisting">[include auto_index_helpers.qbk]</pre>
 <p>
@@ -92,7 +92,7 @@
 <td>
               <p>
                 Creates a Docbook processing instruction that will be handled by
-                Boost.AutoIndex, valid values for "Arg" are either "IgnoreSection"
+                AutoIndex, valid values for "Arg" are either "IgnoreSection"
                 or "IgnoreBlock".
               </p>
             </td>

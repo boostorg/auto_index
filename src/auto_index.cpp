@@ -151,6 +151,34 @@ struct string_cmp
    }
 };
 //
+// Discover whether this node can contain a <title> or not, if not
+// we don't want to link to it, or the XSL HTML stylesheets may do strange 
+// things, and at least emit copious messages.  See https://sourceforge.net/tracker/?func=detail&aid=3325153&group_id=21935&atid=373747
+//
+bool can_contain_title(const char* name)
+{
+   static const boost::array<const char*, 102> names = 
+   { {
+      "abstract", "appendix", "appendixinfo", "article", "articleinfo", "authorblurb", "bibliodiv", "biblioentry", "bibliography", 
+       "bibliographyinfo", "bibliolist", "bibliomixed", "bibliomset", "biblioset", "blockinfo", "blockquote", "book", "bookinfo", 
+       "calloutlist", "caution", "chapter", "chapterinfo", "colophon", "constraintdef", "dedication", "equation", "example", "figure", 
+       "formalpara", "glossary", "glossaryinfo", "glossdiv", "glosslist", "important", "index", "indexdiv", "indexinfo", "itemizedlist", 
+       "legalnotice", "lot", "msg", "msgexplan", "msgmain", "msgrel", "msgset", "msgsub", "note", "objectinfo", "orderedlist", "part", 
+       "partinfo", "partintro", "personblurb", "preface", "prefaceinfo", "procedure", "productionset", "qandadiv", "qandaset", 
+       "refentryinfo", "reference", "referenceinfo", "refsect1", "refsect1info", "refsect2", "refsect2info", "refsect3", "refsect3info", 
+       "refsection", "refsectioninfo", "refsynopsisdiv", "refsynopsisdivinfo", "sect1", "sect1info", "sect2", "sect2info", "sect3", 
+       "sect3info", "sect4", "sect4info", "sect5", "sect5info", "section", "sectioninfo", "segmentedlist", "set", "setindex", 
+       "setindexinfo", "setinfo", "sidebar", "sidebarinfo", "simplesect", "step", "table", "task", "taskprerequisites", 
+       "taskrelated", "tasksummary", "tip", "toc", "variablelist", "warning"
+   } };
+   static std::set<const char*, string_cmp> permitted;
+
+   if(permitted.empty())
+      permitted.insert(names.begin(), names.end());
+
+   return 0 != permitted.count(name);
+}
+//
 // Determine whether this node can contain an indexterm or not:
 //
 bool can_contain_indexterm(const char* name)
@@ -318,7 +346,12 @@ void process_node(boost::tiny_xml::element_ptr node, node_id* prev, title_info* 
    // Store the current ID and title as nested scoped objects:
    //
    node_id id = { 0, prev };
-   id.id = find_attr(node, "id");
+   if(can_contain_title(node->name.c_str()))
+   {
+      // Only set the ID to link to if the block can contain a title, see
+      // can_contain_title above for rationale.
+      id.id = find_attr(node, "id");
+   }
    title_info title = { "", pt};
    bool flatten = should_flatten_node(node->name.c_str());
 
