@@ -364,7 +364,7 @@ or with index(es)
   
 [tip Always send the output to a log file.
 It will contain of lot of stuff, but is invaluable to check if all has gone right,
-and else diagnose what has gone wrong.
+or else diagnose what has gone wrong.
 ]  [/tip]
 
 [tip A return code of 0 is not a reliable indication
