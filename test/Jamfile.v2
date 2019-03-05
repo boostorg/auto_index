@@ -8,7 +8,8 @@ import testing ;
 import toolset ;
 import type ;
 
-alias line_compare_tool : ../../quickbook/test/src//line-compare-tool ;
+exe line_compare_tool : text_diff.cpp ;
+install install_line_compare : line_compare_tool : <location>. ; 
 
 rule auto-index-test ( target-name : input-file : output-file ? : options * )
 {
@@ -45,6 +46,7 @@ rule auto-index-test ( target-name : input-file : output-file ? : options * )
                 <implicit-dependency>$(target_name)
                 <dependency>Jamfile.v2
                 <dependency>$(input-file)
+                <dependency>install_line_compare
         ]
         ;
 
