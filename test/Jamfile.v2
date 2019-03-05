@@ -1,3 +1,6 @@
+# Copyright 2018 John Maddock
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 import feature ;
 import generators ;
@@ -8,10 +11,13 @@ import testing ;
 import toolset ;
 import type ;
 
-exe line_compare_tool : text_diff.cpp ;
-install install_line_compare : line_compare_tool : <location>. ; 
+path-constant ROOT : ../../.. ;
+path-constant HERE : . ;
 
-rule auto-index-test ( target-name : input-file : output-file ? : options * )
+exe line_compare_tool : text_diff.cpp ;
+install install_line_compare : line_compare_tool : <location>$(HERE) ; 
+
+rule auto-index-test ( target-name : input-file : script-file : output-file ? : options * )
 {
     local project = [ project.current ] ;
 
@@ -22,13 +28,15 @@ rule auto-index-test ( target-name : input-file : output-file ? : options * )
             : [ alias autoindex : ../build//auto_index : release ]
             : $(requirements)
                 <location-prefix>$(target-name).test
-                <testing.arg>--prefix=../../..
+                <testing.arg>--prefix=$(ROOT)
                 <testing.arg>$(options)
-                <testing.arg>--in=$(input-file)
-                <testing.arg>--out=$(target-name).out
+                <testing.arg>--in=$(HERE)/$(input-file)
+                <testing.arg>--script=$(HERE)/$(script-file)
+                <testing.arg>--out=$(HERE)/$(target-name).out
                 <preserve-test-targets>on
                 <dependency>Jamfile.v2
                 <dependency>$(input-file)
+                <dependency>$(script-file)
         ]
         ;
     
@@ -39,13 +47,14 @@ rule auto-index-test ( target-name : input-file : output-file ? : options * )
             : .//line_compare_tool
             : $(requirements)
                 <location-prefix>$(target-name).test
-                <testing.arg>$(target-name).out
-                <testing.arg>$(target-name).gold
+                <testing.arg>$(HERE)/$(target-name).out
+                <testing.arg>$(HERE)/$(target-name).gold
                 <preserve-test-targets>on
                 <dependency>$(target_name)
                 <implicit-dependency>$(target_name)
                 <dependency>Jamfile.v2
                 <dependency>$(input-file)
+                <dependency>$(script-file)
                 <dependency>install_line_compare
         ]
         ;
@@ -55,10 +64,6 @@ rule auto-index-test ( target-name : input-file : output-file ? : options * )
     return $(t) ;
 }
 
-auto-index-test test1 : type_traits.docbook : : --script=index.idx ;
-auto-index-test test2 : type_traits.docbook : : --internal-index --script=index.idx ;
-auto-index-test test3 : type_traits.docbook : : --internal-index --index-type=index --script=index.idx ;
-
-
-
-
+auto-index-test test1 : type_traits.docbook : index.idx ;
+auto-index-test test2 : type_traits.docbook : index.idx : : --internal-index ;
+auto-index-test test3 : type_traits.docbook : index.idx : : --internal-index --index-type=index ;
