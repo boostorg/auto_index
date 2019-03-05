@@ -1,3 +1,6 @@
+# Copyright 2018 John Maddock
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 import feature ;
 import generators ;
@@ -8,10 +11,11 @@ import testing ;
 import toolset ;
 import type ;
 
-alias line_compare_tool : ../../quickbook/test/src//line-compare-tool ;
-
 path-constant ROOT : ../../.. ;
 path-constant HERE : . ;
+
+exe line_compare_tool : text_diff.cpp ;
+install install_line_compare : line_compare_tool : <location>$(HERE) ; 
 
 rule auto-index-test ( target-name : input-file : script-file : output-file ? : options * )
 {
@@ -51,6 +55,7 @@ rule auto-index-test ( target-name : input-file : script-file : output-file ? : 
                 <dependency>Jamfile.v2
                 <dependency>$(input-file)
                 <dependency>$(script-file)
+                <dependency>install_line_compare
         ]
         ;
 
