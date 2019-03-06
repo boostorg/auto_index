@@ -15,7 +15,6 @@ path-constant ROOT : ../../.. ;
 path-constant HERE : . ;
 
 exe line_compare_tool : text_diff.cpp ;
-install install_line_compare : line_compare_tool : <location>$(HERE) ; 
 
 rule auto-index-test ( target-name : input-file : script-file : output-file ? : options * )
 {
@@ -44,18 +43,16 @@ rule auto-index-test ( target-name : input-file : script-file : output-file ? : 
         [ targets.create-typed-target RUN
             : $(project)
             : $(target-name)_check
-            : .//line_compare_tool
+            : line_compare_tool
             : $(requirements)
                 <location-prefix>$(target-name).test
                 <testing.arg>$(HERE)/$(target-name).out
                 <testing.arg>$(HERE)/$(target-name).gold
                 <preserve-test-targets>on
-                <dependency>$(target_name)
-                <implicit-dependency>$(target_name)
+                <dependency>$(target_name).test
                 <dependency>Jamfile.v2
                 <dependency>$(input-file)
                 <dependency>$(script-file)
-                <dependency>install_line_compare
         ]
         ;
 
