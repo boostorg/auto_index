@@ -38,7 +38,10 @@ rule auto-index-test ( target-name : input-file : script-file : output-file ? : 
                 <dependency>$(script-file)
         ]
         ;
-    
+
+    local n = [ $(t).name ] ;
+    #ECHO n: $(n) ;
+
     t += 
         [ targets.create-typed-target RUN
             : $(project)
@@ -49,7 +52,7 @@ rule auto-index-test ( target-name : input-file : script-file : output-file ? : 
                 <testing.arg>$(HERE)/$(target-name).out
                 <testing.arg>$(HERE)/$(target-name).gold
                 <preserve-test-targets>on
-                <dependency>$(target_name).test
+                <dependency>$(n)
                 <dependency>Jamfile.v2
                 <dependency>$(input-file)
                 <dependency>$(script-file)
