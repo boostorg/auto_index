@@ -46,7 +46,7 @@ rule auto-index-test ( target-name : input-file : script-file : output-file ? : 
         [ targets.create-typed-target RUN
             : $(project)
             : $(target-name)_check
-            : line_compare_tool
+            : [ alias lct : line_compare_tool : release ]
             : $(requirements)
                 <location-prefix>$(target-name).test
                 <testing.arg>$(HERE)/$(target-name).out
