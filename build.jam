@@ -1,0 +1,15 @@
+# Copyright René Ferdinand Rivera Morell 2024
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+import project ;
+
+project /boost/auto_index
+    : common-requirements
+    ;
+
+explicit
+    [ alias auto_index : build//auto_index ]
+    [ alias all : auto_index test ]
+    ;
