@@ -58,7 +58,7 @@ jobs:
         run: |
           echo GITHUB_REPOSITORY: $GITHUB_REPOSITORY
           BOOST_BRANCH=develop && ( test "${GITHUB_REF_NAME}" == "master" || test "${GITHUB_REF_NAME}" == "modular" ) && BOOST_BRANCH=${GITHUB_REF_NAME} || true
-          BOOST_GIT=https://github.com/${GITHUB_REPOSITORY/boost_auto_index/boost}.git
+          BOOST_GIT=https://github.com/${GITHUB_REPOSITORY/auto_index/boost}.git
           echo BOOST_GIT: ${BOOST_GIT}
           echo BOOST_BRANCH: $BOOST_BRANCH
           cd ..
@@ -108,7 +108,7 @@ jobs:
           set BOOST_BRANCH=develop
           if "%GITHUB_REF_NAME%" == "master" set BOOST_BRANCH=master
           if "%GITHUB_REF_NAME%" == "modular" set BOOST_BRANCH=modular
-          set BOOST_GIT=https://github.com/%GITHUB_REPOSITORY:boost_auto_index=boost%.git
+          set BOOST_GIT=https://github.com/%GITHUB_REPOSITORY:auto_index=boost%.git
           echo BOOST_GIT: %BOOST_GIT%
           echo BOOST_BRANCH: %BOOST_BRANCH%
           cd ..
