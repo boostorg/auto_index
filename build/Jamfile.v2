@@ -6,18 +6,6 @@
 #   http://www.boost.org/LICENSE_1_0.txt)
 #==============================================================================
 
-import quickbook ;
-import modules ;
-import boostcpp ;
-import path ;
-import option ;
-
-local DIST_DIR = [ option.get distdir ] ;
-DIST_DIR ?= [ option.get build-dir ] ;
-DIST_DIR ?= [ path.join $(BOOST_ROOT) dist ] ;
-DIST_DIR = [ path.root [ path.make $(DIST_DIR) ] [ path.pwd ] ] ;
-local DIST_BIN = [ path.join $(DIST_DIR) bin ] ;
-
 exe auto_index :
    ../src/auto_index.cpp
    ../src/file_scanning.cpp
@@ -28,8 +16,3 @@ exe auto_index :
    /boost/system//boost_system
    /boost/program_options//boost_program_options
    : <define>BOOST_ALL_NO_LIB=1 <link>static release ;
-
-install aii : auto_index : <location>. ;
-explicit aii ;
-
-install i : auto_index : <location>$(DIST_BIN) ;
