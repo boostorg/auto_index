@@ -14,13 +14,13 @@ DIST_DIR ?= [ path.join $(BOOST_ROOT) dist ] ;
 DIST_DIR ?= dist ;
 DIST_DIR = [ path.root [ path.make $(DIST_DIR) ] [ path.pwd ] ] ;
 
-project /boost/auto_index ;
+project /boost/auto_index
+    : default-build release ;
 
 explicit
     [ install dist-bin
         : build//auto_index/<link>static
-        : <install-type>EXE <location>$(DIST_DIR)/bin
-        : release ]
+        : <install-type>EXE <location>$(DIST_DIR)/bin ]
     [ alias auto_index : build//auto_index ]
     [ alias all : auto_index test dist-bin ]
     ;

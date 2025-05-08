@@ -19,18 +19,13 @@ jobs:
       matrix:
         include:
           - toolset: gcc
-            os: ubuntu-20.04
-          - toolset: gcc
             os: ubuntu-22.04
+          - toolset: gcc
+            cxxstd: "11,14,17,20"
+            os: ubuntu-24.04
           - toolset: clang
-            cxxstd: 11
-            os: macos-11
-          - toolset: clang
-            cxxstd: 14
-            os: macos-12
-          - toolset: clang
-            cxxstd: 17
-            os: macos-13
+            cxxstd: "11,14,17,20"
+            os: macos-latest
 
     runs-on: ${{matrix.os}}
     container: ${{matrix.container}}
@@ -40,7 +35,7 @@ jobs:
         shell: bash
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup container environment
         if: matrix.container
